@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "lms"
+version = "0.1.0"
+description = "Learning management system"
+authors = ["codewiztinsing <tinsingjobs2k@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+django = "^4.2"
+djangorestframework = "^3.14.0"
+psycopg2-binary = "^2.9.6"
+django-filter = "^23.2"
+django-split-settings = "^1.2.0"
+pyyaml = "^6.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
