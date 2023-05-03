@@ -1,0 +1,36 @@
+[flake8]
+# These are the default rules that flake8 will check for.
+# You can disable or enable them as needed.
+ignore = E203, E266, E501, W503
+
+# These are the paths that flake8 will ignore.
+# You can add or remove paths as needed.
+exclude =
+    .tox
+    .git
+    *migrations*
+    *.egg*
+    *.pyc
+    *.swp
+
+# These are the additional rules that flake8 will check for.
+# You can add or remove rules as needed.
+per-file-ignores =
+    # Ignore long lines in tests.
+    tests/*.py: E501
+
+# This is the maximum line length that flake8 will allow.
+filename = *.py
+accept-encoding = utf-8
+inline-quotes = single
+max-linenumber = 500
+max-line-length = 120
+multiline-quotes = double
+# This is the output format that flake8 will use.
+format = default
+
+# This is the number of errors that flake8 will allow before it stops checking.
+max-errors = 10
+
+# This is the number of warnings that flake8 will allow before it stops checking.
+max-warnings = 10
