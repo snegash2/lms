@@ -16,6 +16,7 @@ files = [
 tests = ["mypy (>=0.800)", "pytest", "pytest-asyncio"]
 
 [[package]]
+<<<<<<< HEAD
 name = "cfgv"
 version = "3.3.1"
 description = "Validate configuration and produce human readable error messages."
@@ -40,6 +41,8 @@ files = [
 ]
 
 [[package]]
+=======
+>>>>>>> 5d54d47 (adding setupfiles)
 name = "django"
 version = "4.2"
 description = "A high-level Python web framework that encourages rapid development and clean, pragmatic design."
@@ -104,6 +107,7 @@ django = ">=3.0"
 pytz = "*"
 
 [[package]]
+<<<<<<< HEAD
 name = "filelock"
 version = "3.12.0"
 description = "A platform independent file lock."
@@ -214,6 +218,8 @@ pyyaml = ">=5.1"
 virtualenv = ">=20.10.0"
 
 [[package]]
+=======
+>>>>>>> 5d54d47 (adding setupfiles)
 name = "psycopg2-binary"
 version = "2.9.6"
 description = "psycopg2 - Python-PostgreSQL Database Adapter"
@@ -286,6 +292,7 @@ files = [
 ]
 
 [[package]]
+<<<<<<< HEAD
 name = "pycodestyle"
 version = "2.10.0"
 description = "Python style guide checker"
@@ -310,6 +317,8 @@ files = [
 ]
 
 [[package]]
+=======
+>>>>>>> 5d54d47 (adding setupfiles)
 name = "pytz"
 version = "2023.3"
 description = "World timezone definitions, modern and historical"
@@ -372,6 +381,7 @@ files = [
 ]
 
 [[package]]
+<<<<<<< HEAD
 name = "setuptools"
 version = "67.7.2"
 description = "Easily download, build, install, upgrade, and uninstall Python packages"
@@ -389,6 +399,8 @@ testing = ["build[virtualenv]", "filelock (>=3.4.0)", "flake8 (<5)", "flake8-202
 testing-integration = ["build[virtualenv]", "filelock (>=3.4.0)", "jaraco.envs (>=2.2)", "jaraco.path (>=3.2.0)", "pytest", "pytest-enabler", "pytest-xdist", "tomli", "virtualenv (>=13.0.0)", "wheel"]
 
 [[package]]
+=======
+>>>>>>> 5d54d47 (adding setupfiles)
 name = "sqlparse"
 version = "0.4.4"
 description = "A non-validating SQL parser."
@@ -417,6 +429,7 @@ files = [
     {file = "tzdata-2023.3.tar.gz", hash = "sha256:11ef1e08e54acb0d4f95bdb1be05da659673de4acbd21bf9c69e94cc5e907a3a"},
 ]
 
+<<<<<<< HEAD
 [[package]]
 name = "virtualenv"
 version = "20.23.0"
@@ -442,3 +455,9 @@ test = ["covdefaults (>=2.3)", "coverage (>=7.2.3)", "coverage-enable-subprocess
 lock-version = "2.0"
 python-versions = "^3.9"
 content-hash = "b04a28344e0a9ef3d1340e82386a141f493ff149062882e3f04123ef330fef05"
+=======
+[metadata]
+lock-version = "2.0"
+python-versions = "^3.9"
+content-hash = "af3968bbf119707fb6fd8e7ed2e04314855c6e8a223370cdbccbece9be86731e"
+>>>>>>> 5d54d47 (adding setupfiles)
