@@ -23,6 +23,7 @@ include(
     'custom.py',
     optional(LOCAL_SETTINGS_PATH),
     'envvars.py',
-    'docker.py'
+    'docker.py',
+    'flowbite.py'
 
 )
