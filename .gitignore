@@ -1,0 +1,46 @@
+node_modules
+.vscode
+.idea
+*.env
+*.lock
+*.swp
+
+# Tailwind
+tailwind.config.js
+tailwind.css
+
+## Django
+*.pyc
+*.pyo
+*.pot
+*.egg-info
+.idea
+.tox
+.venv
+
+## Virtual environment
+.env
+
+## Build
+*.egg
+*.build
+*.dist
+*.wheel
+
+## Media
+media/
+
+## Temp
+tmp/
+
+## Tests
+.tox/
+htmlcov/
+.coverage
+.coverage.*
+
+## Documentation
+docs/_build/
+
+## Other
+.DS_Store
