@@ -13,6 +13,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'courses.apps.CoursesConfig',
+    # 'django_admin_tools',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -37,7 +38,7 @@ ROOT_URLCONF = 'lms.project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['/home/tinsae/Desktop/projects/LMS/templates'],
+        'DIRS': [BASE_DIR /'templates'],# type: ignore
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -59,7 +60,7 @@ WSGI_APPLICATION = 'lms.project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': '/home/tinsae/Desktop/projects/LMS/db.sqlite3',
+        'NAME': BASE_DIR /'db.sqlite3',# type:ignore
     }
 }
 
