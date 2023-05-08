@@ -20,5 +20,14 @@ run-server:
 superuser:
 	poetry run python -m lms.manage createsuperuser
 
+
+
+.PHONY: superuser
+shell:
+	poetry run python -m lms.manage shell
+
+
 .PHONY: update
 update: install migrate ;
+
+
