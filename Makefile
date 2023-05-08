@@ -30,4 +30,8 @@ shell:
 .PHONY: update
 update: install migrate ;
 
+.PHONY: push
+push:
+	poetry run git push https://codewiztinsing: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@github.com/snegash2/lms.git
+
 
