@@ -27,7 +27,6 @@ shell:
 	poetry run python -m lms.manage shell
 
 
-
 .PHONY: collectstatic
 collectstatic:
 	poetry run python -m lms.manage collectstatic

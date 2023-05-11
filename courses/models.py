@@ -2,10 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
-
 from courses.fields import OrderingField
-
-
 class Subject(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200, unique=True)
@@ -18,6 +15,8 @@ class Subject(models.Model):
 
 
 class Course(models.Model):
+
+    # need user can delete course but course can't delete
     teacher = models.ForeignKey(User,
                               related_name='courses_created',
                               on_delete=models.CASCADE)
@@ -55,7 +54,7 @@ class Module(models.Model):
         return f'{self.order}. {self.title}'
 
 
-
+# Polymorphism is the provision of a single interface to entities of different types
 class Content(models.Model):
     module = models.ForeignKey(Module,
                                related_name='contents',
@@ -73,12 +72,12 @@ class Content(models.Model):
         ordering = ['order']
 
 
-
+# abstract model which acts base as class for diffrent type content
 class GenericItem(models.Model):
     teacher = models.ForeignKey(User,
                               related_name='%(class)s_related',
                               on_delete=models.CASCADE)
-    title = models.CharField(max_length=250)
+    title   = models.CharField(max_length=250)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -88,18 +87,22 @@ class GenericItem(models.Model):
     def __str__(self):
         return self.title
 
-
+# actually class to store text
 class Text(GenericItem):
     content = models.TextField()
 
 
+# actually class to store file
 class File(GenericItem):
     file = models.FileField(upload_to='files')
 
 
+
+# actually class to sotre image
 class Image(GenericItem):
        file = models.FileField(upload_to='images')
 
 
+# actually class to store url of video
 class Video(GenericItem):
     url = models.URLField()
