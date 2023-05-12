@@ -14,7 +14,7 @@ class OwnerMixin:
 # assign currently logedin user during editing of course
 class OwnerEditMixin:
     def form_valid(self, form):
-        form.instance.owner = self.request.user
+        form.instance.teacher = self.request.user
         return super().form_valid(form)
 
 
