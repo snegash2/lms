@@ -1,4 +1,6 @@
 <!-- templates/_base.html -->
+{% load crispy_forms_tags %}
+
 {% load compress %}
 {% load static %}
 <html lang="en">
@@ -15,7 +17,7 @@
 
 <body>
     {% include "includes/Navbar.html"%}
-    <div class="container mx-auto mt-4 min-h-screen">
+    <div>
         {% block content %}
         {% endblock content %}
     </div>
