@@ -28,7 +28,7 @@ class OwnerEditMixin:
 class OwnerCourseMixin(OwnerMixin,LoginRequiredMixin,PermissionRequiredMixin):
     model = Course
     fields = ['subject', 'title', 'slug', 'overview']
-    success_url = reverse_lazy('manage_course_list')
+    success_url = reverse_lazy('courses:manage_course_list')
 
 class OwnerCourseEditMixin(OwnerCourseMixin, OwnerEditMixin):
     template_name = 'courses/manage/course/form.html'
@@ -61,7 +61,7 @@ class ContentCreateUpdateView(TemplateResponseMixin, View):
         return None
 
     def get_form(self, model, *args, **kwargs):
-        Form = modelform_factory(model, exclude=['owner',
+        Form = modelform_factory(model, exclude=['teacher',
                                                  'order',
                                                  'created',
                                                  'updated'])
@@ -70,12 +70,12 @@ class ContentCreateUpdateView(TemplateResponseMixin, View):
     def dispatch(self, request, module_id, model_name, id=None):
         self.module = get_object_or_404(Module,
                                        id=module_id,
-                                       course__owner=request.user)
+                                       course__teacher=request.user)
         self.model = self.get_model(model_name)
         if id:
             self.obj = get_object_or_404(self.model,
                                          id=id,
-                                         owner=request.user)
+                                         teacher=request.user)
         return super().dispatch(request, module_id, model_name, id)
 
     def get(self, request, module_id, model_name, id=None):
@@ -90,12 +90,21 @@ class ContentCreateUpdateView(TemplateResponseMixin, View):
                              files=request.FILES)
         if form.is_valid():
             obj = form.save(commit=False)
-            obj.owner = request.user
+            obj.teacher = request.user
             obj.save()
             if not id:
                 # new content
-                Content.objects.create(module=self.module,
-                                       item=obj)
-            return redirect('module_content_list', self.module.id)
+                Content.objects.create(module=self.module,item=obj)
+            return redirect('courses:module_content_list', self.module.id)
         return self.render_to_response({'form': form,
                                         'object': self.obj})
+
+
+
+class ContentDeleteView(View):
+    def post(self, request, id):
+        content = get_object_or_404(Content,id=id,module__course__teacher=request.user)
+        module = content.module
+        content.item.delete()
+        content.delete()
+        return redirect('courses:module_content_list', module.id)
