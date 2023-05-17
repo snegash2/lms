@@ -1,4 +1,5 @@
 {% extends "_base.html" %}
+{% load course %}
 {% block title %}
 Module {{ module.order|add:1 }}: {{ module.title }}
 {% endblock %}
@@ -33,8 +34,10 @@ Edit modules</a></p>
 {% for content in module.contents.all %}
 <div data-id="{{ content.id }}">
 {% with item=content.item %}
-<p>{{ item }}</p>
-<a href="#">Edit</a>
+<p>{{ item }} ({{ item|model_name }})</p>
+<a href="{% url "courses:module_content_update" module.id item|model_name item.id %}">
+Edit
+</a>
 <form action="{% url "courses:module_content_delete" content.id %}"
 method="post">
 <input type="submit" value="Delete">

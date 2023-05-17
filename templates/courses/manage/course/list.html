@@ -16,6 +16,11 @@
     <a  href="{% url "courses:course_edit"  course.id %}" class="btn btn-primary">Edit</a>
       <a href="{% url "courses:course_delete" course.id %}" class="btn btn-danger">Delete</a>
       <a href="{% url "courses:course_module_update" course.id %}">Edit modules</a>
+      {% if course.modules.count > 0 %}
+        <a href="{% url "courses:module_content_list" course.modules.first.id %}">
+        Manage contents
+        </a>
+        {% endif %}
   </div>
 </div>
 
@@ -26,4 +31,21 @@
 <a href="{% url "courses:course_create" %}" class="button">Create new course</a>
 </p>
 </div>
+{% endblock %}
+
+{% block include_js %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5sortable/0.13.3/
+html5sortable.min.js"></script>
+{% endblock %}
+
+{% block domready %}
+    var options = {
+    method: 'POST',
+    mode: 'same-origin'
+    }
+    const moduleOrderUrl = '{% url "courses:module_order" %}';
+    sortable('#modules', {
+    forcePlaceholderSize: true,
+    placeholderClass: 'placeholder'
+    });
 {% endblock %}

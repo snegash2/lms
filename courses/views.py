@@ -1,3 +1,4 @@
+from braces.views import JsonRequestResponseMixin, CsrfExemptMixin
 from django.apps import apps
 from django.forms import modelform_factory
 from django.shortcuts import get_object_or_404, redirect
@@ -144,3 +145,17 @@ class ContentDeleteView(View):
         content.item.delete()
         content.delete()
         return redirect('courses:module_content_list', module.id)
+
+
+class ModuleOrderView(CsrfExemptMixin,JsonRequestResponseMixin,View):
+    def post(self, request):
+        for id, order in self.request_json.items():
+            Module.objects.filter(id=id,course__teacher=request.user).update(order=order)
+        return self.render_json_response({'saved': 'OK'})
+
+
+class ContentOrderView(CsrfExemptMixin,JsonRequestResponseMixin,View):
+    def post(self, request):
+        for id, order in self.request_json.items():
+            Content.objects.filter(id=id,module__course__teacher=request.user) .update(order=order)
+        return self.render_json_response({'saved': 'OK'})
