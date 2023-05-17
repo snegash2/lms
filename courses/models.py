@@ -18,8 +18,9 @@ class Course(models.Model):
 
     # need user can delete course but course can't delete
     teacher = models.ForeignKey(User,
+                                default = "mr Ermi",
                               related_name='courses_created',
-                              on_delete=models.CASCADE)
+                              on_delete=models.SET_DEFAULT)
     subject = models.ForeignKey(Subject,
                                 related_name='courses',
                                 on_delete=models.CASCADE)
@@ -27,6 +28,7 @@ class Course(models.Model):
     slug = models.SlugField(max_length=200, unique=True)
     overview = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
+
 
     class Meta:
         ordering = ['-created']
