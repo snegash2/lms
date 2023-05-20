@@ -104,7 +104,18 @@ class File(GenericItem):
 class Image(GenericItem):
        file = models.FileField(upload_to='images')
 
+class VideoManager(models.Manager):
+    def get_queryset(self,model):
+        return model.filter(name__endswith=".mp4")
+
+
 
 # actually class to store url of video
 class Video(GenericItem):
     url = models.URLField()
+
+    objects = VideoManager()
+
+    # to do
+    # raw_video = models.FileField(upload_to="videos/")
+

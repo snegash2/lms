@@ -13,11 +13,12 @@
     {% compress css %}
     <link rel="stylesheet" href="{% static 'src/output.css' %}">
     {% endcompress %}
+    <link href="{% static 'css/base.css' %}" rel="stylesheet">
 </head>
 
 <body>
     {% include "includes/Navbar.html"%}
-    <div>
+    <div class="h-full mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 ">
         {% block content %}
         {% endblock content %}
     </div>
