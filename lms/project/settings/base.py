@@ -25,8 +25,11 @@ INSTALLED_APPS = [
     'compressor',
     "crispy_forms",
     "crispy_bootstrap4",
+
+    #thridy party apps
     'accounts.apps.AccountsConfig',
     'courses.apps.CoursesConfig',
+    'students.apps.StudentsConfig',
 
 ]
 

@@ -7,6 +7,10 @@ install:
 migrate:
 	poetry run python -m lms.manage migrate
 
+.PHONY: startapp
+startapp:
+	poetry run python -m lms.manage startapp
+
 .PHONY: makemigrations
 makemigrations:
 	poetry run python -m lms.manage makemigrations
