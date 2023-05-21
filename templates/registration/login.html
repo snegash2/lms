@@ -8,13 +8,6 @@
     <form action="{% url 'login' %}" method="post">
 
 
-        <!--
-  Heads up! 👋
-
-  Plugins:
-    - @tailwindcss/forms
--->
-
 <section class="bg-white">
     <div class="lg:grid lg:min-h-screen lg:grid-cols-12">
     
@@ -27,41 +20,13 @@
           <form  class="mt-8 grid grid-cols-6 gap-6">
         {%csrf_token%}
 
-             <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-              <strong class="font-bold">
-                    <span class="block sm:inline">{{form.errors}}</span>
-              </strong>
-
-            </div>
-
-                {% for field in form%}
-
-
-                <div class="col-span-6 sm:col-span-3">
-
-                    <label
-                      for="{{field.label}}"
-                      class="block text-sm font-medium text-gray-700"
-                    >
-                    {%if field.errors %}  {{field.errors}} {%else%}  {{field.label}} {%endif%}
-                    </label>
-
-
-                  </div>
-
-
-                    {{field|addcss:'mt-1 w-full py-4  rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm'}}
-
-                {%endfor%}
-        
+            {{form.as_p}}
  
             <div class="col-span-6 sm:flex sm:items-center sm:gap-4 mt-4">
               <input type="submit"
                 value="Login"
                 class="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500"
               >
-            
-  
               <p class="mt-4 text-sm text-gray-500 sm:mt-0">
                 Don't have an account?
                 <a href="#" class="text-gray-700 underline">register here</a>.
