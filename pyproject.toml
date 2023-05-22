@@ -21,6 +21,8 @@ django-crispy-forms = "^2.0"
 crispy-tailwind = "^0.5.0"
 crispy-bootstrap4 = "^2022.1"
 django-braces = "1.15.0"
+django-embed-video = "1.4.4"
+django-ckeditor = "^6.5.1"
 
 
 [tool.flake8]

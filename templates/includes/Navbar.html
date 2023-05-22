@@ -52,9 +52,9 @@
             <li>
               <a
                 class="text-gray-500 transition hover:text-gray-500/75"
-                href="/"
+                href="{% url 'courses:manage_course_list'%}"
               >
-                Services
+                Teachers
               </a>
             </li>
 
@@ -101,7 +101,7 @@
           <div class="hidden sm:flex">
             <a
               class="rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-teal-600"
-              href="/"
+              href="{%url 'student_registration'%}"
             >
               Register
             </a>

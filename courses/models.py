@@ -1,3 +1,5 @@
+from ckeditor.fields import RichTextField
+from ckeditor_uploader.fields import RichTextUploadingField
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
@@ -11,6 +13,7 @@ class Subject(models.Model):
 
     class Meta:
         ordering = ['title']
+        verbose_name = "Course Name"
 
     def __str__(self):
         return self.title
@@ -24,6 +27,7 @@ class Course(models.Model):
                               related_name='courses_created',
                               on_delete=models.SET_DEFAULT)
     subject = models.ForeignKey(Subject,
+                                verbose_name='Course Name',
                                 related_name='courses',
                                 on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
@@ -35,6 +39,7 @@ class Course(models.Model):
 
     class Meta:
         ordering = ['-created']
+        verbose_name = "Course Content"
 
     def __str__(self):
         return self.title
@@ -99,7 +104,8 @@ class GenericItem(models.Model):
 
 # actually class to store text
 class Text(GenericItem):
-    content = models.TextField()
+    content = RichTextUploadingField()
+    # content = models.TextField()
 
 
 # actually class to store file

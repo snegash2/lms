@@ -24,14 +24,21 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    #thrid party packages
     'compressor',
     "crispy_forms",
     "crispy_bootstrap4",
+    'embed_video',
+    'ckeditor',
+    'ckeditor_uploader',
 
-    #thridy party apps
+    #custom apps
     'accounts.apps.AccountsConfig',
     'courses.apps.CoursesConfig',
     'students.apps.StudentsConfig',
+
+
 
 ]
 
@@ -111,10 +118,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR,'static')# type:ignore
 
+STATICFILES_DIRS = [
 
+    os.path.join(BASE_DIR, 'static')# type:ignore
+]
 # STATICFILES_DIRS = (
 #     STATIC_ROOT,
 # )

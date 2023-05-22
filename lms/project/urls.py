@@ -16,6 +16,7 @@ urlpatterns = [
     path('students/', include('students.urls')),
     # path('', index, name='index'),
     path('', CourseListView.as_view(), name='course_list'),
+    path('ckeditor/', include('ckeditor_uploader.urls')),
 ]
 
 if settings.DEBUG:
