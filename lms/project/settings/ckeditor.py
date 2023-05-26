@@ -1,6 +1,6 @@
 
 
-CKEDITOR_BASEPATH = BASE_DIR / "static" / "ckeditor" / "ckeditor" #type:ignore
+# CKEDITOR_BASEPATH = BASE_DIR / "static" / "ckeditor" / "ckeditor" #type:ignore
 CKEDITOR_UPLOAD_PATH = "uploads/"
 CKEDITOR_FILENAME_GENERATOR = "lms.core.utils.settings.get_filename"
 

@@ -47,8 +47,15 @@ class StudentCourseDetailView(DetailView):
 
     def get_queryset(self):
         qs = super().get_queryset()
+        if qs.filter(students__in=[self.request.user]) != None:
+            qs = qs.filter(students__in=[self.request.user])
 
-        return qs.filter(students__in=[self.request.user])
+        else:
+            raise ValueError("user is not registered for this course")
+            
+
+
+        return qs
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

@@ -11,19 +11,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}LMS{% endblock %}</title>
     <script src="https://cdn.tailwindcss.com"></script>
-<!--    {% compress css %}-->
-<!--    <link rel="stylesheet" href="{% static 'src/output.css' %}">-->
-<!--    {% endcompress %}-->
+    {% compress css %}
+    <link rel="stylesheet" href="{% static 'src/output.css' %}">
+    {% endcompress %}
     <link href="{% static 'css/base.css' %}" rel="stylesheet">
 </head>
 
 <body>
     {% include "includes/Navbar.html"%}
-    <div class="h-full mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 ">
+    <div class="mx-auto max-w-screen-xl w-full h-full">
         {% block content %}
         {% endblock content %}
     </div>
-    {% include "includes/footer.html"%}
+    
+    <div style="position: relative;">
+       
+
+    </div>
+    
     {% block include_js %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5sortable/0.13.3/
 html5sortable.min.js"></script>

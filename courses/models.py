@@ -1,3 +1,5 @@
+from io import BytesIO
+
 from ckeditor.fields import RichTextField
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.db import models
@@ -32,9 +34,10 @@ class Course(models.Model):
                                 on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200, unique=True)
-    overview = models.TextField()
+    overview = RichTextUploadingField()
     created = models.DateTimeField(auto_now_add=True)
     students = models.ManyToManyField(User,related_name='courses_joined',blank=True)
+    image = models.ImageField(null = True,blank = True,upload_to='images')
 
 
     class Meta:
@@ -45,11 +48,12 @@ class Course(models.Model):
         return self.title
 
 
+
 class Module(models.Model):
     course = models.ForeignKey(Course,
                                related_name='modules',on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
-    description = models.TextField(blank=True)
+    description = RichTextUploadingField(blank=True)
     order = OrderingField(blank=True, for_fields=['course'])
 
     def __str__(self):
@@ -126,10 +130,8 @@ class VideoManager(models.Manager):
 
 # actually class to store url of video
 class Video(GenericItem):
-    url = models.URLField()
+    url = models.URLField(blank=True,null=True)
+    video = models.FileField(upload_to="couses/videos", blank=True, null=True, validators=[])
+    # objects = VideoManager()
 
-    objects = VideoManager()
-
-    # to do
-    # raw_video = models.FileField(upload_to="videos/")
 

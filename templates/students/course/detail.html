@@ -25,7 +25,7 @@ Module <span class="order">{{ m.order|add:1 }}</span>
 {% endfor %}
 </ul>
 </div>
-<div class="module">
+<div class="mb-6" style="margin-bottom: 50px;">
 {% for content in module.contents.all %}
 {% with item=content.item %}
 <h2>{{ item.title }}</h2>
