@@ -638,6 +638,10 @@ video {
   margin-left: 0.5rem;
 }
 
+.mt-12 {
+  margin-top: 3rem;
+}
+
 .block {
   display: block;
 }
@@ -1558,6 +1562,10 @@ video {
 
   .lg\:grid-cols-5 {
     grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .lg\:p-12 {

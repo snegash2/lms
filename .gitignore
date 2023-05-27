@@ -5,6 +5,10 @@ node_modules
 *.lock
 *.swp
 
+#
+.images
+.files
+
 # Tailwind
 tailwind.config.js
 tailwind.css

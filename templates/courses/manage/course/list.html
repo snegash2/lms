@@ -3,10 +3,10 @@
 {% block title %}My courses{% endblock %}
 
 {% block content %}
-<div class="mx-auto max-w-screen-xl w-full sm:px-6  grid lg:grid-cols-2 md:grid-cols-1 sm:grid-cols-1">
+<div class="mx-auto max-w-screen-xl w-full mt-12 sm:px-6  grid lg:grid-cols-3 md:grid-cols-1 sm:grid-cols-1">
     {% for course in object_list %}
 
-        <div class="card my-3 border-blue-600 m-8">
+        <div class="card my-3 m-8 border-5 border-red shadow-md" style="border: 1px solid #A5D0DB;box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);">
           <img class="max-w-full h-auto object-fit:contain" src="{{course.image.url}}" alt="{{course.title}}">
           <div class="card-header">
             <h3 class="card-title ">course instructor {{course.teacher|capfirst}}</h3>
@@ -40,12 +40,12 @@
   </div>
   <div class="mx-auto max-w-screen-xl">
 
-   <a
-    href="{% url "courses:course_create" %}"
-    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-    >
-    Create New Course
-    </a>
+      <a
+        href="{% url "courses:course_create" %}"
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        >
+        Create New Course
+        </a>
   </div>
  
 
