@@ -39,7 +39,7 @@
       <div class="rounded-lg bg-white p-8 shadow-lg lg:col-span-3 lg:p-12">
 
 
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
            {{ form|crispy }}
         {% csrf_token %}
          <span class="inline-flex overflow-hidden rounded-md border bg-white shadow-sm">
