@@ -10,15 +10,14 @@ SECRET_KEY = NotImplemented
 DEBUG = False
 
 
-ALLOWED_HOSTS = ["msbeta.pythonanywhere.com"]
+ALLOWED_HOSTS = ["msbeta.pythonanywhere.com","127.0.0.1"]
 
 
 # Application definition
 
 INSTALLED_APPS = [
 
-    'grappelli',
-    'filebrowser',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
