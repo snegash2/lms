@@ -1,5 +1,5 @@
 from io import BytesIO
-
+from filebrowser.fields import FileBrowseField
 from ckeditor.fields import RichTextField
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.db import models
@@ -7,8 +7,32 @@ from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.template.loader import render_to_string
-
 from courses.fields import OrderingField
+from django.utils.translation import gettext as _
+from cabinet.base import AbstractFile, ImageMixin, DownloadMixin
+
+
+class PDFMixin(models.Model):
+    pdf_file = models.FileField(
+        _('pdf'),
+        upload_to="uploads/pdfs",
+        blank=True,
+    )
+
+    class Meta:
+        abstract = True
+        verbose_name = _("PDF")
+        verbose_name_plural = _("PDFs")
+
+    # Cabinet requires a accept_file method on all mixins which
+    # have a file field:
+    def accept_file(self, value):
+        if value.name.lower().endswith('.pdf'):
+            self.pdf_file = value
+            return True
+
+
+
 class Subject(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200, unique=True)
@@ -19,6 +43,14 @@ class Subject(models.Model):
 
     def __str__(self):
         return self.title
+
+class CourseCategory(models.Model):
+    name = models.CharField(max_length = 100)
+    courses = models.ForeignKey("Course", null = True,on_delete = models.SET_NULL)
+
+
+    def __str__(self):
+        return f"{self.name}"
 
 
 class Course(models.Model):
@@ -32,12 +64,16 @@ class Course(models.Model):
                                 verbose_name='Course Name',
                                 related_name='courses',
                                 on_delete=models.CASCADE)
-    title = models.CharField(max_length=200)
-    slug = models.SlugField(max_length=200, unique=True)
+    name = models.CharField(max_length=200)
+    slug = models.SlugField(default = name,max_length=200, unique=True)
     overview = RichTextUploadingField()
     created = models.DateTimeField(auto_now_add=True)
     students = models.ManyToManyField(User,related_name='courses_joined',blank=True)
-    image = models.ImageField(null = True,blank = True,upload_to='images')
+    # image = models.ImageField(null = True,blank = True,upload_to='images')
+    image = FileBrowseField("Image", max_length=200, directory="images/", extensions=[".jpg"], blank=True)
+    document = FileBrowseField("PDF", max_length=200, directory="documents/", extensions=[".pdf",".doc"], blank=True)
+    has_practice = models.BooleanField(default=False)
+    ceu          = models.IntegerField(default= 0)
 
 
     class Meta:
@@ -118,13 +154,29 @@ class File(GenericItem):
 
 
 
-# actually class to sotre image
-class Image(GenericItem):
-       file = models.FileField(upload_to='images')
+# class File(AbstractFile, ImageMixin, PDFMixin, DownloadMixin):
+#     FILE_FIELDS = ['image_file', 'pdf_file', 'download_file']
 
-class VideoManager(models.Manager):
-    def get_queryset(self,model):
-        return model.filter(name__endswith=".mp4")
+#     # Add caption and copyright, makes FileAdmin reuse easier.
+#     caption = models.CharField(
+#         _('caption'),
+#         max_length=1000,
+#         blank=True,
+#     )
+#     copyright = models.CharField(
+#         _('copyright'),
+#         max_length=1000,
+#         blank=True,
+#     )
+
+
+# # actually class to sotre image
+# class Image(GenericItem):
+#        file = models.FileField(upload_to='images')
+
+# class VideoManager(models.Manager):
+#     def get_queryset(self,model):
+#         return model.filter(name__endswith=".mp4")
 
 
 
