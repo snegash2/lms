@@ -123,7 +123,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='course',
             name='teacher',
-            field=models.ForeignKey(default='mr Ermi', on_delete=django.db.models.deletion.SET_DEFAULT, related_name='courses_created', to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.SET_DEFAULT, related_name='courses_created', to=settings.AUTH_USER_MODEL),
         ),
         migrations.CreateModel(
             name='Content',

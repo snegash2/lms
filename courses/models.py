@@ -8,49 +8,44 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.template.loader import render_to_string
 from courses.fields import OrderingField
 from django.utils.translation import gettext as _
+from django.utils.text import slugify
 
 
 
 
 
-class Subject(models.Model):
+class Category(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200, unique=True)
 
     class Meta:
         ordering = ['title']
-        verbose_name = "Course Name"
+        verbose_name = "Category"
 
     def __str__(self):
         return self.title
 
-class CourseCategory(models.Model):
-    name = models.CharField(max_length = 100)
-    courses = models.ForeignKey("Course", null = True,on_delete = models.SET_NULL)
 
-
-    def __str__(self):
-        return f"{self.name}"
 
 
 class Course(models.Model):
 
     # need user can delete course but course can't delete
     teacher = models.ForeignKey(User,
-                                default = "mr Ermi",
+                                null=True,
                               related_name='courses_created',
-                              on_delete=models.SET_DEFAULT)
-    subject = models.ForeignKey(Subject,
+                              on_delete=models.SET_NULL)
+    category = models.ForeignKey(Category,
                                 verbose_name='Course Name',
-                                related_name='courses',
-                                on_delete=models.CASCADE)
+                                related_name='categories',
+                                on_delete=models.CASCADE,
+                                default=1)
     name = models.CharField(max_length=200)
     slug = models.SlugField(default = name,max_length=200, unique=True)
     overview = RichTextUploadingField()
     created = models.DateTimeField(auto_now_add=True)
     students = models.ManyToManyField(User,related_name='courses_joined',blank=True)
-    # image = models.ImageField(null = True,blank = True,upload_to='images')
-    # document = FileBrowseField("PDF", max_length=200, directory="documents/", extensions=[".pdf",".doc"], blank=True)
+    image = models.ImageField(null = True,blank = True,upload_to='images')
     has_practice = models.BooleanField(default=False)
     ceu          = models.IntegerField(default= 0)
 
@@ -60,7 +55,13 @@ class Course(models.Model):
         verbose_name = "Course Content"
 
     def __str__(self):
-        return self.title
+        return self.name
+
+
+    
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        self.slug = slugify(self.name)
 
 
 

@@ -7,7 +7,13 @@
     {% for course in object_list %}
 
         <div class="card my-3 m-8 border-5 border-red shadow-md" style="border: 1px solid #A5D0DB;box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);">
-          <img class="max-w-full h-auto object-fit:contain" src="{{course.image.url}}" alt="{{course.title}}">
+
+          {%if course.image%}
+            <img class="rounded-t-lg contain" src="{{course.image.url}}" alt="{{course.name}}" />
+          {%else%}
+            <img class="rounded-t-lg contain" src="https://media.istockphoto.com/id/1346675635/photo/modern-medical-research-laboratory-portrait-of-latin-and-black-young-scientists-using.jpg?s=2048x2048&w=is&k=20&c=nlXTnte2yzGILzci1azgmg06e2M4-DUbZW_txtuTlxM=" alt="{{course.name}}" />
+          {%endif%}
+     
           <div class="card-header">
             <h3 class="card-title ">course instructor {{course.teacher|capfirst}}</h3>
           </div>

@@ -12,7 +12,7 @@ from students.forms import CourseEnrollForm
 from .forms import ModuleFormSet
 from .models import Course, Module, Content
 from django.db.models import Count
-from .models import Subject
+from .models import Category
 from django.views.generic.detail import DetailView
 # common behavior for all classes this class return courses which create only by currently logedin user
 class OwnerMixin:
@@ -30,7 +30,7 @@ class OwnerEditMixin:
 
 class OwnerCourseMixin(OwnerMixin,LoginRequiredMixin,PermissionRequiredMixin):
     model = Course
-    fields = ['subject', 'title', 'slug', 'overview','image']
+    fields = ['category', 'name', 'slug', 'overview','image']
     success_url = reverse_lazy('courses:manage_course_list')
 
 class OwnerCourseEditMixin(OwnerCourseMixin, OwnerEditMixin):
@@ -42,6 +42,10 @@ class ManageCourseListView(OwnerCourseMixin, ListView):
 
 class CourseCreateView(OwnerCourseEditMixin, CreateView):
     permission_required = 'courses.add_course'
+
+
+
+    
 class CourseUpdateView(OwnerCourseEditMixin, UpdateView):
     permission_required = 'courses.change_course'
 
@@ -168,13 +172,13 @@ class ContentOrderView(CsrfExemptMixin,JsonRequestResponseMixin,View):
 class CourseListView(TemplateResponseMixin, View):
     model = Course
     template_name = 'courses/course/list.html'
-    def get(self, request, subject=None):
-        subjects = Subject.objects.annotate(total_courses=Count('courses'))
+    def get(self, request, category=None):
+        categories = Category.objects.annotate(total_courses=Count('id'))
         courses = Course.objects.annotate(total_modules=Count('modules'))
-        if subject:
-            subject = get_object_or_404(Subject, slug=subject)
-            courses = courses.filter(subject=subject)
-        return self.render_to_response({'subjects': subjects,'subject': subject,'courses': courses})
+        if category:
+            category = get_object_or_404(Category, slug=category)
+            courses = courses.filter(category=category)
+        return self.render_to_response({'categories': categories,'category': category,'courses': courses})
 
 
 

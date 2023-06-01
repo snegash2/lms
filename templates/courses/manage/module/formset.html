@@ -13,7 +13,7 @@ Edit "{{ course.title }}"
             <div class="w-full sm:px-6  grid lg:grid-cols-1 md:grid-cols-1 sm:grid-cols-1">
                 {%for form in formset %}
                     <div class="w-full  m-8">
-                        {{form|crispy}}
+                        {{form}}
                     </div>
                 {%endfor%}
 

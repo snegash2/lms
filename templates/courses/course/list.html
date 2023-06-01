@@ -1,26 +1,28 @@
 {% extends "_base.html" %}
-{% block title %}{% if subject %}{{ subject.title }} courses{% else %}All courses{% endif %}{% endblock %}
+{% block title %}{% if category %}{{ category.title }} courses{% else %}All courses{% endif %}{% endblock %}
 
 
 {% block content %}
-        <h1>{% if subject %}{{ subject.title }} courses{% else %}All courses {% endif %}</h1>
+        <h1>{% if category %}{{ category.title }} courses{% else %}All courses {% endif %}</h1>
 
         <div class="contents">
-            <h3>Subjects</h3>
+            <h3>Categories</h3>
                 <ul class="mx-auto my-4 text-gray-500 text-decoration-none">
                     <div style="display: flex;flex-direction: row; justify-content: space-between;">
-                    <li {% if not subject %}class="selected"{% endif %}>
+                    <li {% if not category %}class="selected"{% endif %}>
 
                     <a href="{% url "course_list" %}"  class = "filter-link text-gray-700" style="width: 60px;display:flex;align-content: center;align-items: center;">All</a>
                     </li>
 
-                            {% for s in subjects %}
+                  
+
+                            {% for c in categories %}
                                 <li>
-                                    <a href="{% url "courses:course_list_subject" s.slug %}" class = "filter-link text-gray-700">
-                                       <p class="text-gray-700">{{ s.title }}</p> 
+                                    <a href="{% url "courses:course_list_category" c.slug %}" class = "filter-link text-gray-700">
+                                       <p class="text-gray-700">{{ c.title }}</p> 
                                         <br>
                                         <span>
-                                        {{ s.total_courses }} course{{ s.total_courses|pluralize }}
+                                        {{ c.total_courses }} course{{ c.total_courses|pluralize }}
                                         </span>
                                     </a>
                                 </li>
@@ -36,12 +38,19 @@
 
         <div class="mx-auto max-w-screen-xl w-full mt-12 sm:px-6  grid grid-cols-1 md:lg:xl:grid-cols-3 group bg-white shadow-xl shadow-neutral-100">
             {% for course in courses %}
-             {% with subject=course.subject %}
+             {% with category=course.category %}
 
              <div class="mt-8 max-w-sm bg-white border border-gray-200 shadow dark:bg-gray-800 dark:border-gray-700">
-                <a href="{% url "courses:course_detail" course.slug %}">
-                 
-                    <img class="rounded-t-lg contain" src="{{course.image.url}}" alt="{{course.title}}" />
+                <a href="{% url 'courses:course_detail' course.slug %}">
+                    {%if course.image%}
+                        <img class="rounded-t-lg contain" src="{{course.image.url}}" alt="{{course.name}}" />
+
+                    {%else%}
+
+                    <img class="rounded-t-lg contain" src="https://media.istockphoto.com/id/1346675635/photo/modern-medical-research-laboratory-portrait-of-latin-and-black-young-scientists-using.jpg?s=2048x2048&w=is&k=20&c=nlXTnte2yzGILzci1azgmg06e2M4-DUbZW_txtuTlxM=" alt="{{course.name}}" />
+
+
+                    {%endif%}
                    
                 </a>
                 <div class="p-5">

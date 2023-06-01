@@ -21,6 +21,7 @@ django-braces = "1.15.0"
 django-embed-video = "1.4.4"
 django-ckeditor = "^6.5.1"
 pillow = "^9.5.0"
+django-imagekit = "^4.1.0"
 
 
 

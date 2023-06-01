@@ -1,20 +1,13 @@
 from django.contrib import admin
-from .models import Subject, Course, Module
+from .models import  Course, Module
 from django.contrib import admin
 from .models import File
-from .models import CourseCategory
+from .models import Category
 
 
 
-@admin.register(CourseCategory)
-class CourseCategoryAdmin(admin.ModelAdmin):
-    list_display = ['name']
-   
-
-
-
-@admin.register(Subject)
-class SubjectAdmin(admin.ModelAdmin):
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
     list_display = ['title', 'slug']
     prepopulated_fields = {'slug': ('title',)}
 
@@ -25,8 +18,8 @@ class ModuleInline(admin.StackedInline):
 
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
-    list_display = [ 'subject', 'created','has_practice','ceu']
-    list_filter = ['created', 'subject']
+    list_display = [  'created','has_practice','ceu']
+    list_filter = ['created',]
     search_fields = [ 'overview']
     prepopulated_fields = {'slug': ('overview',)}
     inlines = [ModuleInline]

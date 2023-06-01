@@ -21,6 +21,7 @@ include(
     'base.py',
     'ckeditor.py',
     'custom.py',
+    'wagtailmedia.py',
     optional(LOCAL_SETTINGS_PATH),
     'envvars.py',
     'docker.py',

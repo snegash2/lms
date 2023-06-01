@@ -24,14 +24,20 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+  
 
     #thrid party packages
     'compressor',
     "crispy_forms",
-    "crispy_bootstrap4",
     'embed_video',
     'ckeditor',
     'ckeditor_uploader',
+    'imagekit',
+    # 'filemanager',
+    # 'reactor',
+    # 'channels',
+    
+
     
 
     #custom apps
@@ -66,12 +72,14 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'courses.context_processors.my_context_processor',
             ],
         },
     },
 ]
 
 WSGI_APPLICATION = 'lms.project.wsgi.application'
+# ASGI_APPLICATION = 'lms.project.asgi.application'
 
 
 # Database

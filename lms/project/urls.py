@@ -5,6 +5,12 @@ from django.contrib import admin
 from django.urls import path, include
 from lms.project.views import index
 from django.contrib.auth import views as auth_views
+# from django.conf.urls import url
+from filemanager import path_end
+
+# from views import view
+
+
 
 
 urlpatterns = [
@@ -17,6 +23,7 @@ urlpatterns = [
     # path('', index, name='index'),
     path('', CourseListView.as_view(), name='course_list'),
     path('ckeditor/', include('ckeditor_uploader.urls')),
+    # url(r'^abc/' + path_end, view, name='view'),
 ]
 
 if settings.DEBUG:
