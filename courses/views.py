@@ -7,7 +7,7 @@ from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView,UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin,PermissionRequiredMixin
 from django.urls import reverse_lazy
-
+from django.core.cache import cache
 from students.forms import CourseEnrollForm
 from .forms import ModuleFormSet
 from .models import Course, Module, Content
@@ -35,6 +35,10 @@ class OwnerCourseMixin(OwnerMixin,LoginRequiredMixin,PermissionRequiredMixin):
 
 class OwnerCourseEditMixin(OwnerCourseMixin, OwnerEditMixin):
     template_name = 'courses/manage/course/form.html'
+
+
+
+
 class ManageCourseListView(OwnerCourseMixin, ListView):
     template_name = 'courses/manage/course/list.html'
     permission_required = 'courses.view_course'
@@ -173,11 +177,28 @@ class CourseListView(TemplateResponseMixin, View):
     model = Course
     template_name = 'courses/course/list.html'
     def get(self, request, category=None):
-        categories = Category.objects.annotate(total_courses=Count('id'))
+
+        categories = cache.get('all_categories')
+        if not categories:
+            categories = Category.objects.annotate(
+            total_courses=Count('id'))
+        cache.set('all_categories', categories)
+
+
+
         courses = Course.objects.annotate(total_modules=Count('modules'))
         if category:
             category = get_object_or_404(Category, slug=category)
-            courses = courses.filter(category=category)
+            key = f'category_{category.id}_courses'
+            all_courses = cache.get(key)
+            if not courses:
+                courses = all_courses.filter(category=category)
+                cache.set(key, courses)
+            else:
+                courses = cache.get('all_courses')
+            if not courses:
+                courses = all_courses
+                cache.set('all_courses', courses)
         return self.render_to_response({'categories': categories,'category': category,'courses': courses})
 
 

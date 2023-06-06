@@ -4,74 +4,81 @@
 
 {% block content %}
 <div class="mx-auto max-w-screen-xl w-full mt-12 sm:px-6  grid lg:grid-cols-3 md:grid-cols-1 sm:grid-cols-1">
-    {% for course in object_list %}
+  {% for course in object_list %}
 
-        <div class="card my-3 m-8 border-5 border-red shadow-md" style="border: 1px solid #A5D0DB;box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);">
+  <div class="card my-3 m-8 border-5 border-red shadow-md"
+    style="border: 1px solid #A5D0DB;box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);">
 
-          {%if course.image%}
-            <img class="rounded-t-lg contain" src="{{course.image.url}}" alt="{{course.name}}" />
-          {%else%}
-            <img class="rounded-t-lg contain" src="https://media.istockphoto.com/id/1346675635/photo/modern-medical-research-laboratory-portrait-of-latin-and-black-young-scientists-using.jpg?s=2048x2048&w=is&k=20&c=nlXTnte2yzGILzci1azgmg06e2M4-DUbZW_txtuTlxM=" alt="{{course.name}}" />
-          {%endif%}
-     
-          <div class="card-header">
-            <h3 class="card-title ">course instructor {{course.teacher|capfirst}}</h3>
-          </div>
-          <div class="card-body">
-           
-            <p class="card-text text-xl font-bold text-red-600">{{course.overview|safe|truncatechars:25  }}</p>
-          
-          </div>
-          <div class="card-footer flex justify-content: space-around rounded-md shadow-sm" style="display: flex;justify-content: space-around;">
-         
+    {%if course.image%}
+    <img class="rounded-t-lg contain" src="{{course.image.url}}" alt="{{course.name}}" />
+    {%else%}
+    <img class="rounded-t-lg contain"
+      src="https://media.istockphoto.com/id/1346675635/photo/modern-medical-research-laboratory-portrait-of-latin-and-black-young-scientists-using.jpg?s=2048x2048&w=is&k=20&c=nlXTnte2yzGILzci1azgmg06e2M4-DUbZW_txtuTlxM="
+      alt="{{course.name}}" />
+    {%endif%}
 
-              <a  href="{% url "courses:course_edit"  course.id %}" class="px-4 py-2 text-sm font-medium text-blue-700 bg-white border border-gray-200 rounded-l-lg hover:bg-gray-100 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">Edit</a>
-              <a href="{% url "courses:course_delete" course.id %}" class="px-4 py-2 bg-gray-700 text-sm font-medium text-blue-700 bg-white border border-gray-200 rounded-l-lg hover:bg-gray-100 focus:z-10 focus:ring-2 focus:ring-red-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">Delete</a>
-              <a href="{% url "courses:course_module_update" course.id %}" class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-r-md hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">Edit modules</a>
-              {% if course.modules.count > 0 %}
-                <a href="{% url "courses:module_content_list" course.modules.first.id %}"  class="px-4 py-2 bg-gray-700 text-sm font-medium text-blue-700 bg-white border border-gray-200 rounded-l-lg hover:bg-gray-100 focus:z-10 focus:ring-2 focus:ring-red-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">
-                Manage contents
-                </a>
-                {% endif %}
-        
-          </div>
-        </div>
+    <div class="card-header">
+      <h3 class="card-title ">course instructor {{course.teacher|capfirst}}</h3>
+    </div>
+    <div class="card-body">
 
-    {% empty %}
-      <p>You haven't created any courses yet.</p>
-    {% endfor %}
-  
-   
+      <p class="card-text text-xl font-bold text-red-600">{{course.overview|safe|truncatechars:25 }}</p>
 
+    </div>
+    <div class="card-footer flex justify-content: space-around rounded-md shadow-sm"
+      style="display: flex;justify-content: space-around;">
+
+
+      <a href="{% url "courses:course_edit" course.id %}"
+        class="px-4 py-2 text-sm font-medium text-blue-700 bg-white border border-gray-200 rounded-l-lg hover:bg-gray-100 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">Edit</a>
+      <a href="{% url "courses:course_delete" course.id %}"
+        class="px-4 py-2 bg-gray-700 text-sm font-medium text-blue-700 bg-white border border-gray-200 rounded-l-lg hover:bg-gray-100 focus:z-10 focus:ring-2 focus:ring-red-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">Delete</a>
+      <a href="{% url "courses:course_module_update" course.id %}"
+        class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-r-md hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">Edit
+        modules</a>
+      {% if course.modules.count > 0 %}
+      <a href="{% url "courses:module_content_list" course.modules.first.id %}"
+        class="px-4 py-2 bg-gray-700 text-sm font-medium text-blue-700 bg-white border border-gray-200 rounded-l-lg hover:bg-gray-100 focus:z-10 focus:ring-2 focus:ring-red-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">
+        Manage contents
+      </a>
+      {% endif %}
+
+    </div>
   </div>
-  <div class="mx-auto max-w-screen-xl">
 
-      <a
-        href="{% url "courses:course_create" %}"
-        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        >
-        Create New Course
-        </a>
-  </div>
- 
+  {% empty %}
+  <p>You haven't created any courses yet.</p>
+  {% endfor %}
 
-  </div>
+
+
+</div>
+<div class="mx-auto max-w-screen-xl">
+
+  <a href="{% url "courses:course_create" %}"
+    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+    Create New Course
+  </a>
+</div>
+
+
+</div>
 {% endblock %}
 
 
 {% block include_js %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5sortable/0.13.3/
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html5sortable/0.13.3/
 html5sortable.min.js"></script>
 {% endblock %}
 
 {% block domready %}
-    var options = {
-    method: 'POST',
-    mode: 'same-origin'
-    }
-    const moduleOrderUrl = '{% url "courses:module_order" %}';
-    sortable('#modules', {
-    forcePlaceholderSize: true,
-    placeholderClass: 'placeholder'
-    });
+var options = {
+method: 'POST',
+mode: 'same-origin'
+}
+const moduleOrderUrl = '{% url "courses:module_order" %}';
+sortable('#modules', {
+forcePlaceholderSize: true,
+placeholderClass: 'placeholder'
+});
 {% endblock %}

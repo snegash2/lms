@@ -18,7 +18,7 @@ makemigrations:
 
 .PHONY: run-server
 run-server:
-	poetry run python -m lms.manage runserver 8081
+	poetry run python -m lms.manage runserver
 
 .PHONY: superuser
 superuser:

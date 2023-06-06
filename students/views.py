@@ -52,9 +52,6 @@ class StudentCourseDetailView(DetailView):
 
         else:
             raise ValueError("user is not registered for this course")
-            
-
-
         return qs
 
     def get_context_data(self, **kwargs):
@@ -67,6 +64,9 @@ class StudentCourseDetailView(DetailView):
             context['module'] = course.modules.get(
                 id=self.kwargs['module_id'])
         else:
-            # get first module
-            context['module'] = course.modules.all()[0]
+            if course.modules.all().exists():
+                context['module'] = course.modules.all()[0]
+            else:
+                raise ValueError("not module for this course")
+
         return context

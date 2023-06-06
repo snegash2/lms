@@ -19,9 +19,10 @@ if not os.path.isabs(LOCAL_SETTINGS_PATH):
 
 include(
     'base.py',
+    'rest_api.py',
     'ckeditor.py',
     'custom.py',
-    'wagtailmedia.py',
+    'cache.py',
     optional(LOCAL_SETTINGS_PATH),
     'envvars.py',
     'docker.py',

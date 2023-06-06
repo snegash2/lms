@@ -36,11 +36,11 @@ class Course(models.Model):
                               related_name='courses_created',
                               on_delete=models.SET_NULL)
     category = models.ForeignKey(Category,
-                                verbose_name='Course Name',
+                                verbose_name='Category',
                                 related_name='categories',
                                 on_delete=models.CASCADE,
                                 default=1)
-    name = models.CharField(max_length=200)
+    name = models.CharField("Course Name ",max_length=200)
     slug = models.SlugField(default = name,max_length=200, unique=True)
     overview = RichTextUploadingField()
     created = models.DateTimeField(auto_now_add=True)
@@ -48,6 +48,8 @@ class Course(models.Model):
     image = models.ImageField(null = True,blank = True,upload_to='images')
     has_practice = models.BooleanField(default=False)
     ceu          = models.IntegerField(default= 0)
+    published   = models.BooleanField(default=False)
+    reason_not_published = models.TextField(default="")
 
 
     class Meta:

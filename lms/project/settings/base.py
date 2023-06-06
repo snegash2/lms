@@ -10,7 +10,7 @@ SECRET_KEY = NotImplemented
 DEBUG = False
 
 
-ALLOWED_HOSTS = ["msbeta.pythonanywhere.com","127.0.0.1"]
+ALLOWED_HOSTS = ["lmsbeta.pythonanywhere.com","127.0.0.1","mysite.com"]
 
 
 # Application definition
@@ -29,14 +29,12 @@ INSTALLED_APPS = [
     #thrid party packages
     'compressor',
     "crispy_forms",
+    "crispy_tailwind",
     'embed_video',
     'ckeditor',
     'ckeditor_uploader',
-    'imagekit',
-    # 'filemanager',
-    # 'reactor',
-    # 'channels',
-    
+    'rest_framework',
+   'debug_toolbar',
 
     
 
@@ -44,15 +42,15 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'courses.apps.CoursesConfig',
     'students.apps.StudentsConfig',
-
-
-
 ]
 
 MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    # 'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.common.CommonMiddleware',
+    # 'django.middleware.cache.FetchFromCacheMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -130,21 +128,31 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR,'static')# type:ignore
 
-STATICFILES_DIRS = [
 
-    os.path.join(BASE_DIR, 'static')# type:ignore
-]
-# STATICFILES_DIRS = (
-#     STATIC_ROOT,
-# )
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = reverse_lazy('student_course_list')
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
-CRISPY_TEMPLATE_PACK = "bootstrap4"
+
+
+
+INTERNAL_IPS = [
+'127.0.0.1',
+]
+
+
+CACHE_MIDDLEWARE_ALIAS = 'default'
+CACHE_MIDDLEWARE_SECONDS = 60 * 15
+# 15 minutes
+CACHE_MIDDLEWARE_KEY_PREFIX = 'lms'
+
+
+
+AUTHENTICATION_BACKENDS = [
+'django.contrib.auth.backends.ModelBackend',
+'account.authentication.EmailAuthBackend',
+'social_core.backends.facebook.FacebookOAuth2',
+]

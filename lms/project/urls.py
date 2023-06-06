@@ -5,10 +5,7 @@ from django.contrib import admin
 from django.urls import path, include
 from lms.project.views import index
 from django.contrib.auth import views as auth_views
-# from django.conf.urls import url
-from filemanager import path_end
 
-# from views import view
 
 
 
@@ -20,10 +17,12 @@ urlpatterns = [
     path('accounts/logout/', auth_views.LogoutView.as_view(),name='logout'),
     path('course/', include('courses.urls')),
     path('students/', include('students.urls')),
+    path('api/', include('courses.api.urls', namespace='api')),
     # path('', index, name='index'),
     path('', CourseListView.as_view(), name='course_list'),
     path('ckeditor/', include('ckeditor_uploader.urls')),
-    # url(r'^abc/' + path_end, view, name='view'),
+    path('__debug__/', include('debug_toolbar.urls')),
+    path('social-auth/',include('social_django.urls', namespace='social')),
 ]
 
 if settings.DEBUG:
