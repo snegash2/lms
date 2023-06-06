@@ -18,7 +18,7 @@ class ModuleInline(admin.StackedInline):
 
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
-    list_display = [  'created','has_practice','ceu']
+    list_display = [  'created','has_practice','published','ceu']
     list_filter = ['created',]
     search_fields = [ 'overview']
     prepopulated_fields = {'slug': ('overview',)}

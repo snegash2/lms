@@ -1,4 +1,5 @@
 {% extends "_base.html" %}
+{% load tailwind_filters %}
 {% block title %}
 Sign up
 {% endblock %}
@@ -9,7 +10,7 @@ Sign up
 <div class="module">
 <p>Enter your details to create an account:</p>
 <form method="post">
-{{ form.as_p }}
+{{ form|crispy }}
 {% csrf_token %}
 <p><input type="submit" value="Create my account"></p>
 </form>

@@ -22,7 +22,7 @@ urlpatterns = [
     path('', CourseListView.as_view(), name='course_list'),
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path('__debug__/', include('debug_toolbar.urls')),
-    path('social-auth/',include('social_django.urls', namespace='social')),
+    # path('social-auth/',include('social_django.urls', namespace='social')),
 ]
 
 if settings.DEBUG:

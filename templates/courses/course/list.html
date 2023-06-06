@@ -35,9 +35,16 @@
 
 
     <div>
+       
 
         <div class="mx-auto max-w-screen-xl w-full mt-12 sm:px-6  grid grid-cols-1 md:lg:xl:grid-cols-3 group bg-white shadow-xl shadow-neutral-100">
+            
+           
             {% for course in courses %}
+
+            {% if course.published == True %}
+
+            
              {% with category=course.category %}
 
              <div class="mt-8 max-w-sm bg-white border border-gray-200 shadow dark:bg-gray-800 dark:border-gray-700">
@@ -68,7 +75,14 @@
               
            
             {% endwith %}
+
+
+            {% endif %}
+
+       
             {% endfor %}
+
+         
     </div>
 </div>
 </div>

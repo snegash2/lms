@@ -1,6 +1,6 @@
 
 {% extends "_base.html" %}
-{% load crispy_forms_tags %}
+{% load tailwind_filters %}
 {% load accounts_tags %}
 {% block title %}Log-in{% endblock %}
 
@@ -20,7 +20,7 @@
           <form  class="mt-8 grid grid-cols-6 gap-6">
         {%csrf_token%}
 
-            {{form.as_p}}
+            {{form|crispy}}
  
             <div class="col-span-6 sm:flex sm:items-center sm:gap-4 mt-4">
               <input type="submit"
