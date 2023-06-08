@@ -10,6 +10,7 @@ from .models import Category
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ['title', 'slug']
     prepopulated_fields = {'slug': ('title',)}
+    
 
 
 class ModuleInline(admin.StackedInline):

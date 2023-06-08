@@ -133,8 +133,7 @@ STATIC_ROOT = os.path.join(BASE_DIR,'static')# type:ignore
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = reverse_lazy('student_course_list')
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 
 
 
@@ -150,9 +149,9 @@ CACHE_MIDDLEWARE_SECONDS = 60 * 15
 CACHE_MIDDLEWARE_KEY_PREFIX = 'lms'
 
 
-
-# AUTHENTICATION_BACKENDS = [
-# 'django.contrib.auth.backends.ModelBackend',
-# 'account.authentication.EmailAuthBackend',
-# 'social_core.backends.facebook.FacebookOAuth2',
-# ]
+# Email server configuration
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'tinsingjobs2k@gmail.com'
+EMAIL_HOST_PASSWORD = 'vavkndyvafegycua'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True

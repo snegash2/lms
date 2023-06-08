@@ -17,6 +17,9 @@ from django.utils.text import slugify
 class Category(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200, unique=True)
+    
+    
+
 
     class Meta:
         ordering = ['title']
