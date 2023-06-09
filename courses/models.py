@@ -29,6 +29,19 @@ class Category(models.Model):
         return self.title
 
 
+class CourseName(models.Model):
+    name = models.CharField("Course Name ",max_length=200)
+    category = models.ForeignKey(Category,
+                                verbose_name='Category',
+                                related_name='categories',
+                                on_delete=models.CASCADE,
+                                default=None)
+
+
+
+    def __str__(self):
+        return self.name
+
 
 
 class Course(models.Model):
@@ -38,13 +51,17 @@ class Course(models.Model):
                                 null=True,
                               related_name='courses_created',
                               on_delete=models.SET_NULL)
-    category = models.ForeignKey(Category,
-                                verbose_name='Category',
-                                related_name='categories',
+
+    course_name = models.ForeignKey(CourseName,
+                                verbose_name='Name',
+                                related_name='names',
                                 on_delete=models.CASCADE,
-                                default=1)
-    name = models.CharField("Course Name ",max_length=200)
-    slug = models.SlugField(default = name,max_length=200, unique=True)
+                                default=None)
+
+    
+
+    
+    slug = models.SlugField(max_length=200, unique=True)
     overview = RichTextUploadingField()
     created = models.DateTimeField(auto_now_add=True)
     students = models.ManyToManyField(User,related_name='courses_joined',blank=True)
@@ -60,13 +77,13 @@ class Course(models.Model):
         verbose_name = "Course Content"
 
     def __str__(self):
-        return self.name
+        return f"{self.course_name}"
 
 
     
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        self.slug = slugify(self.name)
+        self.slug = slugify(self.course_name)
 
 
 

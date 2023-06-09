@@ -6,25 +6,49 @@
 <div class="mx-auto max-w-screen-xl w-full mt-12 sm:px-6  grid lg:grid-cols-3 md:grid-cols-1 sm:grid-cols-1">
   {% for course in object_list %}
 
-  <div class="card my-3 m-8 border-5 border-red shadow-md"
-    style="border: 1px solid #A5D0DB;box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);">
+  <div
+  class="m-2 block rounded-lg bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
+  <div class="badge badge-primary" style="position: relative;">
+        {% if course.published == True %}
+        <span class="badge bg-blue-600 text-white" style="position: absolute;left:78%;">Published</span>
+        {%else%}
 
-    {%if course.image%}
-    <img class="rounded-t-lg contain" src="{{course.image.url}}" alt="{{course.name}}" />
-    {%else%}
+        <span class="badge bg-red-600 text-white tooltip" title="{{course.reason_not_published}}" style="position: absolute;left:78%;">Unpublished</span>
+        {%endif%}
+  
+  </div>
+
+  {%if course.image%}
+
+
+
+
+  <img class="rounded-t-lg contain" src="{{course.image.url}}" alt="{{course.name}}" />
+  <span
+  class="inline-block whitespace-nowrap rounded-[0.27rem] bg-primary-100 px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-primary-700"
+  >New</span
+  {%else%}
+
+  <div>
+
     <img class="rounded-t-lg contain"
-      src="https://media.istockphoto.com/id/1346675635/photo/modern-medical-research-laboratory-portrait-of-latin-and-black-young-scientists-using.jpg?s=2048x2048&w=is&k=20&c=nlXTnte2yzGILzci1azgmg06e2M4-DUbZW_txtuTlxM="
-      alt="{{course.name}}" />
-    {%endif%}
+    src="https://media.istockphoto.com/id/1346675635/photo/modern-medical-research-laboratory-portrait-of-latin-and-black-young-scientists-using.jpg?s=2048x2048&w=is&k=20&c=nlXTnte2yzGILzci1azgmg06e2M4-DUbZW_txtuTlxM="
+    alt="{{course.name}}" />
+  
+  </div>
 
-    <div class="card-header">
-      <h3 class="card-title ">course instructor {{course.teacher|capfirst}}</h3>
-    </div>
-    <div class="card-body">
 
-      <p class="card-text text-xl font-bold text-red-600">{{course.overview|safe|truncatechars:25 }}</p>
-
-    </div>
+    
+  {%endif%}
+ 
+  <div class="p-6">
+    <h5
+      class="mb-2 text-xl font-medium leading-tight text-neutral-800 dark:text-neutral-50">
+      Card title
+    </h5>
+    <p class="mb-4 text-base text-neutral-600 dark:text-neutral-200">
+      {{course.overview|safe|truncatechars:50 }}
+    </p>
     <div class="card-footer flex justify-content: space-around rounded-md shadow-sm"
       style="display: flex;justify-content: space-around;">
 
@@ -43,9 +67,10 @@
       </a>
       {% endif %}
 
-    </div>
+    </div
   </div>
-
+</div>
+    </div>
   {% empty %}
   <p>You haven't created any courses yet.</p>
   {% endfor %}
@@ -53,11 +78,11 @@
 
 
 </div>
-<div class="mx-auto max-w-screen-xl">
+<div class="mx-auto max-w-screen-xl ml-8 mt-8 px-8">
 
   <a href="{% url "courses:course_create" %}"
-    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-    Create New Course
+    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2">
+  New Course
   </a>
 </div>
 
