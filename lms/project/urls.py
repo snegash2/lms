@@ -20,6 +20,7 @@ urlpatterns = [
     path('api/', include('courses.api.urls', namespace='api')),
     # path('', index, name='index'),
     path('', CourseListView.as_view(), name='course_list'),
+    path('chat/', include('chat.urls', namespace='chat')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path('__debug__/', include('debug_toolbar.urls')),
     # path('social-auth/',include('social_django.urls', namespace='social')),
@@ -27,3 +28,4 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)

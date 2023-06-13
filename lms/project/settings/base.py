@@ -34,11 +34,13 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'rest_framework',
-   'debug_toolbar',
+    'channels',
+    'debug_toolbar',
 
     
 
     #custom apps
+    'chat.apps.ChatConfig',
     'accounts.apps.AccountsConfig',
     'courses.apps.CoursesConfig',
     'students.apps.StudentsConfig',
@@ -77,6 +79,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'lms.project.wsgi.application'
+ASGI_APPLICATION = 'lms.project.asgi.application'
 # ASGI_APPLICATION = 'lms.project.asgi.application'
 
 

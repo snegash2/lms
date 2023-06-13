@@ -1,6 +1,6 @@
 {% extends "_base.html" %}
+{%load static %}
 {% load tailwind_filters %}
-
 {% block title %}
 {% if object %}
 Edit course "{{ object.title }}"
@@ -12,12 +12,14 @@ Create a new course
 {% block content %}
 <section class="w-full" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
   <div class="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
-
-
     <div class="rounded-lg bg-white p-8 shadow-lg lg:col-span-3 lg:p-12">
-
-
       <form method="post" enctype="multipart/form-data">
+        <div class="flex flex-col">
+          <label for="category">Category</label>
+          <select name="category" id="category" class="w-full rounded-md border-gray-300 shadow-sm">
+           
+          </select>
+        </div>
         {{ form|crispy }}
         {% csrf_token %}
         <span class="inline-flex overflow-hidden rounded-md border bg-white shadow-sm">
@@ -42,4 +44,9 @@ Create a new course
   </div>
 </section>
 </div>
+
 {% endblock %}
+
+{%block include_js%}
+<script src="{% static 'courses/manage/create.js' %}"></script>
+{%endblock%}

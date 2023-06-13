@@ -1,0 +1,16 @@
+{%extends '_base.html'%} {%block content %}
+
+<script>
+    const published = document.getElementById("published");
+    published.addEventListener("mouseenter", function () {
+        const modal = document.querySelector(".modal");
+        modal.classList.remove("hidden");
+    });
+
+
+    published.addEventListener("mouseout", function () {
+        const modal = document.querySelector(".modal");
+        modal.classList.add("hidden");
+    });
+</script>
+{%endblock%}

@@ -26,6 +26,7 @@ werkzeug = "2.2.2"
 pyopenssl = "22.0.0"
 cryptography = "38.0.4"
 pymemcache = "^4.0.0"
+channels = "3.0.5"
 
 
 

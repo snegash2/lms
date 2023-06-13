@@ -8,13 +8,13 @@ Module {{ module.order|add:1 }}: {{ module.title }}
 {% block content %}
 {% with course=module.course %}
 <div class="mx-auto max-w-screen-xl  sm:px-6">
-  <h1>Course "{{ course.title }}"</h1>
+  <h1>Course "{{ course.course_name }}"</h1>
   <div class="contents">
     <h3>Modules</h3>
     <ul id="modules">
       {% for m in course.modules.all %}
-      <li data-id="{{ m.id }}" {% if m==module %}class="selected" {% endif %}>
-        <a href="{% url " courses:module_content_list" m.id %}">
+      <li data-id="{{ m.id }}" {% if m == module %}class="selected" {% endif %}>
+        <a href="{% url "courses:module_content_list" m.id %}">
           <span>
             Module <span class="order">{{ m.order|add:1 }}</span>
           </span>
@@ -26,7 +26,7 @@ Module {{ module.order|add:1 }}: {{ module.title }}
       <li>No modules yet.</li>
       {% endfor %}
     </ul>
-    <p><a href="{% url " courses:course_module_update" course.id %}">
+    <p><a href="{% url "courses:course_module_update" course.id %}">
         Edit modules</a></p>
   </div>
   <div class="module">
@@ -53,16 +53,16 @@ Module {{ module.order|add:1 }}: {{ module.title }}
     <h3>Add new content:</h3>
     <ul class="content-types">
       <li>
-        <a href="{% url " courses:module_content_create" module.id "text" %}">Text</a>
+        <a href="{% url "courses:module_content_create" module.id "text" %}">Text</a>
       </li>
       <li>
-        <a href="{% url " courses:module_content_create" module.id "image" %}">Image</a>
+        <a href="{% url "courses:module_content_create" module.id "image" %}">Image</a>
       </li>
       <li>
-        <a href="{% url " courses:module_content_create" module.id "video" %}">Video</a>
+        <a href="{% url "courses:module_content_create" module.id "video" %}">Video</a>
       </li>
       <li>
-        <a href="{% url " courses:module_content_create" module.id "file" %}">File</a>
+        <a href="{% url "courses:module_content_create" module.id "file" %}">File</a>
       </li>
     </ul>
   </div>

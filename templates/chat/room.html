@@ -1,0 +1,46 @@
+{% extends "_base.html" %}
+        {% block title %}Chat room for "{{ course.title }}"{% endblock %}
+        {% block content %}
+        <div id="chat">
+        </div>
+
+
+
+        <div id="chat-input" class="mt-8">
+
+            <div class="flex flex-col w-full max-w-md mx-auto bg-gray-100 p-4 rounded-md">
+                <h2 class="text-xl font-semibold mb-4">Join a Chat Room</h2>
+                <form action="/chatrooms" method="post">
+                  <div class="mb-4">
+                    <label for="room-name" class="block mb-1">Room Name</label>
+                    <input type="text" name="room-name" id="chat-message-input"  class="form-control w-full" />
+                  </div>
+                  <input type="submit" value="Join Room" id="chat-message-submit" class="btn btn-primary" />
+                </form>
+              </div>
+     
+        </div>
+        {% endblock %}
+        {% block include_js %}
+            {{ course.id|json_script:"course-id" }}
+        {% endblock %}
+
+        {% block domready %}
+
+            const courseId = JSON.parse(document.getElementById('course-id').textContent);
+            const url = 'ws://' + window.location.host + '/ws/chat/room/' + courseId + '/';
+            const chatSocket = new WebSocket(url);
+            chatSocket.onmessage = function(event) {
+                    const data = JSON.parse(event.data);
+                    const chat = document.getElementById('chat');
+                    chat.innerHTML += '<div class="message">' +
+                    data.message + '</div>';
+                    chat.scrollTop = chat.scrollHeight;
+                };
+                
+                chatSocket.onclose = function(event) {
+                console.error('Chat socket closed unexpectedly');
+                };
+
+
+        {% endblock %}

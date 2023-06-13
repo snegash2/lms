@@ -3,16 +3,16 @@
 {{ object.title }}
 {% endblock %}
 {% block content %}
-    {% with category=object.category %}
+    {% with category=object.course_name.category  %}
         <h1>{{ object.name }}</h1>
         <div>
             <h2>overview</h2>
 
             <p>
-                <a href="{% url "courses:course_list_category" category.slug %}">
-                {{ subject.title }}</a>.
+                <a href="{% url 'courses:course_list_category' category.slug %}">
+                {{ category.title }}</a>.
                 {{ object.modules.count }} modules.
-                Instructor: {{ object.owner.get_full_name }}
+                Instructor: {{ object.teacher.get_full_name }}
                 </p>
                 {{ object.overview|safe|linebreaks }}
                     {% if request.user.is_authenticated %}

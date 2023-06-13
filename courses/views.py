@@ -1,6 +1,6 @@
 from braces.views import JsonRequestResponseMixin, CsrfExemptMixin
 from django.apps import apps
-from django.forms import modelform_factory
+from django.forms import modelform_factory,modelformset_factory
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic.base import TemplateResponseMixin, View
 from django.views.generic.list import ListView
@@ -35,8 +35,6 @@ class OwnerCourseMixin(OwnerMixin,LoginRequiredMixin,PermissionRequiredMixin):
 
 class OwnerCourseEditMixin(OwnerCourseMixin, OwnerEditMixin):
     template_name = 'courses/manage/course/form.html'
-
-
 
 
 class ManageCourseListView(OwnerCourseMixin, ListView):
@@ -80,10 +78,14 @@ class CourseModuleUpdateView(TemplateResponseMixin, View):
         id=pk,
         teacher=request.user)
         return super().dispatch(request, pk)
+
+
     def get(self, request, *args, **kwargs):
         formset = self.get_formset()
         return self.render_to_response({
         'course': self.course,'formset': formset})
+
+
     def post(self, request, *args, **kwargs):
         formset = self.get_formset(data=request.POST)
         if formset.is_valid():
@@ -108,7 +110,8 @@ class ContentCreateUpdateView(TemplateResponseMixin, View):
         return None
 
     def get_form(self, model, *args, **kwargs):
-        Form = modelform_factory(model, exclude=['teacher',
+        Form = modelform_factory(model, exclude=[
+                                                 'teacher',
                                                  'order',
                                                  'created',
                                                  'updated'])
@@ -181,7 +184,7 @@ class CourseListView(TemplateResponseMixin, View):
         categories = cache.get('all_categories')
         if not categories:
             categories = Category.objects.annotate(
-            total_courses=Count('id'))
+            total_courses=Count('categories'))
         cache.set('all_categories', categories)
 
 

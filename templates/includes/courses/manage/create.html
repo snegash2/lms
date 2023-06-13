@@ -1,0 +1,20 @@
+{%extends '_base.html'%}
+{%block content %}
+
+<script>
+    const select = document.getElementById("category");
+    const categorList = []
+    fetch("http://127.0.0.1:8000/api/category/")
+    .then(res => res.json())
+    .then(res => {
+        res.forEach((item) => {
+            categorList.push(item)
+        })
+
+    })
+
+   
+console.log(typeof(categorList.title))
+    
+</script>
+{%endblock%}

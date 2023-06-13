@@ -3,7 +3,7 @@
 {% block title %}My courses{% endblock %}
 
 {% block content %}
-<div class="mx-auto max-w-screen-xl w-full mt-12 sm:px-6  grid lg:grid-cols-3 md:grid-cols-1 sm:grid-cols-1">
+<div class="w-full mt-12 sm:px-6  grid lg:grid-cols-3 md:grid-cols-1 sm:grid-cols-1">
   {% for course in object_list %}
 
   <div
@@ -13,32 +13,29 @@
         <span class="badge bg-blue-600 text-white" style="position: absolute;left:78%;">Published</span>
         {%else%}
 
-        <span class="badge bg-red-600 text-white tooltip" title="{{course.reason_not_published}}" style="position: absolute;left:78%;">Unpublished</span>
+        <div class="modal z-10 flex justify-center items-center fixed top-0 left-0 w-full h-full hidden">
+          <div class="bg-white rounded-lg shadow-lg p-4">
+            <h2 class="text-lg font-semibold">Edit your course</h2>
+            <p></p>
+            <button class="mt-4 btn btn-primary">Close</button>
+          </div>
+        </div>
+        
+
+        <span class="badge bg-red-600 text-white tooltip" title="{{course.reason_not_published}}" id="published" style="position: absolute;left:78%;">Unpublished</span>
         {%endif%}
   
   </div>
 
   {%if course.image%}
-
-
-
-
   <img class="rounded-t-lg contain" src="{{course.image.url}}" alt="{{course.name}}" />
-  <span
-  class="inline-block whitespace-nowrap rounded-[0.27rem] bg-primary-100 px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-primary-700"
-  >New</span
   {%else%}
-
   <div>
-
     <img class="rounded-t-lg contain"
     src="https://media.istockphoto.com/id/1346675635/photo/modern-medical-research-laboratory-portrait-of-latin-and-black-young-scientists-using.jpg?s=2048x2048&w=is&k=20&c=nlXTnte2yzGILzci1azgmg06e2M4-DUbZW_txtuTlxM="
     alt="{{course.name}}" />
-  
-  </div>
 
-
-    
+  </div>    
   {%endif%}
  
   <div class="p-6">
@@ -54,15 +51,15 @@
 
 
       <a href="{% url "courses:course_edit" course.id %}"
-        class="px-4 py-2 text-sm font-medium text-blue-700 bg-white border border-gray-200 rounded-l-lg hover:bg-gray-100 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">Edit</a>
+        class="px-4 py-2 text-sm font-medium text-blue-700 bg-white border border-gray-200  hover:bg-gray-100 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">Edit</a>
       <a href="{% url "courses:course_delete" course.id %}"
-        class="px-4 py-2 bg-gray-700 text-sm font-medium text-blue-700 bg-white border border-gray-200 rounded-l-lg hover:bg-gray-100 focus:z-10 focus:ring-2 focus:ring-red-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">Delete</a>
+        class="px-4 py-2 bg-gray-700 text-sm font-medium text-blue-700 text-red-700 bg-white border border-gray-200  hover:bg-gray-100 focus:z-10 focus:ring-2 focus:ring-red-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">Delete</a>
       <a href="{% url "courses:course_module_update" course.id %}"
-        class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-r-md hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">Edit
+        class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200  hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">Edit
         modules</a>
       {% if course.modules.count > 0 %}
       <a href="{% url "courses:module_content_list" course.modules.first.id %}"
-        class="px-4 py-2 bg-gray-700 text-sm font-medium text-blue-700 bg-white border border-gray-200 rounded-l-lg hover:bg-gray-100 focus:z-10 focus:ring-2 focus:ring-red-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">
+        class="px-4 py-2 bg-gray-700 text-sm font-medium text-blue-700 bg-white border border-gray-200  hover:bg-gray-100 focus:z-10 focus:ring-2 focus:ring-red-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">
         Manage contents
       </a>
       {% endif %}
@@ -88,6 +85,7 @@
 
 
 </div>
+{% include 'includes/courses/manage/list.html' %}
 {% endblock %}
 
 

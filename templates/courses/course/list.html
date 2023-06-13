@@ -14,8 +14,6 @@
                     <a href="{% url "course_list" %}"  class = "filter-link text-gray-700" style="width: 60px;display:flex;align-content: center;align-items: center;">All</a>
                     </li>
 
-                  
-
                             {% for c in categories %}
                                 <li>
                                     <a href="{% url "courses:course_list_category" c.slug %}" class = "filter-link text-gray-700">
