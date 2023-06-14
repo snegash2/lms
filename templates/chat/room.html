@@ -1,46 +1,113 @@
 {% extends "_base.html" %}
-        {% block title %}Chat room for "{{ course.title }}"{% endblock %}
-        {% block content %}
-        <div id="chat">
-        </div>
 
+{% block title %}Chat room for "{{ course.title }}"{% endblock %}
 
-
-        <div id="chat-input" class="mt-8">
-
-            <div class="flex flex-col w-full max-w-md mx-auto bg-gray-100 p-4 rounded-md">
-                <h2 class="text-xl font-semibold mb-4">Join a Chat Room</h2>
-                <form action="/chatrooms" method="post">
-                  <div class="mb-4">
-                    <label for="room-name" class="block mb-1">Room Name</label>
-                    <input type="text" name="room-name" id="chat-message-input"  class="form-control w-full" />
-                  </div>
-                  <input type="submit" value="Join Room" id="chat-message-submit" class="btn btn-primary" />
-                </form>
+{% block content %}
+<div class="discussion-forum">
+  <h1 class="text-xl font-bold mb-4">Discussion Forum</h1>
+ 
+ 
+    <ul class="list-reset">
+      <li class="mb-4">
+        <h2 class="text-base font-semibold">Course Discussion</h2>
+        <ul class="list-reset">
+          <li class="mb-2">
+            <a href="#" class="text-gray-600 hover:text-gray-900">
+              <div id="chat">
               </div>
-     
+            </a>
+          
+          </li>
+          
+        </ul>
+      </li>
+      <li class="mb-4">
+        <h2 class="text-base font-semibold">Your Discussions</h2>
+        <ul class="list-reset">
+          <li class="mb-2">
+            <a href="#" class="text-gray-600 hover:text-gray-900">
+              <strong>Your Topic 1</strong>
+              <span class="text-gray-400">12/12/2023</span>
+            </a>
+            <p class="mt-2 text-gray-500">
+              This is your first discussion topic.
+            </p>
+          </li>
+        </ul>
+      </li>
+      <li>
+
+        <div id="chat-input">
+          <input id="chat-message-input" type="text" class="w-full bg-gray-100 border-gray-200 rounded-md py-2 px-4 text-gray-700 focus:bg-gray-200 focus:border-gray-300 mb-6">
+          <input id="chat-message-submit" type="submit" value="Create New Discussion"  class="w-full bg-gray-600 text-white rounded-md py-2 px-4">
         </div>
-        {% endblock %}
-        {% block include_js %}
-            {{ course.id|json_script:"course-id" }}
-        {% endblock %}
-
-        {% block domready %}
-
-            const courseId = JSON.parse(document.getElementById('course-id').textContent);
-            const url = 'ws://' + window.location.host + '/ws/chat/room/' + courseId + '/';
-            const chatSocket = new WebSocket(url);
-            chatSocket.onmessage = function(event) {
-                    const data = JSON.parse(event.data);
-                    const chat = document.getElementById('chat');
-                    chat.innerHTML += '<div class="message">' +
-                    data.message + '</div>';
-                    chat.scrollTop = chat.scrollHeight;
-                };
-                
-                chatSocket.onclose = function(event) {
-                console.error('Chat socket closed unexpectedly');
-                };
 
 
-        {% endblock %}
+      
+      </li>
+    </ul>
+  </div>
+{% endblock %}
+
+{% block include_js %}
+  {{ course.id|json_script:"course-id" }}
+  {{ request.user.username|json_script:"request-user" }}
+{% endblock %}
+
+{% block domready %}
+  const courseId = JSON.parse(
+    document.getElementById('course-id').textContent
+  );
+  const requestUser = JSON.parse(
+    document.getElementById('request-user').textContent
+  );
+  const url = 'ws://' + window.location.host +
+              '/ws/chat/room/' + courseId + '/';
+  const chatSocket = new WebSocket(url);
+
+  chatSocket.onmessage = function(event) {
+    const data = JSON.parse(event.data);
+    const chat = document.getElementById('chat');
+
+    const dateOptions = {hour: 'numeric', minute: 'numeric', hour12: true};
+    const datetime = new Date(data.datetime).toLocaleString('en', dateOptions);
+    const isMe = data.user === requestUser;
+    const source = isMe ? 'me' : 'other';
+    const name = isMe ? 'Me' : data.user;
+
+    chat.innerHTML += '<div class="message ' + source + '">' +
+                      '<strong>' + name + '</strong> ' +
+                      '<span class="date">' + datetime + '</span><br>' +
+                      data.message + '</div>';
+    chat.scrollTop = chat.scrollHeight;
+  };
+
+  chatSocket.onclose = function(event) {
+    console.error('Chat socket closed unexpectedly');
+  };
+
+  const input = document.getElementById('chat-message-input');
+  const submitButton = document.getElementById('chat-message-submit');
+
+  submitButton.addEventListener('click', function(event) {
+    const message = input.value;
+    if(message) {
+      // send message in JSON format
+      chatSocket.send(JSON.stringify({'message': message}));
+      // clear input
+      input.value = '';
+      input.focus();
+    }
+  });
+
+  input.addEventListener('keypress', function(event) {
+    if (event.key === 'Enter') {
+      // cancel the default action, if needed
+      event.preventDefault();
+      // trigger click event on button
+      submitButton.click();
+    }
+  });
+
+  input.focus();
+{% endblock %}

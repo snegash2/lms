@@ -22,7 +22,7 @@ include(
     'rest_api.py',
     'ckeditor.py',
     'custom.py',
-    'cache.py',
+    # 'cache.py',
     optional(LOCAL_SETTINGS_PATH),
     'envvars.py',
     'docker.py',
