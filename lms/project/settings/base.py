@@ -44,6 +44,12 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'courses.apps.CoursesConfig',
     'students.apps.StudentsConfig',
+
+    #exam related
+    'exam.essay',
+    'exam.multichoice',
+    'exam.quiz',
+    'exam.true_false'
 ]
 
 MIDDLEWARE = [
