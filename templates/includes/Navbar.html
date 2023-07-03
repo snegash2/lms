@@ -78,6 +78,7 @@
         {% if request.user.is_authenticated %}
             <a
             class="rounded-md bg-teal-600 px-5 py-2.5 text-sm font-medium text-white shadow"
+            href="{%url 'account_logout'%}"
           
           >
             Logout
@@ -85,6 +86,7 @@
             {%else%}
           <a
             class="rounded-md bg-teal-600 px-5 py-2.5 text-sm font-medium text-white shadow"
+            href="{%url 'account_login'%}"
           
           >
             Login
@@ -94,7 +96,7 @@
           <div class="hidden sm:flex">
             <a
               class="rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-teal-600"
-              href="{%url 'student_registration'%}"
+              href="{%url 'account_signup'%}"
             >
               Register
             </a>

@@ -20,6 +20,12 @@ INSTALLED_APPS = [
 
     'django.contrib.admin',
     'django.contrib.auth',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -39,10 +45,7 @@ INSTALLED_APPS = [
     # 'social_django',
     'django_extensions',
 
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.google',
+   
 
     
 
@@ -190,9 +193,41 @@ PASSWORD_HASHERS = [
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',#username authentication
-    'accounts.authentication.EmailAuthBackend',#email authentication
-    'social_core.backends.facebook.FacebookOAuth2'
+    # 'accounts.authentication.EmailAuthBackend',#email authentication
+    'allauth.account.auth_backends.AuthenticationBackend',
+   
     ]
+
+
+
+# Django Allauth settings
+
+ACCOUNT_EMAIL_REQUIRED= True
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS=10 
+ACCOUNT_LOGIN_ATTEMPTS_LIMIT=5
+ACCOUNT_EMAIL_VERIFICATION="mandatory"
+ACCOUNT_REDIRECT_URL='/course/course_list/'
+ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT=86400
+ACCOUNT_UNIQUE_EMAIL=True
+ACCOUNT_EMAIL_CONFORMATION=180
+ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = True
+
+
+ACCOUNT_FORMS = {
+    'signup': 'lms.forms.LmsSignupForm',
+  
+    }
+
+
+# This setting will redirect users to the homepage after a successful login.
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
+REDIRECT_UNAUTHENTICATED_USER = '/signup/success/'
+
+
+
 
 SITE_ID = 1
 
@@ -209,3 +244,6 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     }
 }
+
+
+LOGIN_URL = '/'

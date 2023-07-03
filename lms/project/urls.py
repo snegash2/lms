@@ -2,9 +2,9 @@ from django.conf import  settings
 from django.conf.urls.static import static
 from courses.views import CourseListView
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path,re_path, include
 from lms.project.views import index
-from django.contrib.auth import views as auth_views
+
 
 
 
@@ -13,10 +13,8 @@ from django.contrib.auth import views as auth_views
 urlpatterns = [
   
     path('admin/', admin.site.urls),
-    path('quiz/',include('exam.quiz.urls')),
-    # path('accounts/',include('accounts.urls')),
     path('accounts/', include('allauth.urls')),
-
+    path('quiz/',include('exam.quiz.urls')),   
     path('course/', include('courses.urls')),
     path('students/', include('students.urls')),
     path('api/', include('courses.api.urls', namespace='api')),
