@@ -5,7 +5,7 @@
 {% block title %}Log-in{% endblock %}
 
 {% block content %}
-    <form action="{% url 'login' %}" method="post">
+    <form action="" method="post">
 
 
 <section class="bg-white">
@@ -27,9 +27,19 @@
                 value="Login"
                 class="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500"
               >
+
+              <div class="social">
+                <ul>
+                <li class="facebook">
+                <a href="{% url "social:begin" "facebook" %}">
+                Sign in with Facebook
+                </a>
+                </li>
+                </ul>
+                </div>
               <p class="mt-4 text-sm text-gray-500 sm:mt-0">
                 Don't have an account?
-                <a href="{% url 'accounts:register' %}" class="text-gray-700 underline">register here</a>.
+                <a href="{% url 'register' %}" class="text-gray-700 underline">register here</a>.
               </p>
             </div>
           </form>

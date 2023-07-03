@@ -2,18 +2,18 @@ from io import BytesIO
 from ckeditor.fields import RichTextField
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.db import models
-from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.template.loader import render_to_string
 from courses.fields import OrderingField
 from django.utils.translation import gettext as _
 from django.utils.text import slugify
+from django.contrib.auth import get_user_model
+from django.conf import settings
+# from django.contrib.auth.models import User
 
 
-
-
-
+User = get_user_model()
 class Category(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200, unique=True)
@@ -126,7 +126,8 @@ class Content(models.Model):
 
 # abstract model which acts base as class for diffrent type content
 class GenericItem(models.Model):
-    teacher = models.ForeignKey(User,
+    
+    teacher = models.ForeignKey(settings.AUTH_USER_MODEL,
                               related_name='%(class)s_related',
                               on_delete=models.CASCADE)
     title   = models.CharField(max_length=250)

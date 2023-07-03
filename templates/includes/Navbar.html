@@ -40,21 +40,14 @@
               </a>
             </li>
 
-            <li>
-              <a
-                class="text-gray-500 transition hover:text-gray-500/75"
-                href="/"
-              >
-                History
-              </a>
-            </li>
+    
 
             <li>
               <a
                 class="text-gray-500 transition hover:text-gray-500/75"
                 href="{% url 'courses:manage_course_list'%}"
               >
-                 my coursesba
+                 my courses
               </a>
             </li>
 
@@ -85,14 +78,14 @@
         {% if request.user.is_authenticated %}
             <a
             class="rounded-md bg-teal-600 px-5 py-2.5 text-sm font-medium text-white shadow"
-            href="{%url 'logout'%}"
+          
           >
             Logout
           </a>
             {%else%}
           <a
             class="rounded-md bg-teal-600 px-5 py-2.5 text-sm font-medium text-white shadow"
-            href="{%url 'login'%}"
+          
           >
             Login
           </a>

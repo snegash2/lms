@@ -36,12 +36,19 @@ INSTALLED_APPS = [
     'rest_framework',
     'channels',
     'debug_toolbar',
+    # 'social_django',
+    'django_extensions',
+
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 
     
 
     #custom apps
     'chat.apps.ChatConfig',
-    'accounts.apps.AccountsConfig',
+    # 'accounts.apps.AccountsConfig',
     'courses.apps.CoursesConfig',
     'students.apps.StudentsConfig',
 
@@ -79,6 +86,8 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'courses.context_processors.my_context_processor',
+                 # `allauth` needs this from django
+                'django.template.context_processors.request',
             ],
         },
     },
@@ -157,6 +166,8 @@ CACHE_MIDDLEWARE_SECONDS = 60 * 15
 # 15 minutes
 CACHE_MIDDLEWARE_KEY_PREFIX = 'lms'
 
+# AUTH_USER = "accounts.CustomUser"
+
 
 # Email server configuration
 EMAIL_HOST = 'smtp.gmail.com'
@@ -173,3 +184,28 @@ PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
     'django.contrib.auth.hashers.ScryptPasswordHasher',
 ]
+
+
+
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',#username authentication
+    'accounts.authentication.EmailAuthBackend',#email authentication
+    'social_core.backends.facebook.FacebookOAuth2'
+    ]
+
+SITE_ID = 1
+
+# Provider specific settings
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        # For each OAuth based provider, either add a ``SocialApp``
+        # (``socialaccount`` app) containing the required client
+        # credentials, or list them here:
+        'APP': {
+            'client_id': '123',
+            'secret': '456',
+            'key': ''
+        }
+    }
+}

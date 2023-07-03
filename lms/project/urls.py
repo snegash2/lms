@@ -14,13 +14,12 @@ urlpatterns = [
   
     path('admin/', admin.site.urls),
     path('quiz/',include('exam.quiz.urls')),
-     path('account/',include('accounts.urls')),
-    path('accounts/login/', auth_views.LoginView.as_view(),name='login'),
-    path('accounts/logout/', auth_views.LogoutView.as_view(),name='logout'),
+    # path('accounts/',include('accounts.urls')),
+    path('accounts/', include('allauth.urls')),
+
     path('course/', include('courses.urls')),
     path('students/', include('students.urls')),
     path('api/', include('courses.api.urls', namespace='api')),
-    # path('', index, name='index'),
     path('', CourseListView.as_view(), name='course_list'),
     path('chat/', include('chat.urls', namespace='chat')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
