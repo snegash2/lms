@@ -35,9 +35,6 @@ class ChatConsumer(WebsocketConsumer):
         # send message to WebSocket
         # send message to room group
 
-        # store
-
-        Chat.objects.create(user=user,created_at = now,updated_at = now,message=message)
         async_to_sync(self.channel_layer.group_send)(
         self.room_group_name,
         {
@@ -47,9 +44,10 @@ class ChatConsumer(WebsocketConsumer):
         'datetime': now.isoformat(),
         }
         )
+
         self.send(text_data=json.dumps({'message': message}))
-
-
+         # store
+        Chat.objects.create(user=user,created_at = now,updated_at = now,message=message)
 
     # receive message from room group
     def chat_message(self, event):

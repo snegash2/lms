@@ -34,7 +34,7 @@ class ModuleInline(admin.StackedInline):
 
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
-    actions = ["publish_all","unpublish_all"]
+    actions = ["publish_selected","unpublish_selected"]
     list_display = ['created','has_practice','published','ceu']
     list_filter = ['created',]
     search_fields = [ 'overview']
@@ -42,12 +42,11 @@ class CourseAdmin(admin.ModelAdmin):
     inlines = [ModuleInline]
 
     #publish course
-    def publish_all(self, request, queryset):
+    def publish_selected(self, request, queryset):
         queryset.update(published=True)
 
-
     #unpublish course
-    def unpublish_all(self, request, queryset):
+    def unpublish_selected(self, request, queryset):
         queryset.update(published=False)
 
 
