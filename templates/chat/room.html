@@ -21,21 +21,29 @@
           
         </ul>
       </li>
+
+      {%for chat in chats%}
+
+  
+
       <li class="mb-4">
         <h2 class="text-base font-semibold">Your Discussions</h2>
         <ul class="list-reset">
           <li class="mb-2">
             <a href="#" class="text-gray-600 hover:text-gray-900">
               <strong>Your Topic 1</strong>
-              <span class="text-gray-400">12/12/2023</span>
+              <span class="text-gray-400">{{chat.created_at}} </span>
             </a>
             <p class="mt-2 text-gray-500">
-              This is your first discussion topic.
+             {{chat.message}}
             </p>
           </li>
         </ul>
       </li>
       <li>
+
+      {%endfor%}
+
 
         <div id="chat-input">
           <input id="chat-message-input" type="text" class="w-full bg-gray-100 border-gray-200 rounded-md py-2 px-4 text-gray-700 focus:bg-gray-200 focus:border-gray-300 mb-6">

@@ -17,6 +17,8 @@ ALLOWED_HOSTS = ["lmsbeta.pythonanywhere.com","127.0.0.1","mysite.com"]
 
 INSTALLED_APPS = [
 
+    "admin_interface",
+    "colorfield",
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -247,3 +249,8 @@ SOCIALACCOUNT_PROVIDERS = {
 
 
 LOGIN_URL = '/'
+
+
+#admin custimization
+X_FRAME_OPTIONS = "SAMEORIGIN"
+SILENCED_SYSTEM_CHECKS = ["security.W019"]

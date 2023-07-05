@@ -1,1 +1,0 @@
-console.log("hello world form javascript side")

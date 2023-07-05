@@ -4,10 +4,15 @@ from courses.views import CourseListView
 from django.contrib import admin
 from django.urls import path,re_path, include
 from lms.project.views import index
+from django.contrib import admin
 
 
 
 
+
+admin.site.site_header = "Abebech Gobena Hospital Admin"
+admin.site.site_title = "Abebech Gobena Hospital"
+admin.site.index_title = "Welcome to Abebech Gobena Hospital"
 
 
 urlpatterns = [
