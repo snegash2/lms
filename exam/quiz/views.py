@@ -30,6 +30,7 @@ class SittingFilterTitleMixin(object):
 
 class QuizListView(ListView):
     model = Quiz
+    permission_required ='quiz.view_quiz'
 
     def get_queryset(self):
         queryset = super(QuizListView, self).get_queryset()

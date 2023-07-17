@@ -37,10 +37,10 @@ Module {{ module.order|add:1 }}: {{ module.title }}
       <div data-id="{{ content.id }}">
         {% with item=content.item %}
         <p>{{ item }} ({{ item|model_name }})</p>
-        <a href="{% url " courses:module_content_update" module.id item|model_name item.id %}">
+        <a href="{% url "courses:module_content_update" module.id item|model_name item.id %}">
           Edit
         </a>
-        <form action="{% url " courses:module_content_delete" content.id %}" method="post">
+        <form action="{% url "courses:module_content_delete" content.id %}" method="post">
           <input type="submit" value="Delete">
           {% csrf_token %}
         </form>
@@ -65,6 +65,9 @@ Module {{ module.order|add:1 }}: {{ module.title }}
         <a href="{% url "courses:module_content_create" module.id "file" %}">File</a>
       </li>
     </ul>
+ 
+
+    {%endif%}
   </div>
   {% endwith %}
 </div>
