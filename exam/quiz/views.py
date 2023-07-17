@@ -9,7 +9,8 @@ from django.views.generic import DetailView, ListView, TemplateView, FormView
 from .forms import QuestionForm, EssayForm
 from .models import Quiz, Category, Progress, Sitting, Question
 from exam.essay.models import Essay_Question
-
+from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.mixins import PermissionRequiredMixin
 
 class QuizMarkerMixin(object):
     @method_decorator(login_required)
@@ -27,8 +28,8 @@ class SittingFilterTitleMixin(object):
 
         return queryset
 
-
-class QuizListView(ListView):
+# @permission_required("blog.view_post")
+class QuizListView(PermissionRequiredMixin,ListView):
     model = Quiz
     permission_required ='quiz.view_quiz'
 
@@ -36,7 +37,7 @@ class QuizListView(ListView):
         queryset = super(QuizListView, self).get_queryset()
         return queryset.filter(draft=False)
 
-
+# @permission_required("exam.view_exam")
 class QuizDetailView(DetailView):
     model = Quiz
     slug_field = 'url'
@@ -50,11 +51,11 @@ class QuizDetailView(DetailView):
         context = self.get_context_data(object=self.object)
         return self.render_to_response(context)
 
-
+# @permission_required("exam.view_exam")
 class CategoriesListView(ListView):
     model = Category
 
-
+# @permission_required("exam.view_exam")
 class ViewQuizListByCategory(ListView):
     model = Quiz
     template_name = 'view_quiz_category.html'

@@ -12,10 +12,11 @@ from django.utils.timezone import now
 from django.conf import settings
 from model_utils.managers import InheritanceManager
 from django.contrib.auth import get_user_model
-# from django.contrib.auth.models import User
+from django.contrib.auth.models import User
+from courses.models import Course
 
 
-User = get_user_model()
+# User = get_user_model()
 
 
 class CategoryManager(models.Manager):
@@ -69,7 +70,8 @@ class SubCategory(models.Model):
 
 
 class Quiz(models.Model):
-
+    course = models.ForeignKey(Course, on_delete = models.CASCADE,default=1)
+ 
     title = models.CharField(
         verbose_name=_("Title"),
         max_length=60, blank=False)

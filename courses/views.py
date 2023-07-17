@@ -14,6 +14,8 @@ from .models import Course, Module, Content
 from django.db.models import Count
 from .models import Category
 from django.views.generic.detail import DetailView
+from django.shortcuts import render
+from django.contrib.auth.models import Group,User
 # common behavior for all classes this class return courses which create only by currently logedin user
 class OwnerMixin:
     def get_queryset(self):
@@ -220,3 +222,33 @@ class CourseDetailView(DetailView):
         return context
 
 
+def verify_egiliable_student(request,id):
+    # egiliable_students_group = Group.objects.get(name='can_take_exam')
+    # egiliable_students = egiliable_students_group.user_set.all()
+    group = Group.objects.get(name='can_take_exam')
+    user_email = request.POST.get('user')
+    if request.method == "POST":
+       if request.POST.get('user-to-deny') != None:
+            user = User.objects.get(email = user_email)
+            user.groups.remove(group)
+            user.save()
+            
+
+
+     
+       user = User.objects.get(email = user_email)
+       user.groups.add(group)
+       user.save()
+      
+
+
+    course = Course.objects.get(id = id)
+
+    candidate_students = course.students.all()
+  
+    context = {
+        'course_id':id,
+        'group_users':group.user_set.all(),
+        'candidate_students':candidate_students
+    }
+    return render(request,'courses/course/egiliablity.html',context)

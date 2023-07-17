@@ -16,4 +16,6 @@ urlpatterns = [
         path('content/order/',views.ContentOrderView.as_view(),name='content_order'),
         path('category/<slug:category>/',views.CourseListView.as_view(),name='course_list_category'),
         path('<slug:slug>/',views.CourseDetailView.as_view(),name='course_detail'),
+        path('eligibility/<id>/',views.verify_egiliable_student,name='egiliablity'),
+      
 ]
