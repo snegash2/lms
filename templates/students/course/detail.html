@@ -45,19 +45,14 @@
 
   
 
-{% if course.has_practice%}
+{% if course.has_practice %}
 
 
     {% if request.user.groups.all  %}
 
      <a href="/quiz/"  class="bg-blue-500 text-white font-bold py-2 px-4 rounded-md"> Take exam</a>
+    {% elif not request.user.groups.all %}
 
-    {% else %}
-
-
-
-
-      
      <div class="mt-12">
       <p class="text-gray-700 text-sm">
         please upload the certificate and other necessary material in order to verify your egiability to take quiz

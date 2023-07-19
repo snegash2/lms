@@ -252,3 +252,10 @@ def verify_egiliable_student(request,id):
         'candidate_students':candidate_students
     }
     return render(request,'courses/course/egiliablity.html',context)
+
+
+
+def view_egiliable_detail(request,id):
+    print(id)
+    context = {}
+    return render(request,'courses/course/egiliablity_detail.html',context)
