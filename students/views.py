@@ -1,13 +1,17 @@
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy,resolve,reverse
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
 from django.views.generic.edit import FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
-
+from django.http import HttpResponse
 from courses.models import Course
 from .forms import CourseEnrollForm
+from django.core.files.uploadedfile import InMemoryUploadedFile
+from crendential.models import Crendential
+
+
 class StudentRegistrationView(CreateView):
     template_name = 'students/student/registration.html'
     form_class = UserCreationForm
@@ -70,3 +74,30 @@ class StudentCourseDetailView(DetailView):
                 raise ValueError("not module for this course")
 
         return context
+
+
+    def post(self, request, *args, **kwargs):
+        print("Hello ",request.FILES)
+        user = request.user
+        name  = request.POST.get('name')
+        file = request.FILES['file']
+        # file_object = InMemoryUploadedFile(
+        #     file.read(),
+        #     name = file.name,
+        #     content_type= file.content_type,
+        #     size=None,
+        #     charset=None,
+        #  )
+
+
+        cr = Crendential()
+
+        cr.name = name
+        cr.user = user
+        cr.file = file
+        cr.save()
+
+
+
+        return reverse(resolve('student_course_list'))
+          

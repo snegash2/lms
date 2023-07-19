@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     # 'accounts.apps.AccountsConfig',
     'courses.apps.CoursesConfig',
     'students.apps.StudentsConfig',
+    'crendential',
 
     #exam related
     'exam.essay',

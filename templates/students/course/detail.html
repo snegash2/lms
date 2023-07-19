@@ -51,7 +51,7 @@
     {% if request.user.groups.all  %}
 
      <a href="/quiz/"  class="bg-blue-500 text-white font-bold py-2 px-4 rounded-md"> Take exam</a>
-    {% elif not request.user.groups.all %}
+    {% else %}
 
      <div class="mt-12">
       <p class="text-gray-700 text-sm">
@@ -64,8 +64,10 @@
       </p>
 
 
-      <form action="{% url  'courses:egiliablity' course.id %}" method="post" enctype="multipart/form-data">
+      <form  method="post" enctype="multipart/form-data">
       <div class="mb-4">
+      <label for="file" class="block text-gray-700">name</label>
+      <input type="text" name="name" id="name" class="w-full bg-gray-100 border border-gray-300 rounded-md p-2">
       <label for="file" class="block text-gray-700">File</label>
       <input type="file" name="file" id="file" class="w-full bg-gray-100 border border-gray-300 rounded-md p-2">
       </div>

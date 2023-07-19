@@ -14,8 +14,10 @@ from .models import Course, Module, Content
 from django.db.models import Count
 from .models import Category
 from django.views.generic.detail import DetailView
-from django.shortcuts import render
+from django.shortcuts import render,get_object_or_404
 from django.contrib.auth.models import Group,User
+from crendential.models import Crendential
+
 # common behavior for all classes this class return courses which create only by currently logedin user
 class OwnerMixin:
     def get_queryset(self):
@@ -256,6 +258,11 @@ def verify_egiliable_student(request,id):
 
 
 def view_egiliable_detail(request,id):
-    print(id)
-    context = {}
+    user = User.objects.get(id = id)
+    crendential = get_object_or_404(Crendential,user = user)
+    
+    context = {
+        'crendential':crendential,
+        'user':user
+    }
     return render(request,'courses/course/egiliablity_detail.html',context)
