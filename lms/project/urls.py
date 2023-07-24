@@ -18,8 +18,8 @@ admin.site.index_title = "Welcome to Abebech Gobena Hospital"
 urlpatterns = [
   
     path('admin/', admin.site.urls),
+    path('instructor/', InstructorSignupView.as_view(), name='instructor_account_signup'),
     path('accounts/', include('allauth.urls')),
-    path('accounts/instructor/', InstructorSignupView.as_view(), name='instructor_account_signup'),
     path('quiz/',include('exam.quiz.urls')),   
     path('course/', include('courses.urls')),
     path('students/', include('students.urls')),
@@ -34,3 +34,7 @@ urlpatterns = [
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
     urlpatterns += static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)
+
+
+
+
