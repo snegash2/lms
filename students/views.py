@@ -81,23 +81,10 @@ class StudentCourseDetailView(DetailView):
         user = request.user
         name  = request.POST.get('name')
         file = request.FILES['file']
-        # file_object = InMemoryUploadedFile(
-        #     file.read(),
-        #     name = file.name,
-        #     content_type= file.content_type,
-        #     size=None,
-        #     charset=None,
-        #  )
-
-
         cr = Crendential()
-
         cr.name = name
         cr.user = user
         cr.file = file
         cr.save()
-
-
-
-        return reverse(resolve('student_course_list'))
+        return reverse(resolve('student_enroll_course'))
           

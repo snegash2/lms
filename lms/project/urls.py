@@ -5,8 +5,8 @@ from django.contrib import admin
 from django.urls import path,re_path, include
 from lms.project.views import index
 from django.contrib import admin
-
-
+from django.contrib.auth.models import User
+from .views import InstructorSignupView
 
 
 
@@ -19,6 +19,7 @@ urlpatterns = [
   
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
+    path('accounts/instructor/', InstructorSignupView.as_view(), name='instructor_account_signup'),
     path('quiz/',include('exam.quiz.urls')),   
     path('course/', include('courses.urls')),
     path('students/', include('students.urls')),
