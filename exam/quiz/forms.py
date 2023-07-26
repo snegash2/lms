@@ -1,5 +1,6 @@
 from django import forms
 from django.forms.widgets import RadioSelect, Textarea
+from .models import Quiz
 
 
 class QuestionForm(forms.Form):
@@ -15,3 +16,11 @@ class EssayForm(forms.Form):
         super(EssayForm, self).__init__(*args, **kwargs)
         self.fields["answers"] = forms.CharField(
             widget=Textarea(attrs={'style': 'width:100%'}))
+
+
+class InstructorQuizEditView(forms.ModelForm):
+    class Meta:
+        model = Quiz
+        fields = "__all__"
+
+

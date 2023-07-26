@@ -4,13 +4,33 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404, render
 from django.utils.decorators import method_decorator
-from django.views.generic import DetailView, ListView, TemplateView, FormView
+from django.views.generic import DetailView, ListView, TemplateView, FormView,CreateView
 
 from .forms import QuestionForm, EssayForm
 from .models import Quiz, Category, Progress, Sitting, Question
 from exam.essay.models import Essay_Question
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
+
+
+
+from .forms import InstructorQuizEditView
+
+
+class InstructorQuizEditView(CreateView):
+    model = Quiz
+    form_class = InstructorQuizEditView
+    template_name = "instructor/quiz/edit.html"
+    
+    success_url = '/'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # context['form'].fields['name'].label = 'Your name'
+        return context
+
+
+
 
 class QuizMarkerMixin(object):
     @method_decorator(login_required)

@@ -1,0 +1,23 @@
+{% extends '_base.html' %}
+{% load tailwind_filters %}
+
+{%block title%}
+  instructor create quiz
+{%endblock title%}
+{% block content %}
+    <form  method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {{form|crispy}}
+        <span class="inline-flex overflow-hidden rounded-md border bg-blue shadow-sm">
+            <input type="submit" value="Create quiz"
+              class="inline-block border-e px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:relative">
+  
+            </input>
+
+            <br />
+            <br />
+            <br />
+    </form>
+
+    {% endblock content%}

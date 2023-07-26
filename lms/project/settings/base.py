@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'ckeditor_uploader',
     'rest_framework',
     'channels',
-    'debug_toolbar',
+    # 'debug_toolbar',
     # 'social_django',
     'django_extensions',
 
@@ -66,7 +66,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    # 'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     # 'django.middleware.cache.UpdateCacheMiddleware',
@@ -151,6 +151,10 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR,'static')# type:ignore
+STATICFILES_DIRS = [
+  BASE_DIR / 'static' / 'css' / 'landing',
+  BASE_DIR / 'static' / 'assets' ,
+]
 
 
 

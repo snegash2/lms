@@ -1,4 +1,77 @@
-<header aria-label="Site Header" class="bg-gray-50" >
+{% load static %}   
+<!-- =========================================Navgation================================= -->
+<header>
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <img class="menu-logo" src="{% static 'logo.png' %}" alt="" />
+    </div>
+    <div class="navbar-hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <div class="navbar-menu">
+      <ul class="Menu-container">
+        <li>
+          <a id="Links" class="Links" href="#">Home</a>
+        </li>
+        <li><a class="Links" href="#">About</a></li>
+        <li>
+          <a class="Links" href="#"
+            >Catgories <i class="fa fa-caret-down"></i>
+          </a>
+          <ul>
+            <li><a href="#">Neurology <i class="fa fa-caret-right"></i></a>
+              <ul class="Sub__dropdown">
+                <li><a id="Sub-lniks" href="#">CT scans</a></li>
+                <li><a id="Sub-lniks" href="#">MRIs</a></li>
+                <li><a id="Sub-lniks" href="#">x-rays</a></li>
+              </ul></li>
+            <li><a href="#">Hematology <i class="fa fa-caret-right"></i> </a>
+              <ul class="Sub__dropdown">
+                <li><a id="Sub-lniks" href="#">CT scans</a></li>
+                <li><a id="Sub-lniks" href="#">MRIs</a></li>
+                <li><a id="Sub-lniks" href="#">x-rays</a></li>
+              </ul>
+            </li>
+            <li><a href="#">Pathology <i class="fa fa-caret-right"></i></a>
+              <ul class="Sub__dropdown">
+                <li><a id="Sub-lniks" href="#">CT scans</a></li>
+                <li><a id="Sub-lniks" href="#">MRIs</a></li>
+                <li><a id="Sub-lniks" href="#">x-rays</a></li>
+              </ul>
+            </li>
+
+            <li>
+              <a href="#">Radiology <i class="fa fa-caret-right"></i></a>
+              <ul class="Sub__dropdown">
+                <li><a id="Sub-lniks" href="#">CT scans</a></li>
+                <li><a id="Sub-lniks" href="#">MRIs</a></li>
+                <li><a id="Sub-lniks" href="#">x-rays</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <div class="All__Btn">
+          <li>
+            <button class="Sign">
+              <a href="#"><h6>Sing In</h6></a>
+            </button>
+          </li>
+          <li>
+            <button class="Sign">
+              <a href="#"><h6>Sing up</h6></a>
+            </button>
+          </li>
+        </div>
+      </ul>
+    </div>
+  </nav>
+</header>
+
+
+<!-- <header aria-label="Site Header" class="bg-gray-50" >
   <div class="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
     <div class="flex h-16 items-center justify-between">
       <div class="md:flex md:items-center md:gap-12">
@@ -40,16 +113,20 @@
               </a>
             </li>
 
-    
+            {% if request.user.is_authenticated %}
+         
+         
 
-            <li>
-              <a
-                class="text-gray-500 transition hover:text-gray-500/75"
-                href="{% url 'courses:manage_course_list'%}"
-              >
-                 my courses
-              </a>
-            </li>
+                <li>
+                  <a
+                    class="text-gray-500 transition hover:text-gray-500/75"
+                    href="{% url 'courses:manage_course_list'%}"
+                  >
+                    my courses
+                  </a>
+                </li>
+
+            {% endif %}
 
             <li>
               <a
@@ -103,7 +180,7 @@
 
 
             <a
-            class="rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-teal-600"
+            class="rounded-md bg-gray-100 mx-5 px-5 py-2.5 text-sm font-medium text-teal-600"
             href="{%url 'instructor_account_signup'%}"
           >
             Register as Instructor
@@ -137,4 +214,4 @@
       </div>
     </div>
   </div>
-</header>
+</header> -->

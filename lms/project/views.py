@@ -12,6 +12,13 @@ def index(request):
 
 class InstructorSignupView(SignupView):
 
+    def get_context_data(self, **kwargs):
+        ret = super(InstructorSignupView, self).get_context_data(**kwargs)
+        # group = Group.objects.get(name='instructors')
+        # ret.user.groups.add(group)
+    
+        return ret
+
     def dispatch(self, request,**kwargs):   
         # user = self.form_valid(request,**kwargs) 
         # print("hell world is this user ",user)

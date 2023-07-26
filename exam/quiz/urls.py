@@ -5,9 +5,13 @@ except ImportError:
 
 from .views import QuizListView, CategoriesListView, \
     ViewQuizListByCategory, QuizUserProgressView, QuizMarkingList, \
-    QuizMarkingDetail, QuizDetailView, QuizTake
+    QuizMarkingDetail, QuizDetailView, QuizTake,InstructorQuizEditView
 
 urlpatterns = [
+
+    url(r'^instructor/edit-quiz/$',
+        view=InstructorQuizEditView.as_view(),
+        name='edit-quiz'),
 
     url(r'^$',
         view=QuizListView.as_view(),

@@ -1,0 +1,521 @@
+{% extends '_base.html'%}
+{% load static %}   
+{% block content %}
+    <!-- ================================ First Section================================== -->
+    <div class="Main__site">
+      <section>
+        <div class="Main__Container">
+          <div>
+            <!-- <h3>Learning Excellence</h3> -->
+            <p>
+              Best <span>LMS </span> For Healthcare, Medical &
+              <span>Telemedicine </span>
+            </p>
+            <div class="Sub__container">
+              <div class="Second__container">
+                <img class="Icons__img" src="{% static 'medical.jpg' %}" alt="" />
+                <h2>Medical Coursers</h2>
+              </div>
+              <div class="Second__container">
+                <img class="Icons__img" src="{% static 'learning.jpg' %}" alt="" />
+
+                <h2>Learning Material</h2>
+              </div>
+              <div class="Second__container">
+                <img class="Icons__img" src="{% static 'icon1.jpg' %}" alt="" />
+                <h2>Creative Thinking</h2>
+              </div>
+            </div>
+          </div>
+          <div>
+            <!-- ===================================Slider============================ -->
+            <div class="slider__container">
+              <div class="swiper">
+                <div class="swiper-wrapper">
+                  <div class="swiper-slide">
+                    <img src="{% static 'undraw_medicine_b-1-ol.svg' %} " alt="" />
+                  </div>
+                  <div class="swiper-slide">
+                    <img src="{% static 'undraw_doctors_p6aq.svg' %}" alt="" />
+                  </div>
+                  <div class="swiper-slide">
+                    <img
+                      src="{% static 'undraw_online_learning_re_qw08.svg' %}"
+                      alt=""
+                    />
+                  </div>
+                  <div class="swiper-slide">
+                    <img src="{% static 'undraw_doctor_kw-5-l.svg' %}" alt="" />
+                  </div>
+                </div>
+
+                <div class="swiper-pagination"></div>
+
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-button-next"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    <!-- ============================== Number section====================================== -->
+    <div>
+      <section class="Whole__Number">
+        <div class="grid-numbers">
+          <div class="no1">
+            <div class="Sup">50<sup>+</sup></div>
+            <p class="Text">Coursers</p>
+          </div>
+          <div class="no2">
+            <div class="Sup">13<sup>+</sup></div>
+            <p class="Text">Instructor</p>
+          </div>
+          <div class="no3">
+            <div class="Sup">300<sup>+</sup></div>
+            <p class="Text">Students</p>
+          </div>
+          <div class="no4">
+            <div class="Sup">500<sup>+</sup></div>
+            <p class="Text">Learning Material</p>
+          </div>
+        </div>
+      </section>
+    </div>
+    <!-- ============================== What expected====================================== -->
+    <div>
+      <section>
+        <div class="Expect__Main">
+          <div class="Expect__Text">
+            <div>
+              <h2>What to Expect from a Collab Course</h2>
+
+              <h6>
+                We value your interest and look forward to hearing from you.
+              </h6>
+            </div>
+            <div>
+              <button><p><a href="#">Explore Course</a>
+              </p></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="Expect__Container">
+          <div>
+            <img class="Student-img" src="{% static 'afr.jpg' %}" alt="" />
+          </div>
+          <div class="Cards__Container">
+            <div class="first">
+              <div class="card">
+                <img class="Expect__icons" src="{% static 'hat.png' %}" alt="" />
+                <div class="container-card">
+                  <h4><b>Knowledge</b></h4>
+
+                  <p>Architect & Engineer</p>
+                </div>
+              </div>
+              <div id="cards" class="card">
+                <img
+                  class="Expect__icons"
+                  src="{% static 'ulimited.jpg' %}"
+                  alt=""
+                />
+                <div class="container-card">
+                  <h4><b>Unlimited access</b></h4>
+                  <p>Architect & Engineer</p>
+                </div>
+              </div>
+            </div>
+            <div class="second">
+              <div class="card">
+                <img class="Expect__icons" src="{% static  'skill.jpg' %}" alt="" />
+                <div class="container-card">
+                  <h4><b>Practical Skills</b></h4>
+                  <p>Architect & Engineer</p>
+                </div>
+              </div>
+              <div id="cards" class="card">
+                <img
+                  class="Expect__icons"
+                  src="{% static 'certficate.jpg' %}"
+                  alt=""
+                />
+                <div class="container-card">
+                  <h4><b>A certificate</b></h4>
+                  <p>Architect & Engineer</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ============================== Coursers====================================== -->
+    <div>
+      <section class="Whole__Course">
+        <div class="Coursers__Container">
+          <h1>Populare <span>Medical </span> Courses</h1>
+        </div>
+        <!--  -->
+
+        <div id="myBtnContainer">
+          <button class="btn active" onclick="filterSelection('all')">
+            <p>Show all</p>
+          </button>
+          <button class="btn" onclick="filterSelection('card1')">
+            <p>Pharmacology</p>
+          </button>
+          <button class="btn" onclick="filterSelection('card2')">
+            <p>Biochemistry</p>
+          </button>
+          <button class="btn" onclick="filterSelection('card3')">
+            <p>Immunology</p>
+          </button>
+          <button class="btn" onclick="filterSelection('card4')">
+            <p>Physiology</p>
+          </button>
+        </div>
+
+        <div class="container">
+          <div class="Fl__container">
+            <div class="filterDiv card1">
+              <div class="card__new">
+                <img src="./assets/coursers.jpg" alt="" />
+                <div class="container__new">
+                  <h4>Lorem ipsum</h4>
+                  <p>
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                    Perferendis, molestiae?
+
+                  <h4 id="Birr">$400 <span class="Birr_span">ETB</span></h4>
+                  </p>
+                  <div class="Enroll__Container">
+                    <button class="First"><p>Enroll Now</p></button>
+                    <button class="Second"><p>View Courses</p></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="filterDiv card1">
+              <div class="card__new">
+                <img src="./assets/coursers.jpg" alt="" />
+                <div class="container__new">
+                  <h4>Lorem ipsum</h4>
+                  <p>
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                    Perferendis, molestiae?
+
+                  <h4 id="Birr">$400 <span class="Birr_span">ETB</span></h4>
+                  </p>
+                  <div class="Enroll__Container">
+                    <button class="First"><p>Enroll Now</p></button>
+                    <button class="Second"><p>View Courses</p></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="filterDiv card3">
+              <div class="card__new">
+                <img src="./assets/coursers.jpg" alt="" />
+                <div class="container__new">
+                  <h4>Lorem ipsum</h4>
+                  <p>
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                    Perferendis, molestiae?
+
+                  <h4 id="Birr">$400 <span class="Birr_span">ETB</span></h4>
+                  </p>
+                  <div class="Enroll__Container">
+                    <button class="First"><p>Enroll Now</p></button>
+                    <button class="Second"><p>View Courses</p></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="filterDiv card3">
+              <div class="card__new">
+                <img src="./assets/coursers.jpg" alt="" />
+                <div class="container__new">
+                  <h4>Lorem ipsum</h4>
+                  <p>
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                    Perferendis, molestiae?
+                  </p>
+
+                                    <h4 id="Birr">$400 <span class="Birr_span">ETB</span></h4>
+
+                  <div class="Enroll__Container">
+                    <button class="First"><p>Enroll Now</p></button>
+                    <button class="Second"><p>View Courses</p></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- two -->
+          <div id="Fl__container" class="Fl__container">
+            <div class="filterDiv card2">
+              <div class="card__new">
+                <img src="./assets/coursers.jpg" alt="" />
+                <div class="container__new">
+                  <h4>Lorem ipsum</h4>
+                  <p>
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                    Perferendis, molestiae?
+                  </p>
+
+                                    <h4 id="Birr">$400 <span class="Birr_span">ETB</span></h4>
+
+                  <div class="Enroll__Container">
+                    <button class="First"><p>Enroll Now</p></button>
+                    <button class="Second"><p>View Courses</p></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="filterDiv card2">
+              <div class="card__new">
+                <img src="./assets/coursers.jpg" alt="" />
+                <div class="container__new">
+                  <h4>Lorem ipsum</h4>
+                  <p>
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                    Perferendis, molestiae?
+                  </p>
+
+                                    <h4 id="Birr">$400 <span class="Birr_span">ETB</span></h4>
+
+                  <div class="Enroll__Container">
+                    <button class="First"><p>Enroll Now</p></button>
+                    <button class="Second"><p>View Courses</p></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="filterDiv card4">
+              <div class="card__new">
+                <img src="./assets/coursers.jpg" alt="" />
+                <div class="container__new">
+                  <h4>Lorem ipsum</h4>
+                  <p>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                    Consequatur, laboriosam!
+
+                  <h4 id="Birr">$400 <span class="Birr_span">ETB</span></h4>
+                  </p>
+                  <div class="Enroll__Container">
+                    <button class="First"><p>Enroll Now</p></button>
+                    <button class="Second"><p>View Courses</p></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="filterDiv card4">
+              <div class="card__new">
+                <img src="./assets/coursers.jpg" alt="" />
+                <div class="container__new">
+                  <h4>Lorem ipsum</h4>
+                  <p>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                    Consequatur, laboriosam!
+                  </p>
+
+                  <h4 id="Birr">$400 <span class="Birr_span">ETB</span></h4>
+                  <div class="Enroll__Container">
+                    <button class="First"><p>Enroll Now</p></button>
+                    <button class="Second"><p>View Courses</p></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!--================== Testmonial================ -->
+    <div class="hero">
+      <h1>Real-life success stories from <span> Students</span></h1>
+
+      <div class="container__test">
+        <div class="indicator">
+          <span class="btns active"></span>
+          <span class="btns"></span>
+          <span class="btns"></span>
+          <span class="btns"></span>
+        </div>
+        <div class="testimonial">
+          <div class="slide-row" id="slide">
+            <div class="slide-col">
+              <div class="user-text">
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                  Tenetur, quo. Facere tempore nam consequuntur natus adipisci
+                  ut perferendis quas unde aliquam ipsam libero, officiis
+                  quaerat magnam consectetur ab, ea hic!
+                </p>
+                <h3>Leslie</h3>
+                <p>Alexander</p>
+              </div>
+              <div class="user-img">
+                <img src="{% static 'student.jpg' %}" alt="" />
+              </div>
+            </div>
+            <div class="slide-col">
+              <div class="user-text">
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                  Tenetur, quo. Facere tempore nam consequuntur natus adipisci
+                  ut perferendis quas unde aliquam ipsam libero, officiis
+                  quaerat magnam consectetur ab, ea hic!
+                </p>
+                <h3>Leslie</h3>
+                <p>Alexander</p>
+              </div>
+              <div class="user-img">
+                <img src="{% static 'undraw_doctors_p6aq.svg' %}" alt="" />
+              </div>
+            </div>
+            <div class="slide-col">
+              <div class="user-text">
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                  Tenetur, quo. Facere tempore nam consequuntur natus adipisci
+                  ut perferendis quas unde aliquam ipsam libero, officiis
+                  quaerat magnam consectetur ab, ea hic!
+                </p>
+                <h3>Leslie</h3>
+                <p>Alexander</p>
+              </div>
+              <div class="user-img">
+                <img src="{% static 'undraw_medicine_b-1-ol.svg' %}" alt="" />
+              </div>
+            </div>
+            <div class="slide-col">
+              <div class="user-text">
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                  Tenetur, quo. Facere tempore nam consequuntur natus adipisci
+                  ut perferendis quas unde aliquam ipsam libero, officiis
+                  quaerat magnam consectetur ab, ea hic!
+                </p>
+                <h3>Leslie</h3>
+                <p>Alexander</p>
+              </div>
+              <div class="user-img">
+                <img src="{% static 'coursers.jpg' %}" alt="" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- =================Contact us================= -->
+    <section class="Contacts__Lnading">
+      <h1>Contact <span> Us</span></h1>
+
+      <div class="Contacts__Lnading__container">
+        <div class="first">
+          <img src="{% static 'contactus.svg' %}" alt="" />
+        </div>
+        <div>
+          <h3>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore
+            voluptate rem expedita eius accusantium quasi perspiciatis. Eaque,
+            libero necessitatibus enim consequatur unde eos? Unde odio tenetur
+            exercitationem at voluptas molestias.
+          </h3>
+          <button><a href="">Contact Us</a></button>
+        </div>
+      </div>
+    </section>
+    <!-- ====================  Subscribe Text============================ -->
+    <section>
+      <div class="Start-text">
+        <h1>Never Miss a Single News</h1>
+        <h2>
+          Subscribe for Creative Software and get to know more about latest
+          informations
+        </h2>
+        <div class="newsletter">
+          <form action="#" method="post">
+            <input
+              type="email"
+              name="email"
+              placeholder="Enter your email"
+              required
+            />
+            <button type="submit">Subscribe</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- =========================================Js code==================== -->
+  
+    <script>
+      // JavaScript to toggle the active class on hamburger click
+      document.addEventListener("DOMContentLoaded", function () {
+        var navbarHamburger = document.querySelector(".navbar-hamburger");
+        var navbarMenu = document.querySelector(".navbar-menu");
+
+        navbarHamburger.addEventListener("click", function () {
+          navbarHamburger.classList.toggle("active");
+          navbarMenu.classList.toggle("active");
+        });
+
+        document.addEventListener("click", function (event) {
+          var targetElement = event.target;
+          if (
+            !targetElement.closest(".navbar") &&
+            navbarHamburger.classList.contains("active")
+          ) {
+            navbarHamburger.classList.remove("active");
+            navbarMenu.classList.remove("active");
+          }
+        });
+      });
+    </script>
+    <script>
+      var btns = document.getElementsByClassName("btns");
+      var slide = document.getElementById("slide");
+      btns[0].onclick = function () {
+        slide.style.transform = "translateX(0px)";
+        for (i = 0; i < 4; i++) {
+          btns[i].classList.remove("active");
+        }
+        btns[i].classList.add("active");
+      };
+      btns[1].onclick = function () {
+        slide.style.transform = "translateX(-800px)";
+        for (i = 0; i < 4; i++) {
+          btns[i].classList.remove("active");
+        }
+        btns[i].classList.add("active");
+      };
+      btns[2].onclick = function () {
+        slide.style.transform = "translateX(-1600px)";
+        for (i = 0; i < 4; i++) {
+          btns[i].classList.replace("active");
+        }
+        btns[i].classList.add("active");
+      };
+      btns[3].onclick = function () {
+        slide.style.transform = "translateX(-2400px)";
+        for (i = 0; i < 4; i++) {
+          btns[i].classList.replace("active");
+        }
+        btns[i].classList.add("active");
+      };
+    </script>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
+    <script type="text/javascript" src="swiper.js"></script>
+
+    <script type="text/javascript" src="Filter.js"></script>
+ {% endblock content %}
