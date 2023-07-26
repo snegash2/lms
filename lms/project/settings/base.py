@@ -154,6 +154,7 @@ STATIC_ROOT = os.path.join(BASE_DIR,'static')# type:ignore
 STATICFILES_DIRS = [
   BASE_DIR / 'static' / 'css' / 'landing',
   BASE_DIR / 'static' / 'assets' ,
+  BASE_DIR / 'static' / 'js' ,
 ]
 
 

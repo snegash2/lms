@@ -10,8 +10,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}LMS{% endblock %}</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="{% static 'css/base.css' %}" rel="stylesheet">
+  
 
 
    
@@ -123,9 +122,9 @@
       <!-- Scripts -->
       <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
   
-      <script type="text/javascript" src="swiper.js"></script>
+      <script type="text/javascript" src="{% static 'swiper.js' %}"></script>
   
-      <script type="text/javascript" src="Filter.js"></script>
+      <script type="text/javascript" src="{% static 'Filter.js' %}"></script>
 
 
     </div>

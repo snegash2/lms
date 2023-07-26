@@ -64,15 +64,15 @@
       <section class="Whole__Number">
         <div class="grid-numbers">
           <div class="no1">
-            <div class="Sup">50<sup>+</sup></div>
+            <div class="Sup">{{courses.count }}<sup>+</sup></div>
             <p class="Text">Coursers</p>
           </div>
           <div class="no2">
-            <div class="Sup">13<sup>+</sup></div>
+            <div class="Sup">{{instructors}}<sup>+</sup></div>
             <p class="Text">Instructor</p>
           </div>
           <div class="no3">
-            <div class="Sup">300<sup>+</sup></div>
+            <div class="Sup">{{students_num}}<sup>+</sup></div>
             <p class="Text">Students</p>
           </div>
           <div class="no4">
@@ -112,7 +112,7 @@
                 <div class="container-card">
                   <h4><b>Knowledge</b></h4>
 
-                  <p>Architect & Engineer</p>
+                  <p>Physician & Nurses</p>
                 </div>
               </div>
               <div id="cards" class="card">
@@ -123,7 +123,7 @@
                 />
                 <div class="container-card">
                   <h4><b>Unlimited access</b></h4>
-                  <p>Architect & Engineer</p>
+                  <p>Physician & Nurses</p>
                 </div>
               </div>
             </div>
@@ -132,7 +132,7 @@
                 <img class="Expect__icons" src="{% static  'skill.jpg' %}" alt="" />
                 <div class="container-card">
                   <h4><b>Practical Skills</b></h4>
-                  <p>Architect & Engineer</p>
+                  <p>Physician & Nurses</p>
                 </div>
               </div>
               <div id="cards" class="card">
@@ -143,7 +143,7 @@
                 />
                 <div class="container-card">
                   <h4><b>A certificate</b></h4>
-                  <p>Architect & Engineer</p>
+                  <p>Physician & Nurses</p>
                 </div>
               </div>
             </div>
@@ -182,7 +182,7 @@
           <div class="Fl__container">
             <div class="filterDiv card1">
               <div class="card__new">
-                <img src="./assets/coursers.jpg" alt="" />
+                <img src="{% static 'coursers.jpg' %}" alt="" />
                 <div class="container__new">
                   <h4>Lorem ipsum</h4>
                   <p>
@@ -200,7 +200,7 @@
             </div>
             <div class="filterDiv card1">
               <div class="card__new">
-                <img src="./assets/coursers.jpg" alt="" />
+                <img src="{% static 'coursers.jpg' %}" alt="" />
                 <div class="container__new">
                   <h4>Lorem ipsum</h4>
                   <p>
@@ -218,7 +218,7 @@
             </div>
             <div class="filterDiv card3">
               <div class="card__new">
-                <img src="./assets/coursers.jpg" alt="" />
+                <img src="{% static 'coursers.jpg' %}" alt="" />
                 <div class="container__new">
                   <h4>Lorem ipsum</h4>
                   <p>
@@ -236,7 +236,7 @@
             </div>
             <div class="filterDiv card3">
               <div class="card__new">
-                <img src="./assets/coursers.jpg" alt="" />
+                <img src="{% static 'coursers.jpg' %}" alt="" />
                 <div class="container__new">
                   <h4>Lorem ipsum</h4>
                   <p>
@@ -258,7 +258,7 @@
           <div id="Fl__container" class="Fl__container">
             <div class="filterDiv card2">
               <div class="card__new">
-                <img src="./assets/coursers.jpg" alt="" />
+                <img src="{% static 'coursers.jpg' %}" alt="" />
                 <div class="container__new">
                   <h4>Lorem ipsum</h4>
                   <p>
@@ -277,7 +277,7 @@
             </div>
             <div class="filterDiv card2">
               <div class="card__new">
-                <img src="./assets/coursers.jpg" alt="" />
+                <img src="{% static 'coursers.jpg' %}" alt="" />
                 <div class="container__new">
                   <h4>Lorem ipsum</h4>
                   <p>
@@ -296,7 +296,7 @@
             </div>
             <div class="filterDiv card4">
               <div class="card__new">
-                <img src="./assets/coursers.jpg" alt="" />
+                <img src="{% static 'coursers.jpg' %}" alt="" />
                 <div class="container__new">
                   <h4>Lorem ipsum</h4>
                   <p>
@@ -314,7 +314,7 @@
             </div>
             <div class="filterDiv card4">
               <div class="card__new">
-                <img src="./assets/coursers.jpg" alt="" />
+                <img src="{% static 'coursers.jpg' %}" alt="" />
                 <div class="container__new">
                   <h4>Lorem ipsum</h4>
                   <p>
@@ -515,7 +515,7 @@
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
 
-    <script type="text/javascript" src="swiper.js"></script>
+    <script type="text/javascript" src="{% static 'swiper.js' %}"></script>
 
-    <script type="text/javascript" src="Filter.js"></script>
+    <script type="text/javascript" src="{% static 'Filter.js' %}"></script>
  {% endblock content %}
