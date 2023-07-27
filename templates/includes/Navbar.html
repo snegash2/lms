@@ -54,16 +54,22 @@
           </ul>
         </li>
         <div class="All__Btn">
+
+          {% if not request.user.is_authenticated %}
           <li>
             <div class="Sign">
-              <a   href="{%url 'account_login'%}" ><h6>Sign in</h6></a>
+              <a   href="{%url 'account_login'%}" ><h6>Log in</h6></a>
             </div>
           </li>
+
+          {% else %}
           <li>
             <div class="Sign">
-              <a href="{% url 'account_signup' %}"><h6>Sign up</h6></a>
+              <a     href="{%url 'account_logout'%}"  ><h6>Logout</h6></a>
             </div>
           </li>
+
+          {% endif %}
         </div>
       </ul>
     </div>
