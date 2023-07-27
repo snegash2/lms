@@ -55,14 +55,14 @@
         </li>
         <div class="All__Btn">
           <li>
-            <button class="Sign">
-              <a href="#"><h6>Sign in</h6></a>
-            </button>
+            <div class="Sign">
+              <a   href="{%url 'account_login'%}" ><h6>Sign in</h6></a>
+            </div>
           </li>
           <li>
-            <button class="Sign">
-              <a href="#"><h6>Sign up</h6></a>
-            </button>
+            <div class="Sign">
+              <a href="{% url 'account_signup' %}"><h6>Sign up</h6></a>
+            </div>
           </li>
         </div>
       </ul>

@@ -16,7 +16,7 @@ admin.site.index_title = "Welcome to Abebech Gobena Hospital"
 
 
 urlpatterns = [
-    path('',include('landing.urls')),
+
     path('admin/', admin.site.urls),
     path('instructor/', InstructorSignupView.as_view(), name='instructor_account_signup'),
     path('accounts/', include('allauth.urls')),
@@ -27,6 +27,7 @@ urlpatterns = [
     path('course-list/', CourseListView.as_view(), name='course_list'),
     path('chat/', include('chat.urls', namespace='chat')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
+    path('',include('landing.urls')),
     # path('__debug__/', include('debug_toolbar.urls')),
     # path('social-auth/',include('social_django.urls', namespace='social')),
 ]

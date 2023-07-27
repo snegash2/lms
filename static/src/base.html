@@ -1,0 +1,160 @@
+<!-- templates/_base.html -->
+{% load crispy_forms_tags %}
+
+{% load compress %}
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}LMS{% endblock %}</title>
+  
+
+
+   
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Cabin:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Cormorant+Upright:wght@300;400;600;700&family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,700&family=Great+Vibes&family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Lexend:wght@100;200;300;400;500;600;700;800;900&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;0,1000;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900;1,1000&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Syne:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet"
+        />
+    
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+          tailwind.config = {
+            theme: {
+              extend: {
+                colors: {
+                  clifford: '#da373d',
+                }
+              }
+            }
+          }
+        </script>
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"
+        />
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+        />
+    
+</head>
+
+<body>
+    {% include "includes/Navbar.html"%}
+    <div class="mx-auto max-w-screen-xl w-full h-full">
+        <!-- class="mx-auto max-w-screen-xl w-full h-full"> -->
+        {% if messages %}
+        <ul class="messages">
+        {% for message in messages %}
+        <li class="{{ message.tags }}">
+        {{ message|safe }}
+        <a href="#" class="close">x</a>
+        </li>
+        {% endfor %}
+        </ul>
+
+        
+        {% endif %}
+        {% block content %}
+        {% endblock content %}
+
+        {% include "includes/footer.html"%}
+
+
+          <!-- =========================================Js code==================== -->
+  
+    <script>
+        // JavaScript to toggle the active class on hamburger click
+        document.addEventListener("DOMContentLoaded", function () {
+          var navbarHamburger = document.querySelector(".navbar-hamburger");
+          var navbarMenu = document.querySelector(".navbar-menu");
+  
+          navbarHamburger.addEventListener("click", function () {
+            navbarHamburger.classList.toggle("active");
+            navbarMenu.classList.toggle("active");
+          });
+  
+          document.addEventListener("click", function (event) {
+            var targetElement = event.target;
+            if (
+              !targetElement.closest(".navbar") &&
+              navbarHamburger.classList.contains("active")
+            ) {
+              navbarHamburger.classList.remove("active");
+              navbarMenu.classList.remove("active");
+            }
+          });
+        });
+      </script>
+      <script>
+        var btns = document.getElementsByClassName("btns");
+        var slide = document.getElementById("slide");
+        btns[0].onclick = function () {
+          slide.style.transform = "translateX(0px)";
+          for (i = 0; i < 4; i++) {
+            btns[i].classList.remove("active");
+          }
+          btns[i].classList.add("active");
+        };
+        btns[1].onclick = function () {
+          slide.style.transform = "translateX(-800px)";
+          for (i = 0; i < 4; i++) {
+            btns[i].classList.remove("active");
+          }
+          btns[i].classList.add("active");
+        };
+        btns[2].onclick = function () {
+          slide.style.transform = "translateX(-1600px)";
+          for (i = 0; i < 4; i++) {
+            btns[i].classList.replace("active");
+          }
+          btns[i].classList.add("active");
+        };
+        btns[3].onclick = function () {
+          slide.style.transform = "translateX(-2400px)";
+          for (i = 0; i < 4; i++) {
+            btns[i].classList.replace("active");
+          }
+          btns[i].classList.add("active");
+        };
+      </script>
+  
+      <!-- Scripts -->
+      <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+  
+      <script type="text/javascript" src="{% static 'swiper.js' %}"></script>
+  
+      <script type="text/javascript" src="{% static 'Filter.js' %}"></script>
+
+
+    </div>
+    
+    <div style="position: relative;">
+       
+
+    </div>
+    
+    {% block include_js %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5sortable/0.13.3/html5sortable.min.js"></script>
+    {% endblock %}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+        // DOM loaded
+        {% block domready %}
+
+        
+        {% endblock %}
+        })
+     </script>
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
+<script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+<script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+</body>
+</html>
