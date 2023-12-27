@@ -1,46 +1,162 @@
-{% extends "base.html" %}
+{% extends "account/base.html" %}
+{% load static %}
 {% load tailwind_filters %}
 {% load i18n %}
 {% load account socialaccount %}
+{% load widget_tweaks %}
+{% block head_title %}{% trans "Log in" %}{% endblock %}
 
-{% block head_title %}{% trans "Sign In" %}{% endblock %}
 
 {% block content %}
+  <body>
+   
+     {% include 'includes/login_header.html'%}
+    <!-- Body -->
+    <div class="grid__container">
+      <div id="mobile" class="container">
+        <h3>Log in to your LMS account</h3>
+        <!-- <h3>Welcome back  <span> Username </span> </h3> -->
+        <form class="login" method="POST" action="{% url 'account_login' %}">
+          {% csrf_token %}
+          {{form|crispy}}
+          <div class="error-message" id="error-message"></div>
+          <button type="submit" class="submit-button">Login</button>
+        </form>
+        <div class="forgot-password">
+          <a href="{% url 'account_reset_password' %}">Forgot Password?</a>
+        </div>
+      </div>
+      <div class="image">
+        <img src="{% static 'doters-removebg-preview.png' %}" alt="" />
+      </div>
+    </div>
+    <!-- Second- Socail Meda -->
+    <div class="Socail-Container">
+      <div></div>
+      <div>
+        <div class="Socail-Media">
+          <a href="#" id="fa" class="fa fa-facebook"></a>
+          Continue with FaceBook
+        </div>
+        <div class="Socail-Media">
+          <a href="#" id="fa" class="fa fa-google"></a>
+          Continue with Google
+        </div>
+      </div>
+    </div>
+    <!-- ================Footer======================= -->
+  
+    <!-- =========================================Js code==================== -->
+    <!-- New coursers -->
 
-<h1>{% trans "Sign In" %}</h1>
+    <script>
+      // JavaScript to toggle the active class on hamburger click
+      document.addEventListener("DOMContentLoaded", function () {
+        var navbarHamburger = document.querySelector(".navbar-hamburger");
+        var navbarMenu = document.querySelector(".navbar-menu");
 
-{% get_providers as socialaccount_providers %}
+        navbarHamburger.addEventListener("click", function () {
+          navbarHamburger.classList.toggle("active");
+          navbarMenu.classList.toggle("active");
+        });
 
-{% if socialaccount_providers %}
-<p>{% blocktrans with site.name as site_name %}Please sign in with one
-of your existing third party accounts. Or, <a href="{{ signup_url }}">sign up</a>
-for a {{ site_name }} account and sign in below:{% endblocktrans %}</p>
+        document.addEventListener("click", function (event) {
+          var targetElement = event.target;
+          if (
+            !targetElement.closest(".navbar") &&
+            navbarHamburger.classList.contains("active")
+          ) {
+            navbarHamburger.classList.remove("active");
+            navbarMenu.classList.remove("active");
+          }
+        });
+      });
+    </script>
 
-<div class="socialaccount_ballot">
+    <!-- Catgory dropdown -->
+    <script>
+      const newdropdowns = document.querySelectorAll(".newdropdown");
+      newdropdowns.forEach((newdropdown) => {
+        const select = newdropdown.querySelector(".select");
+        const caret = newdropdown.querySelector(".caret");
+        const menu = newdropdown.querySelector(".menu");
+        const options = newdropdown.querySelector(".menu li");
+        const selected = newdropdown.querySelector(".selected");
 
-  <ul class="socialaccount_providers">
-    {% include "socialaccount/snippets/provider_list.html" with process="login" %}
-  </ul>
-
-  <div class="login-or">{% trans 'or' %}</div>
-
-</div>
-
-{% include "socialaccount/snippets/login_extra.html" %}
-
-{% else %}
-<p>{% blocktrans %}If you have not created an account yet, then please
-<a href="{{ signup_url }}">sign up</a> first.{% endblocktrans %}</p>
-{% endif %}
-
-<form class="login" method="POST" action="{% url 'account_login' %}">
-  {% csrf_token %}
-  {{ form|crispy }}
-  {% if redirect_field_value %}
-  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-  {% endif %}
-  <a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
-  <button class="primaryAction" type="submit">{% trans "Sign In" %}</button>
-</form>
-
+        select.addEventListener("click", () => {
+          select.classList.toggle("select-clicked");
+          caret.classList.toggle("caret-rotate");
+          menu.classList.toggle("menu-open");
+        });
+        options.forEach((option) => {
+          option.addEventListener("click", () => {
+            selected.innerText = option.innerText;
+            select.classList.remove("select-clicked");
+            caret.classList.remove("caret-rotate");
+            menu.classList.remove("menu-open");
+            options.forEach((option) => {
+              option.classList.remove("active");
+            });
+            option.classList.add("active");
+          });
+        });
+      });
+    </script>
+    <!-- Scripts -->
+    <script src="./script.js"></script>
+    <script type="text/javascript" src="dropdown.js"></script>
+  </body>
 {% endblock %}
+{% block extra_body %}
+   <script>
+   
+   const passwordInput = document.getElementById("password");
+      const passwordIcon = document.getElementById("password-icon");
+
+      passwordIcon.addEventListener("click", function () {
+        if (passwordInput.type === "password") {
+          passwordInput.type = "text";
+          passwordIcon.classList.remove("fa-eye");
+          passwordIcon.classList.add("fa-eye-slash");
+        } else {
+          passwordInput.type = "password";
+          passwordIcon.classList.remove("fa-eye-slash");
+          passwordIcon.classList.add("fa-eye");
+        }
+      });
+  
+      const passwordField = document.getElementById("password");
+      const showPasswordButton = document.getElementById("show-password");
+      const loginForm = document.getElementById("login-form");
+      const errorMessage = document.getElementById("error-message");
+
+      showPasswordButton.addEventListener("click", () => {
+        if (passwordField.type === "password") {
+          passwordField.type = "text";
+          showPasswordButton.textContent = "Hide Password";
+        } else {
+          passwordField.type = "password";
+          showPasswordButton.textContent = "Show Password";
+        }
+      });
+
+      loginForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const username = document.getElementById("username").value;
+        const password = passwordField.value;
+
+        // Example validation: Check if username and password are not empty
+        if (username.trim() === "" || password.trim() === "") {
+          errorMessage.textContent = "Username and password are required.";
+        } else {
+          // Here, you can add your login logic (e.g., sending data to the server)
+          // If the login is successful, you can redirect the user to the dashboard.
+          errorMessage.textContent = ""; // Clear any previous error message
+          // Perform login logic or redirect the user.
+          alert("Login successful!");
+        }
+      });
+   
+   </script>
+{% endblock %}
+

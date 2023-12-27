@@ -1,4 +1,4 @@
-#!/home/tinsae/Desktop/LMS/lms/venv/bin/python
+#!/home/tinsae/Desktop/projects/lms/venv/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys

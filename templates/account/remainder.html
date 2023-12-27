@@ -1,0 +1,118 @@
+   <!-- Body -->
+    <div class="grid__container">
+      <div id="mobile" class="container">
+        <h3>Log in to your LMS account</h3>
+        <!-- <h3>Welcome back  <span> Username </span> </h3> -->
+        <form id="login-form" action="#" method="post">
+          <div class="form-group">
+            <!-- <label for="username">Username:</label> -->
+            <i class="bx bxs-user"></i>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              placeholder="Username"
+              required
+            />
+          </div>
+          <!-- <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required />
+            <span class="show-password" id="show-password">
+              <i class="fa-solid fa-envelope"></i>
+            </span>
+          </div> -->
+          <!--  -->
+          <div>
+            <!-- <label for="password">Password:</label> -->
+            <i class="bx bxs-lock-alt"></i>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Password"
+              required
+            />
+            <i id="password-icon" class="password-icon fas fa-eye"></i>
+          </div>
+          <div class="form-group">
+            <label for="rememberMe" style="margin-top: 2rem"
+              >Remember me:</label
+            >
+            <input type="checkbox" id="rememberMe" name="rememberMe" />
+          </div>
+          <div class="error-message" id="error-message"></div>
+          <button type="submit" class="submit-button">Login</button>
+        </form>
+        <div class="forgot-password">
+          <a href="#">Forgot Password?</a>
+        </div>
+      </div>
+      <div class="image">
+        <img src="./img/doters-removebg-preview.png" alt="" />
+      </div>
+    </div>
+    <!-- Second- Socail Meda -->
+    <div class="Socail-Container">
+      <div></div>
+      <div>
+        <div class="Socail-Media">
+          <a href="#" id="fa" class="fa fa-facebook"></a>
+          Continue with FaceBook
+        </div>
+        <div class="Socail-Media">
+          <a href="#" id="fa" class="fa fa-google"></a>
+          Continue with Google
+        </div>
+      </div>
+    </div>
+
+
+
+
+<!-- {% extends "base.html" %}
+{% load tailwind_filters %}
+{% load i18n %}
+{% load account socialaccount %}
+
+{% block head_title %}{% trans "Sign In" %}{% endblock %}
+
+{% block content %}
+
+<h1>{% trans "Sign In" %}</h1>
+
+{% get_providers as socialaccount_providers %}
+
+{% if socialaccount_providers %}
+<p>{% blocktrans with site.name as site_name %}Please sign in with one
+of your existing third party accounts. Or, <a href="{{ signup_url }}">sign up</a>
+for a {{ site_name }} account and sign in below:{% endblocktrans %}</p>
+
+<div class="socialaccount_ballot">
+
+  <ul class="socialaccount_providers">
+    {% include "socialaccount/snippets/provider_list.html" with process="login" %}
+  </ul>
+
+  <div class="login-or">{% trans 'or' %}</div>
+
+</div>
+
+{% include "socialaccount/snippets/login_extra.html" %}
+
+{% else %}
+<p>{% blocktrans %}If you have not created an account yet, then please
+<a href="{{ signup_url }}">sign up</a> first.{% endblocktrans %}</p>
+{% endif %}
+
+<form class="login" method="POST" action="{% url 'account_login' %}">
+  {% csrf_token %}
+  {{ form|crispy }}
+  {% if redirect_field_value %}
+  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+  {% endif %}
+  <a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
+  <button class="primaryAction" type="submit">{% trans "Sign In"%}</button>
+</form>
+
+{% endblock %} -->

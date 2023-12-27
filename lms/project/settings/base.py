@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     # 'debug_toolbar',
     # 'social_django',
     'django_extensions',
+     'widget_tweaks',
 
    
 
@@ -153,8 +154,16 @@ STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR,'static')# type:ignore
 STATICFILES_DIRS = [
   BASE_DIR / 'static' / 'css' / 'landing',
+  BASE_DIR /'static' / 'css' / 'courses',
+  BASE_DIR /'static' / 'css' /'students',
+  BASE_DIR /'static' / 'css' / 'exam',
+  BASE_DIR /'static' / 'css' / 'chat',
+  BASE_DIR /'static'  / 'css' / 'allauth',
+
   BASE_DIR / 'static' / 'assets' ,
+  BASE_DIR / 'static' / 'assets' / 'allauth',
   BASE_DIR / 'static' / 'js' ,
+  BASE_DIR / 'static' / 'js' 
 ]
 
 

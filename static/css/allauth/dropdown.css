@@ -1,0 +1,107 @@
+.childs {
+  display: none;
+}
+.parent:hover .childs {
+  display: block;
+}
+
+.dropdown {
+  display: inline-block;
+  margin: 10px;
+}
+.parent {
+  display: block;
+}
+.parent > a {
+  display: block;
+  background-color: transparent;
+  box-sizing: border-box;
+  padding: 7px 30px;
+}
+.dropdown .parent a span {
+  display: inline-block;
+  transition: 0.4s;
+  font-size: 14px;
+}
+
+/*for icon rotation*/
+
+.childs {
+  background-color: rgb(235, 230, 230);
+}
+.childs li {
+  display: block;
+  list-style: none;
+}
+.childs li a {
+  display: block;
+  box-sizing: border-box;
+  padding: 7px 30px;
+}
+/*main effect*/
+.dropdown-1 .childs {
+  display: none;
+}
+.dropdown-1 .parent:hover > .childs {
+  display: block;
+}
+@media only screen and (max-width: 700px) {
+  .dropdown .parent:hover > a span {
+    transform: rotate(90deg);
+  }
+  .Catgory:hover > .Links span {
+    transform: rotate(90deg);
+  }
+}
+/*  */
+.newdropdown {
+  min-width: 7rem;
+  position: relative;
+  margin: 2rem;
+}
+.newdropdown * {
+  box-sizing: border-box;
+}
+/* .select {
+  color: black;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 2px red soild;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  cursor: pointer;
+  transition: background 0.3s;
+} */
+.select {
+  /* background: blue; */
+  color: black;
+  display: flex;
+  justify-content: unset;
+  align-items: center;
+  border: 2px red soild;
+  /* border-radius: 0.5rem; */
+  /* padding: 0.2rem; */
+  cursor: pointer;
+  margin-top: -2.2rem;
+  margin-left: -2rem;
+  /* transition: background 0.3s; */
+}
+.select-clicked {
+}
+.select:hover {
+  /* background: cyan; */
+}
+
+.caret {
+  width: 0;
+  height: 0;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-top: 8px solid black;
+  transition: 0.3s;
+  margin-left: -11px;
+}
+.caret-rotate {
+  transform: rotate(-90deg);
+}

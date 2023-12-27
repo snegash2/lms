@@ -1,0 +1,88 @@
+{%load static %}
+<header>
+    <nav class="navbar">
+      <div class="navbar-brand">
+        <img class="menu-logo" src="{% static 'logo.png' %}" alt="" />
+      </div>
+      <div class="navbar-hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <div class="navbar-menu">
+        <ul class="Menu-container">
+          <li>
+            <a id="Links" class="Links" href="/">Home</a>
+          </li>
+          <li><a class="Links" href="#">About</a></li>
+          <div class="dropdowns dropdown-3">
+            <li class="parents">
+              <a class="Linkss" href="#"
+                >Catgories <span> <i class="fa fa-caret-down"></i></span>
+              </a>
+              <ul id="drop-downs" class="dropdown dropdown-2">
+                <li class="parent">
+                  <a href="#"
+                    >Hematology<span><i class="fa fa-caret-right"></i></span
+                  ></a>
+
+                  <ul class="childs">
+                    <li><a id="Sub-lniks" href="#">CT scans</a></li>
+                    <li><a id="Sub-lniks" href="#">MRIs</a></li>
+                    <li><a id="Sub-lniks" href="#">x-rays</a></li>
+                  </ul>
+                </li>
+                <li class="parent">
+                  <a href="#"
+                    >Radiology<span><i class="fa fa-caret-right"></i></span
+                  ></a>
+
+                  <ul class="childs">
+                    <li><a id="Sub-lniks" href="#">CT scans</a></li>
+                    <li><a id="Sub-lniks" href="#">MRIs</a></li>
+                    <li><a id="Sub-lniks" href="#">x-rays</a></li>
+                  </ul>
+                </li>
+                <li class="parent">
+                  <a href="#"
+                    >Neurology<span><i class="fa fa-caret-right"></i></span
+                  ></a>
+
+                  <ul class="childs">
+                    <li><a id="Sub-lniks" href="#">CT scans</a></li>
+                    <li><a id="Sub-lniks" href="#">MRIs</a></li>
+                    <li><a id="Sub-lniks" href="#">x-rays</a></li>
+                  </ul>
+                </li>
+                <li class="parent">
+                  <a href="#"
+                    >Pathology<span><i class="fa fa-caret-right"></i></span
+                  ></a>
+
+                  <ul class="childs">
+                    <li><a id="Sub-lniks" href="#">CT scans</a></li>
+                    <li><a id="Sub-lniks" href="#">MRIs</a></li>
+                    <li><a id="Sub-lniks" href="#">x-rays</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          </div>
+          <div class="All__Btn">
+            <!--  -->
+            <li>
+            
+                <a href="#" class="Sign"><h6>Sign In </h6></a>
+              
+            </li>
+            <li>
+              
+                <a href="{% url 'account_signup' %}" class="Sign"><h6>Sign up</h6></a>
+              
+            </li>
+          </div>
+        </ul>
+      </div>
+    </nav>
+  </header>
