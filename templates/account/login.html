@@ -34,17 +34,11 @@
     <div class="Socail-Container">
       <div></div>
       <div>
-        <div class="Socail-Media">
-          <a href="#" id="fa" class="fa fa-facebook"></a>
-          Continue with FaceBook
-        </div>
-        <div class="Socail-Media">
-          <a href="#" id="fa" class="fa fa-google"></a>
-          Continue with Google
-        </div>
+       {% include "socialaccount/snippets/provider_list.html" with process="login" %}
+         
       </div>
     </div>
-    <!-- ================Footer======================= -->
+    {% include 'includes/login_footer.html'%}
   
     <!-- =========================================Js code==================== -->
     <!-- New coursers -->

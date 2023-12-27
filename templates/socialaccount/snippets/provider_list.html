@@ -1,20 +1,30 @@
+{% extends 'account/base.html'%}
 {% load socialaccount %}
 
+
+{% block content%}
 {% get_providers as socialaccount_providers %}
 
 {% for provider in socialaccount_providers %}
 {% if provider.id == "openid" %}
 {% for brand in provider.get_brands %}
+<ul style="list-style-type: none;">
 <li>
-  <a title="{{brand.name}}" 
+
+  <a 
+
+  title="{{brand.name}}" 
      class="socialaccount_provider {{provider.id}} {{brand.id}}" 
      href="{% provider_login_url provider.id openid=brand.openid_url process=process %}"
-     >{{brand.name}}</a>
+     > {{brand.name}}</a>
 </li>
 {% endfor %}
 {% endif %}
 <li>
-  <a title="{{provider.name}}" class="socialaccount_provider {{provider.id}}" 
-     href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}">{{provider.name}}</a>
+  <div id="fa" class="fa fa-{{provider.name|lower}}"></div>
+  <a title="{{provider.name}}" class="socialaccount_provider {{provider.id}}" id="fa"
+     href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}"> Continue with {{provider.name}}</a>
 </li>
+</ul>
 {% endfor %}
+{% endblock %}

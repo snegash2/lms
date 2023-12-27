@@ -230,10 +230,10 @@ ACCOUNT_EMAIL_CONFORMATION=180
 ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = True
 
 
-ACCOUNT_FORMS = {
-    'signup': 'lms.forms.LmsSignupForm',
+# ACCOUNT_FORMS = {
+#     'signup': 'lms.forms.LmsSignupForm',
   
-    }
+#     }
 
 
 # This setting will redirect users to the homepage after a successful login.

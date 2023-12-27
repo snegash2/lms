@@ -1,22 +1,100 @@
-{% extends "base.html" %}
+{% extends "account/base.html" %}
 {% load tailwind_filters %}
-
+{% load static %}
 {% load i18n %}
+{% block css %} 
 
+<link rel="stylesheet"  type="text/css" href="{% static 'styles.css' %}" />
+
+{% endblock %}
 {% block head_title %}{% trans "Signup" %}{% endblock %}
 
 {% block content %}
-<h1>{% trans "Sign Up" %}</h1>
 
-<p>{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}</p>
 
-<form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
-  {% csrf_token %}
-  {{ form|crispy }}
-  {% if redirect_field_value %}
-  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-  {% endif %}
-  <button type="submit">{% trans "Sign Up" %} &raquo;</button>
-</form>
+  <!-- Body -->
+  <div class="Main-container">
+    <div class="container">
+      <h2>Welcome to <span> Lorem </span> LMS</h2>
+      <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+        {% csrf_token %}
+        {{form|crispy}}
+        {% if redirect_field_value %}
+        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+        {% endif %}
+        <button type="submit" class="submit-button">{% trans "Sign Up" %} &raquo;</button>
+      </form>
+    </div>
+    <div>
+      <img class="img" src="{% static 'doters-removebg-preview.png' %}" alt="" />
+    </div>
+  </div>
+  <!-- Second- Socail Meda -->
+    <!-- Second- Socail Meda -->
+    <div class="Socail-Container">
+      <div></div>
+      <div>
+       {% include "socialaccount/snippets/provider_list.html" with process="login" %}
+         
+      </div>
+    </div>
+ 
+  <script>
+    // JavaScript to toggle the active class on hamburger click
+    document.addEventListener("DOMContentLoaded", function () {
+      var navbarHamburger = document.querySelector(".navbar-hamburger");
+      var navbarMenu = document.querySelector(".navbar-menu");
+
+      navbarHamburger.addEventListener("click", function () {
+        navbarHamburger.classList.toggle("active");
+        navbarMenu.classList.toggle("active");
+      });
+
+      document.addEventListener("click", function (event) {
+        var targetElement = event.target;
+        if (
+          !targetElement.closest(".navbar") &&
+          navbarHamburger.classList.contains("active")
+        ) {
+          navbarHamburger.classList.remove("active");
+          navbarMenu.classList.remove("active");
+        }
+      });
+    });
+  </script>
+
+  <!-- Catgory dropdown -->
+  <script>
+    const newdropdowns = document.querySelectorAll(".newdropdown");
+    newdropdowns.forEach((newdropdown) => {
+      const select = newdropdown.querySelector(".select");
+      const caret = newdropdown.querySelector(".caret");
+      const menu = newdropdown.querySelector(".menu");
+      const options = newdropdown.querySelector(".menu li");
+      const selected = newdropdown.querySelector(".selected");
+
+      select.addEventListener("click", () => {
+        select.classList.toggle("select-clicked");
+        caret.classList.toggle("caret-rotate");
+        menu.classList.toggle("menu-open");
+      });
+      options.forEach((option) => {
+        option.addEventListener("click", () => {
+          selected.innerText = option.innerText;
+          select.classList.remove("select-clicked");
+          caret.classList.remove("caret-rotate");
+          menu.classList.remove("menu-open");
+          options.forEach((option) => {
+            option.classList.remove("active");
+          });
+          option.classList.add("active");
+        });
+      });
+    });
+  </script>
+  <!-- Scripts -->
+  <script src="./script.js"></script>
+  <script type="text/javascript" src="dropdown.js"></script>
+
 
 {% endblock %}
