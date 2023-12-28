@@ -1,8 +1,127 @@
-{% extends '_base.html'%}
-{% load static %}   
-{% block content %}
-     <!-- ==================================================Second section================== -->
-     <section class="Main__site">
+<html lang="en">
+  <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cabin:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Cormorant+Upright:wght@300;400;600;700&family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,700&family=Great+Vibes&family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Lexend:wght@100;200;300;400;500;600;700;800;900&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;0,1000;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900;1,1000&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Syne:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel = "icon" href = "./assets/logo.png" 
+        type = "image/x-icon">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LMS</title>
+    <link rel="stylesheet" href="./index.css" />
+    <link rel="stylesheet" href="./testimonial.css" />
+    <link rel="stylesheet" href="./LandingContact.css" />
+    <link rel="stylesheet" href="./footer.css" />
+    <link rel="stylesheet" href="./newmenu.css">
+    <link rel="stylesheet" href="./courses.css">
+    <link rel="stylesheet" href="./news.css">
+    <link rel="stylesheet" href="./dropdown.css">
+    <link rel="stylesheet" href="./newdrop.css">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+  </head>
+  <body>
+   
+<!-- =========================================Navgation================================= -->
+<header>
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <img class="menu-logo" src="./assets/logo.png" alt="" />
+    </div>
+    <div class="navbar-hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <div class="navbar-menu">
+      <ul class="Menu-container">
+        <li>
+          <a id="Links" class="Links" href="#">Home</a>
+        </li>
+        <li><a class="Links" href="#">About</a></li>
+        <div class="dropdowns dropdown-3">
+          <li class="parents">
+            <a class="Linkss" href="#"
+              >Catgories <span> <i class="fa fa-caret-down"></i></span>
+            </a>
+            <ul class="dropdown dropdown-2">
+              <li class="parent">
+                <a href="#"
+                  >Hematology<span><i class="fa fa-caret-right"></i></span
+                ></a>
+
+                <ul class="childs">
+                  <li><a id="Sub-lniks" href="#">CT scans</a></li>
+                  <li><a id="Sub-lniks" href="#">MRIs</a></li>
+                  <li><a id="Sub-lniks" href="#">x-rays</a></li>
+                </ul>
+              </li>
+              <li class="parent">
+                <a href="#"
+                  >Radiology<span><i class="fa fa-caret-right"></i></span
+                ></a>
+
+                <ul class="childs">
+                  <li><a id="Sub-lniks" href="#">CT scans</a></li>
+                  <li><a id="Sub-lniks" href="#">MRIs</a></li>
+                  <li><a id="Sub-lniks" href="#">x-rays</a></li>
+                </ul>
+              </li>
+              <li class="parent">
+                <a href="#"
+                  >Neurology<span><i class="fa fa-caret-right"></i></span
+                ></a>
+
+                <ul class="childs">
+                  <li><a id="Sub-lniks" href="#">CT scans</a></li>
+                  <li><a id="Sub-lniks" href="#">MRIs</a></li>
+                  <li><a id="Sub-lniks" href="#">x-rays</a></li>
+                </ul>
+              </li>
+              <li class="parent">
+                <a href="#"
+                  >Pathology<span><i class="fa fa-caret-right"></i></span
+                ></a>
+
+                <ul class="childs">
+                  <li><a id="Sub-lniks" href="#">CT scans</a></li>
+                  <li><a id="Sub-lniks" href="#">MRIs</a></li>
+                  <li><a id="Sub-lniks" href="#">x-rays</a></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </div>
+        <div class="All__Btn">
+          <!--  -->
+          <li>
+            <button class="Sign">
+              <a href="#"><h6>Sign In</h6></a>
+            </button>
+          </li>
+          <li>
+            <button class="Sign">
+              <a href="#"><h6>SignUp</h6></a>
+            </button>
+          </li>
+        </div>
+      </ul>
+    </div>
+  </nav>
+</header>
+
+    <!-- ==================================================Second section================== -->
+    <section class="Main__site">
       <div >
       <div class="slide__Second">
         <div class="slider__container">
@@ -20,7 +139,7 @@
 
                     <button class="Home__btn"><a href="#">Learn More</a></button>
                   </div>
-                  <div><img src="{% static 'new-doc.png' %}" alt="" /></div>
+                  <div><img src="./assets/new-doc.png" alt="" /></div>
                 </div>
               </div>
               <div class="swiper-slide">
@@ -33,7 +152,7 @@
                                         <button class="Home__btn"><a href="#">Learn More</a></button>
 
                   </div>
-                  <div><img src="{% static 'doc-slide.png' %}" alt="" />
+                  <div><img src="./assets/doc-slide.png" alt="" />
                   </div>
                 </div>
               </div>  
@@ -49,7 +168,7 @@
 
                   </div>
                   <div>
-                    <img class="Third__img" src="{% static 'doc-slide2.png' %}" alt="" />
+                    <img class="Third__img" src="./assets/doc-slide2.png" alt="" />
                   </div>
                 </div>
               </div>   <div class="swiper-slide">
@@ -63,7 +182,7 @@
 
                   </div>
                   <div> <img
-                    src="{% static 'undraw_online_learning_re_qw08.svg' %}"
+                    src="./assets/undraw_online_learning_re_qw08.svg"
                     alt=""
                   /></div>
                 </div>
@@ -78,7 +197,7 @@
                                         <button class="Home__btn"><a href="#">Learn More</a></button>
 
                   </div>
-                  <div><img src="{% static 'doc-slide1.png' %}" alt="" /></div>
+                  <div><img src="./assets/doc-slide1.png" alt="" /></div>
                 </div>
               </div>
               <div class="swiper-slide">
@@ -92,7 +211,7 @@
 
                   </div>
                   <div>
-                    <img class="peer-img"  src="{% static 'peer1.png' %}" alt="" />
+                    <img class="peer-img"  src="./assets/peer1.png" alt="" />
                   </div>
                 </div>
               </div>   <div class="swiper-slide">
@@ -105,7 +224,7 @@
                                         <button class="Home__btn"><a href="#">Learn More</a></button>
 
                   </div>
-                  <div><img src="{% static 'hands.png' %}" alt="" /></div>
+                  <div><img src="./assets/hands.png" alt="" /></div>
                 </div>
               </div>
             </div>
@@ -120,20 +239,20 @@
     </div>
     <div class="Sub__container">
       <div class="Second__container">
-        <img class="Icons__img" src="{% static 'icons-img (1).png' %}" alt="" />
+        <img class="Icons__img" src="./assets/icons-img (1).png" alt="" />
         <h2>Medical Coursers</h2>
       </div>
       <div class="Second__container">
-        <img class="Icons__img" src="{% static 'icons-img (2).png' %}" alt="" />
+        <img class="Icons__img" src="./assets/icons-img (2).png" alt="" />
 
         <h2>Learning Material</h2>
       </div>
       <div class="Second__container">
-        <img class="Icons__img" src="{% static 'icons-img (3).png' %}" alt="" />
+        <img class="Icons__img" src="./assets/icons-img (3).png" alt="" />
         <h2>Creative Thinking</h2>
       </div>
       <div class="Second__container">
-        <img class="Icons__img" src="{% static 'icons-img (4).png' %}" alt="" />
+        <img class="Icons__img" src="./assets/icons-img (4).png" alt="" />
         <h2>Self Assesement</h2>
       </div>
     </div>
@@ -160,12 +279,12 @@
 
         <div class="Expect__Container">
           <div>
-            <img class="Student-img" src="{% static 'afr.jpg' %}" alt="" />
+            <img class="Student-img" src="./assets//afr.jpg" alt="" />
           </div>
           <div class="Cards__Container">
             <div class="first">
               <div class="card">
-                <img class="Expect__icons" src="{% static 'hat.png' %}" alt="" />
+                <img class="Expect__icons" src="./assets//hat.png" alt="" />
                 <div class="container-card">
                   <h4><b>Knowledge</b></h4>
 
@@ -175,7 +294,7 @@
               <div id="cards" class="card">
                 <img
                   class="Expect__icons"
-                  src="{% static 'ulimited.jpg' %}"
+                  src="./assets//ulimited.jpg"
                   alt=""
                 />
                 <div class="container-card">
@@ -186,7 +305,7 @@
             </div>
             <div class="second">
               <div class="card">
-                <img class="Expect__icons" src="{% static 'skills.jpg' %}" alt="" />
+                <img class="Expect__icons" src="./assets//skills.jpg" alt="" />
                 <div class="container-card">
                   <h4><b>Practical Skills</b></h4>
                   <p>All Health Professionals</p>
@@ -195,7 +314,7 @@
               <div id="cards" class="card">
                 <img
                   class="Expect__icons"
-                  src="{% static 'certficate.jpg' %}"
+                  src="./assets//certficate.jpg"
                   alt=""
                 />
                 <div class="container-card">
@@ -253,7 +372,7 @@
             <div class="gallery-item-inner">
             
               <div class="card__new">
-                <img src="{% static 'coursers.jpg' %}" alt="" />
+                <img src="./assets/coursers.jpg" alt="" />
                 <div class="container__new">
                   <h4>Lorem ipsum</h4>
                   <p>
@@ -274,7 +393,7 @@
             <div class="gallery-item-inner">
             
               <div class="card__new">
-                <img src="{% static 'coursers.jpg' %}" alt="" />
+                <img src="./assets/coursers.jpg" alt="" />
                 <div class="container__new">
                   <h4>Lorem ipsum</h4>
                   <p>
@@ -294,7 +413,7 @@
             <div class="gallery-item-inner">
             
               <div class="card__new">
-                <img src="{% static 'coursers.jpg' %}" alt="" />
+                <img src="./assets/coursers.jpg" alt="" />
                 <div class="container__new">
                   <h4>Lorem ipsum</h4>
                   <p>
@@ -315,7 +434,7 @@
             <div class="gallery-item-inner">
             
                 <div class="card__new">
-                  <img src="{% static 'coursers.jpg' %}" alt="" />
+                  <img src="./assets/coursers.jpg" alt="" />
                   <div class="container__new">
                     <h4>Lorem ipsum</h4>
                     <p>
@@ -338,7 +457,7 @@
             <div class="gallery-item-inner">
             
                 <div class="card__new">
-                  <img src="{% static 'coursers.jpg' %}" alt="" />
+                  <img src="./assets/coursers.jpg" alt="" />
                   <div class="container__new">
                     <h4>Lorem ipsum</h4>
                     <p>
@@ -366,7 +485,7 @@
             <div class="gallery-item-inner">
             
                 <div class="card__new">
-                  <img src="{% static 'coursers.jpg' %}" alt="" />
+                  <img src="./assets/coursers.jpg" alt="" />
                   <div class="container__new">
                     <h4>Lorem ipsum</h4>
                     <p>
@@ -388,7 +507,7 @@
             <div class="gallery-item-inner">
             
                 <div class="card__new">
-                  <img src="{% static  'coursers.jpg' %}" alt="" />
+                  <img src="./assets/coursers.jpg" alt="" />
                   <div class="container__new">
                     <h4>Lorem ipsum</h4>
                     <p>
@@ -410,7 +529,7 @@
             <div class="gallery-item-inner">
             
                 <div class="card__new">
-                  <img src="{% static 'coursers.jpg' %}" alt="" />
+                  <img src="./assets/coursers.jpg" alt="" />
                   <div class="container__new">
                     <h4>Lorem ipsum</h4>
                     <p>
@@ -458,7 +577,7 @@
                 <p>Alexander</p>
               </div>
               <div class="user-img">
-                <img src="{% static 'student.jpg' %}" alt="" />
+                <img src="./assets/student.jpg" alt="" />
               </div>
             </div>
             <div class="slide-col">
@@ -473,7 +592,7 @@
                 <p>Alexander</p>
               </div>
               <div class="user-img">
-                <img src="{% static 'undraw_doctors_p6aq.svg' %}" alt="" />
+                <img src="./assets/undraw_doctors_p6aq.svg" alt="" />
               </div>
             </div>
             <div class="slide-col">
@@ -488,7 +607,7 @@
                 <p>Alexander</p>
               </div>
               <div class="user-img">
-                <img src="{% static 'undraw_medicine_b-1-ol.svg' %}" alt="" />
+                <img src="./assets/undraw_medicine_b-1-ol.svg" alt="" />
               </div>
             </div>
             <div class="slide-col">
@@ -503,7 +622,7 @@
                 <p>Alexander</p>
               </div>
               <div class="user-img">
-                <img src="{% static 'coursers.jpg' %}" alt="" />
+                <img src="./assets/coursers.jpg" alt="" />
               </div>
             </div>
           </div>
@@ -516,7 +635,7 @@
 
       <div class="Contacts__Lnading__container">
         <div class="first">
-          <img src="{% static 'contactus.svg' %}" alt="" />
+          <img src="./assets/contactus.svg" alt="" />
         </div>
         <div>
           <h3>
@@ -543,7 +662,7 @@
       <div class="News__Container">
         <div>
           <div class="cards">
-            <img src="{% static 'covide.jpg' %}" alt="Avatar" style="width:100%">
+            <img src="./assets/covide.jpg" alt="Avatar" style="width:100%">
             <div class="container">
               <h2>Covid-19</h2>
               <p>Researchers found that people who carry a genetic variant of a protein found on cell surfaces are less likely to get sick from Covid, even if they were infected with the vi...</p>
@@ -556,7 +675,7 @@
         </div>
         <div>
           <div class="cards">
-            <img src="{% static 'news-2.jpg' %}" alt="Avatar" style="width:100%">
+            <img src="./assets/news-2.jpg" alt="Avatar" style="width:100%">
             <div class="container">
               <h2>Postpartum</h2>
               <p>Postpartum depression pill is safe and effective, new trial data shows,  Medications shouldn’t be the first of treatment for mental health conditi...</p>
@@ -567,7 +686,7 @@
         </div>
         <div>
           <div class="cards">
-            <img src="{% static 'news3.jpg' %}" alt="Avatar" style="width:100%">
+            <img src="./assets/news3.jpg" alt="Avatar" style="width:100%">
             <div class="container">
               <h2>Blood pressure</h2>
                       <p>Blood pressure is measured in units of millimeters of mercury (abbreviated as mmHg), and written as two numbers, one above the o...</p>              <!-- <p>Interior Designer</p>  -->
@@ -599,4 +718,163 @@
       </div>
     </section>
 
- {% endblock content %}
+    <!-- ================Footer======================= -->
+    <section>
+      <footer>
+        <div class="containers">
+          <div class="column">
+            <img src="./assets//logo.png" alt="LMS Logo" />
+          </div>
+          <div class="column">
+            <h4>Active Pages</h4>
+            <ul>
+              <li><a href="#">Home</a></li>
+              <li><a href="#">About</a></li>
+              <li><a href="#">Services</a></li>
+              <li><a href="#">Contact</a></li>
+            </ul>
+          </div>
+
+          <div class="column">
+            <h4>Contact Us</h4>
+            <p>Email: example@example.com</p>
+            <p>Address: 123 ABC Street, City, Country</p>
+          </div>
+          <div class="column">
+        
+            <h4>Social Media</h4>
+            <p>do you need our help? Feel free to contact us.</p>
+            <div class="social-icons">
+              <a href="#"><i class="fa fa-facebook"></i></a>
+              <a href="#"><i class="fa fa-linkedin"></i></a>
+              <a href="#"><i class="fa fa-telegram"></i></a>
+              <a href="#"><i class="fa fa-youtube"></i></a>
+            </div>
+          </div>
+        </div>
+        <h1 class="footer__class">
+       
+          <hr >
+          © Copyright <span><a href="">MarkAb Solutions</a> </span> - 2023. All Rights Reserved
+        </h1>
+
+      </footer>
+    </section>
+    <!-- =========================================Js code==================== -->
+  <!-- New coursers -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
+    <script>
+      // JavaScript to toggle the active class on hamburger click
+      document.addEventListener("DOMContentLoaded", function () {
+        var navbarHamburger = document.querySelector(".navbar-hamburger");
+        var navbarMenu = document.querySelector(".navbar-menu");
+
+        navbarHamburger.addEventListener("click", function () {
+          navbarHamburger.classList.toggle("active");
+          navbarMenu.classList.toggle("active");
+        });
+
+        document.addEventListener("click", function (event) {
+          var targetElement = event.target;
+          if (
+            !targetElement.closest(".navbar") &&
+            navbarHamburger.classList.contains("active")
+          ) {
+            navbarHamburger.classList.remove("active");
+            navbarMenu.classList.remove("active");
+          }
+        });
+      });
+    </script>
+      <script>
+        const filterContainer = document.querySelector(".gallery-filter"),
+          galleryItems = document.querySelectorAll(".gallery-item");
+    
+        filterContainer.addEventListener("click", (event) => {
+          if (event.target.classList.contains("filter-item")) {
+            // deactivate existing active 'filter-item'
+            filterContainer.querySelector(".active").classList.remove("active");
+            // activate new 'filter-item'
+            event.target.classList.add("active");
+            const filterValue = event.target.getAttribute("data-filter");
+            galleryItems.forEach((item) => {
+              if (item.classList.contains(filterValue) || filterValue === "all") {
+                item.classList.remove("hide");
+                item.classList.add("show");
+              } else {
+                item.classList.remove("show");
+                item.classList.add("hide");
+              }
+            });
+          }
+        });
+      </script>
+    <script>
+      var btns = document.getElementsByClassName("btns");
+      var slide = document.getElementById("slide");
+      btns[0].onclick = function () {
+        slide.style.transform = "translateX(0px)";
+        for (i = 0; i < 4; i++) {
+          btns[i].classList.remove("active");
+        }
+        btns[i].classList.add("active");
+      };
+      btns[1].onclick = function () {
+        slide.style.transform = "translateX(-800px)";
+        for (i = 0; i < 4; i++) {
+          btns[i].classList.remove("active");
+        }
+        btns[i].classList.add("active");
+      };
+      btns[2].onclick = function () {
+        slide.style.transform = "translateX(-1600px)";
+        for (i = 0; i < 4; i++) {
+          btns[i].classList.replace("active");
+        }
+        btns[i].classList.add("active");
+      };
+      btns[3].onclick = function () {
+        slide.style.transform = "translateX(-2400px)";
+        for (i = 0; i < 4; i++) {
+          btns[i].classList.replace("active");
+        }
+        btns[i].classList.add("active");
+      };
+    </script>
+<!-- Catgory dropdown -->
+<script>
+  const newdropdowns = document.querySelectorAll(".newdropdown");
+  newdropdowns.forEach((newdropdown) => {
+    const select = newdropdown.querySelector(".select");
+    const caret = newdropdown.querySelector(".caret");
+    const menu = newdropdown.querySelector(".menu");
+    const options = newdropdown.querySelector(".menu li");
+    const selected = newdropdown.querySelector(".selected");
+
+    select.addEventListener("click", () => {
+      select.classList.toggle("select-clicked");
+      caret.classList.toggle("caret-rotate");
+      menu.classList.toggle("menu-open");
+    });
+    options.forEach((option) => {
+      option.addEventListener("click", () => {
+        selected.innerText = option.innerText;
+        select.classList.remove("select-clicked");
+        caret.classList.remove("caret-rotate");
+        menu.classList.remove("menu-open");
+        options.forEach((option) => {
+          option.classList.remove("active");
+        });
+        option.classList.add("active");
+      });
+    });
+  });
+</script>
+    <!-- Scripts -->
+<script type="text/javascript" src="{% static 'dropdown.js' %}"></script>
+    <script type="text/javascript" src="{% static  'swiper.js' %}"></script>
+
+    <script type="text/javascript" src="{% static 'Filter.js' %}"></script>
+  </body>
+</html>

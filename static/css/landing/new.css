@@ -118,3 +118,9 @@ header {
 .subnav:hover .subnav-content {
   display: block;
 }
+#vertical-center {
+  position: absolute;
+  top: 5rem;
+  -ms-transform: translateY(-50%);
+  transform: translateX(50%);
+}

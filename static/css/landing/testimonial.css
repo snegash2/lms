@@ -39,7 +39,8 @@
   left: 30rem;
 }
 .user-img img {
-  height: 100%;
+  height: 79%;
+  margin-top: 3rem;
   border-radius: 10px;
   width: 70%;
 }
@@ -108,6 +109,9 @@
     width: 49%;
     margin-left: -16rem;
   } */
+  .indicator {
+    left: 63%;
+  }
   .container__test {
     margin-top: 6rem;
   }
@@ -141,9 +145,9 @@
   .user-img img {
     height: 25%;
     border-radius: 130px;
-    width: 26%;
+    width: 25%;
     margin-top: 0rem;
-    margin-left: 8rem;
+    margin-left: 6rem;
   }
   .user-text p {
     font-size: 16px;

@@ -245,7 +245,6 @@ REDIRECT_UNAUTHENTICATED_USER = '/signup/success/'
 
 
 
-
 SITE_ID = 1
 
 # Provider specific settings

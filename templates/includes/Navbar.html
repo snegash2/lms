@@ -17,59 +17,71 @@
           <a id="Links" class="Links" href="#">Home</a>
         </li>
         <li><a class="Links" href="#">About</a></li>
-        <li>
-          <a class="Links" href="#"
-            >Catgories <i class="fa fa-caret-down"></i>
-          </a>
-          <ul>
-            <li><a href="#">Neurology <i class="fa fa-caret-right"></i></a>
-              <ul class="Sub__dropdown">
-                <li><a id="Sub-lniks" href="#">CT scans</a></li>
-                <li><a id="Sub-lniks" href="#">MRIs</a></li>
-                <li><a id="Sub-lniks" href="#">x-rays</a></li>
-              </ul></li>
-            <li><a href="#">Hematology <i class="fa fa-caret-right"></i> </a>
-              <ul class="Sub__dropdown">
-                <li><a id="Sub-lniks" href="#">CT scans</a></li>
-                <li><a id="Sub-lniks" href="#">MRIs</a></li>
-                <li><a id="Sub-lniks" href="#">x-rays</a></li>
-              </ul>
-            </li>
-            <li><a href="#">Pathology <i class="fa fa-caret-right"></i></a>
-              <ul class="Sub__dropdown">
-                <li><a id="Sub-lniks" href="#">CT scans</a></li>
-                <li><a id="Sub-lniks" href="#">MRIs</a></li>
-                <li><a id="Sub-lniks" href="#">x-rays</a></li>
-              </ul>
-            </li>
+        <div class="dropdowns dropdown-3">
+          <li class="parents">
+            <a class="Linkss" href="#"
+              >Catgories <span> <i class="fa fa-caret-down"></i></span>
+            </a>
+            <ul class="dropdown dropdown-2">
+              <li class="parent">
+                <a href="#"
+                  >Hematology<span><i class="fa fa-caret-right"></i></span
+                ></a>
 
-            <li>
-              <a href="#">Radiology <i class="fa fa-caret-right"></i></a>
-              <ul class="Sub__dropdown">
-                <li><a id="Sub-lniks" href="#">CT scans</a></li>
-                <li><a id="Sub-lniks" href="#">MRIs</a></li>
-                <li><a id="Sub-lniks" href="#">x-rays</a></li>
-              </ul>
-            </li>
-          </ul>
-        </li>
+                <ul class="childs">
+                  <li><a id="Sub-lniks" href="#">CT scans</a></li>
+                  <li><a id="Sub-lniks" href="#">MRIs</a></li>
+                  <li><a id="Sub-lniks" href="#">x-rays</a></li>
+                </ul>
+              </li>
+              <li class="parent">
+                <a href="#"
+                  >Radiology<span><i class="fa fa-caret-right"></i></span
+                ></a>
+
+                <ul class="childs">
+                  <li><a id="Sub-lniks" href="#">CT scans</a></li>
+                  <li><a id="Sub-lniks" href="#">MRIs</a></li>
+                  <li><a id="Sub-lniks" href="#">x-rays</a></li>
+                </ul>
+              </li>
+              <li class="parent">
+                <a href="#"
+                  >Neurology<span><i class="fa fa-caret-right"></i></span
+                ></a>
+
+                <ul class="childs">
+                  <li><a id="Sub-lniks" href="#">CT scans</a></li>
+                  <li><a id="Sub-lniks" href="#">MRIs</a></li>
+                  <li><a id="Sub-lniks" href="#">x-rays</a></li>
+                </ul>
+              </li>
+              <li class="parent">
+                <a href="#"
+                  >Pathology<span><i class="fa fa-caret-right"></i></span
+                ></a>
+
+                <ul class="childs">
+                  <li><a id="Sub-lniks" href="#">CT scans</a></li>
+                  <li><a id="Sub-lniks" href="#">MRIs</a></li>
+                  <li><a id="Sub-lniks" href="#">x-rays</a></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </div>
         <div class="All__Btn">
-
-          {% if not request.user.is_authenticated %}
+          <!--  -->
           <li>
-            <div class="Sign">
-              <a   href="{%url 'account_login'%}" ><h6>Log in</h6></a>
-            </div>
+            <button class="Sign">
+              <a href="#"><h6>Sign In</h6></a>
+            </button>
           </li>
-
-          {% else %}
           <li>
-            <div class="Sign">
-              <a     href="{%url 'account_logout'%}"  ><h6>Logout</h6></a>
-            </div>
+            <button class="Sign">
+              <a href="#"><h6>SignUp</h6></a>
+            </button>
           </li>
-
-          {% endif %}
         </div>
       </ul>
     </div>

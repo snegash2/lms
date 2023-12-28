@@ -24,6 +24,7 @@
   width: 7rem;
   display: block;
   padding: 6rem;
+  margin-top: -11px;
 }
 
 .navbar-menu ul {
@@ -75,6 +76,9 @@ li .Links {
 }
 /* Hamburger styles */
 @media screen and (max-width: 700px) {
+  header .navbar ul li ul:hover {
+    margin-top: 0rem;
+  }
   .Sub__dropdown .navbar-menu ul li {
     margin-left: 0px;
   }
@@ -182,9 +186,13 @@ header .navbar ul li {
   position: relative;
   float: left;
 }
+li.parents {
+  padding: 0rem;
+}
 header .navbar ul li a {
   /* font-size: 20px;
   padding: 20px; */
+  background-color: transparent;
   display: block;
   padding-inline: 0rem;
   text-decoration: none;
@@ -221,6 +229,15 @@ header .navbar ul li .Links:hover {
   padding-bottom: 25px;
   /* padding-left: 15px; */
 }
+header .navbar ul li .Linkss:hover {
+  /* padding: 10px 20px; */
+  /* padding: 35px 25px 45px 25px; */
+
+  padding-top: 15px;
+  /* padding-right: 15px; */
+  padding-bottom: 36px;
+  /* padding-left: 15px; */
+}
 header .navbar ul li a:hover {
   /* background-color: rgb(240, 240, 232); */
   /* margin-left: -1.1rem; */
@@ -233,20 +250,25 @@ header .navbar ul li ul {
   left: 0;
   width: 165px;
   background-color: rgb(243, 243, 243);
+  /* background-color: red; */
   display: block;
   z-index: 15;
   display: none;
 }
+
 .fa-caret-right:before {
   content: "\f0da";
   padding-left: 9px;
+  font-size: 18px;
 }
+
 header .navbar ul li ul li {
   width: 100%;
 }
 header .navbar ul li ul li ul {
   left: 150px;
   top: 0;
+  /* background-color: yellow; */
 }
 header .navbar ul li:focus-within > ul,
 header .navbar ul li:hover > ul {
@@ -266,6 +288,9 @@ header .navbar ul li:hover > ul {
   .navbar-menu ul li {
     margin-left: 16px;
     padding-left: 1rem;
+  }
+  .parents .Links {
+    margin-left: -1rem;
   }
   /* header .navbar {
           position: absolute;
@@ -289,3 +314,11 @@ header .navbar ul li:hover > ul {
     left: -32;
   }
 }
+/* @media only screen and (min-width: 992px) {
+  header .navbar ul li ul:hover {
+    margin-top: 9rem;
+  }
+} */
+/* #New__icons &:hover {
+  transform: rotate(1080deg);
+} */

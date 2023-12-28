@@ -21,27 +21,37 @@
           rel="stylesheet"
         />
     
-       
+      
        
         <link rel="stylesheet"  type="text/css" href="{% static 'index.css' %}" />
         <link rel="stylesheet"  type="text/css" href="{% static 'testimonial.css' %}" />
         <link rel="stylesheet"  type="text/css" href="{% static 'LandingContact.css' %}" />
         <link rel="stylesheet"  type="text/css" href="{% static 'footer.css' %}" />
         <link rel="stylesheet"  type="text/css" href="{% static 'newmenu.css' %}">
+
+
+
+        <link rel="stylesheet" href="{% static 'courses.css' %}" />
+        <link rel="stylesheet" href="{% static 'news.css' %}" />
+        <link rel="stylesheet" href="{% static 'dropdown.css' %}" />
+        <link rel="stylesheet" href="{% static 'newdrop.css' %}" />
+
+
+
         <link
-          rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"
-        />
-        <link
-          rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-        />
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"
+      />
+      <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+      />
     
 </head>
 
 <body>
-    {% include "includes/Navbar.html"%}
-    <div class="mx-auto max-w-screen-xl w-full h-full">
+   
+    <div>
         <!-- class="mx-auto max-w-screen-xl w-full h-full"> -->
         {% if messages %}
         <ul class="messages">
