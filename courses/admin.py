@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import  Course, Module
+from .models import  Course, Module,SubCategory
 from django.contrib import admin
 from .models import File
 from .models import Category,CourseName
@@ -17,8 +17,15 @@ from .models import Category,CourseName
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ['title', 'slug']
-    prepopulated_fields = {'slug': ('title',)}
+    list_display = ['category', 'slug']
+    prepopulated_fields = {'slug': ('category',)}
+
+
+@admin.register(SubCategory)
+class SubCategory(admin.ModelAdmin):
+    list_display = "name",
+
+    
     
 
 

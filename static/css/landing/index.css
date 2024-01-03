@@ -630,6 +630,7 @@ body {
   .row {
     display: flex;
     flex-wrap: wrap;
+    flex-direction: row;
   }
   div.gallery-item.watch {
     width: calc(100% / 3);

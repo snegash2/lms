@@ -11,22 +11,53 @@ from django.utils.text import slugify
 from django.contrib.auth import get_user_model
 from django.conf import settings
 # from django.contrib.auth.models import User
+import re
 
 
 User = get_user_model()
-class Category(models.Model):
-    title = models.CharField(max_length=200)
-    slug = models.SlugField(max_length=200, unique=True)
-    
+
+
     
 
+class Category(models.Model):
+
+    category = models.CharField(
+        verbose_name=_("Category"),
+        max_length=250, blank=True,
+        unique=True, null=True)
+    sub_categories = models.ManyToManyField("SubCategory")
+    slug = models.SlugField()
+
+    # objects = CategoryManager()
 
     class Meta:
-        ordering = ['title']
-        verbose_name = "Category"
+        verbose_name = _("Category")
+        verbose_name_plural = _("Categories")
 
     def __str__(self):
-        return self.title
+        return f"{self.category}"
+
+
+
+
+
+
+class SubCategory(models.Model):
+
+    name = models.CharField(
+        verbose_name=_("Sub-Category"),
+        max_length=250, blank=True, null=True)
+
+
+    # objects = CategoryManager()
+
+    class Meta:
+        verbose_name = _("Sub-Category")
+        verbose_name_plural = _("Sub-Categories")
+
+    def __str__(self):
+        return f"{self.name}" # + " (" + self.category.category + ")"
+
 
 
 class CourseName(models.Model):
@@ -56,12 +87,21 @@ class Course(models.Model):
                                 verbose_name='Name',
                                 related_name='names',
                                 on_delete=models.CASCADE,
+                                null = True)
+    
+
+    sub_category = models.ForeignKey(SubCategory,
+                                verbose_name='Sub Category',
+                                related_name='categories',
+                                on_delete=models.CASCADE,
                                 default=None)
+
 
     
 
     
     slug = models.SlugField(max_length=200, unique=True)
+
     overview = RichTextUploadingField()
     created = models.DateTimeField(auto_now_add=True)
     students = models.ManyToManyField(User,related_name='courses_joined',blank=True)
@@ -78,6 +118,10 @@ class Course(models.Model):
 
     def __str__(self):
         return f"{self.course_name}"
+    
+    @property
+    def detail(self):
+        return f"{self.overview[3:40]} ..."
 
 
     

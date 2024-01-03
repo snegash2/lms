@@ -14,7 +14,7 @@ from .models import Course, Module, Content
 from django.db.models import Count
 from .models import Category
 from django.views.generic.detail import DetailView
-from django.shortcuts import render,get_object_or_404
+from django.shortcuts import render,get_object_or_404,HttpResponse
 from django.contrib.auth.models import Group,User
 from crendential.models import Crendential
 
@@ -266,3 +266,17 @@ def view_egiliable_detail(request,id):
         'user':user
     }
     return render(request,'courses/course/egiliablity_detail.html',context)
+
+def course_filter(request,category,subcategory):
+    print("Category filter selected ",category,subcategory)
+    courses = Course.objects.filter(published = True).filter(sub_category__name__icontains = subcategory)
+    categories = Category.objects.all()
+
+
+    context = {
+        'courses':courses,
+        'categories':categories
+    }
+    
+    return render(request, 'landing/index.html',context)
+

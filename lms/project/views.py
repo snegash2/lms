@@ -6,7 +6,8 @@ from django.dispatch import Signal
 
 
 def index(request):
-    return render(request, 'index.html')
+    courses = 5
+    return render(request, 'index.html',{courses:courses})
 
 
 

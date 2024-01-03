@@ -18,6 +18,7 @@ urlpatterns = [
         path('<slug:slug>/',views.CourseDetailView.as_view(),name='course_detail'),
         path('eligibility/<id>/',views.verify_egiliable_student,name='egiliablity'),
         path('eligibility_view/<id>/',views.view_egiliable_detail,name='egiliablity_view'),
+        path('<category>/<subcategory>/',views.course_filter,name='course_filter'),
       
      
 ]
