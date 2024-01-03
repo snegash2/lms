@@ -1,35 +1,885 @@
 {% extends "_base.html" %}
+{% load static %}
+
+{% block style %} 
+    
+
+
+    <link rel="stylesheet" href="{% static 'cstyles.css' %}" />
+    <link rel="stylesheet" href="{% static 'cstyless.css' %}" />
+    <link rel="stylesheet" href="{% static 'cstudentindex.css' %}" />
+
+    <link rel="stylesheet" href="{% static 'footer.css' %}" />
+    <link rel="stylesheet" href="{% static 'studentnewmenu.css' %}" />
+    <link rel="stylesheet" href="{% static 'note.css' %}" />
+    <link rel="stylesheet" href="{% static 'newplaylist.css' %}" />
+    <link rel="stylesheet" href="{% static 'video.css' %}" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"> -->
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+
+
+{%endblock %}
 {% block title %}
 {{ object.title }}
 {% endblock %}
 {% block content %}
+    {% include 'includes/Navbar.html' %}
     {% with category=object.course_name.category  %}
-        <h1>{{ object.name }}</h1>
-        <div>
-            <h2>overview</h2>
 
-            <p>
-                <a href="{% url 'courses:course_list_category' category.slug %}">
-                {{ category.title }}</a>.
-                {{ object.modules.count }} modules.
-                Instructor: {{ object.teacher.get_full_name }}
-                </p>
-                {{ object.overview|safe|linebreaks }}
-                {% if request.user.is_authenticated %}
-                <form action="{% url "student_enroll_course" %}" method="post">
-                {{ enroll_form }}
-                {% csrf_token %}
-                <input type="submit" value="Enroll now">
-                </form>
-                {% else %}
-                <a href="{% url "account_login" %}" class="button">
-                Login to enroll
-                </a>
-                {% endif %}
+    <script>
+      // ====================================================click drop down icon anywhere==========================
 
+      const dropdown = document.querySelector(".dropdown");
 
-             
+      document.addEventListener("click", (event) => {
+        // Close the dropdown if clicked outside the dropdown
+        if (!dropdown.contains(event.target)) {
+          closeDropdown();
+        }
+      });
+
+      dropdown
+        .querySelector(".dropdown-toggle")
+        .addEventListener("click", (event) => {
+          event.stopPropagation(); // Prevent the document listener from triggering
+          toggleDropdown();
+        });
+
+      function toggleDropdown() {
+        dropdown.classList.toggle("show");
+      }
+
+      function closeDropdown() {
+        dropdown.classList.remove("show");
+      }
+    </script>
+    <div class="dashboard-container">
+      <div id="left" class="course">
+        <h2>Biomedical Science</h2>
+        <!-- ====================================Introduction One============================================ -->
+        <div class="accordion">
+          <div id="module-one" class="accordion-item">
+            <div class="accordion-header">
+              <!-- <i class="fas fa-angle-right"></i> -->
+              <img src="{% static 'files.png' %}" /> Module:1 Introductions
+              <i class="fas fa-angle-right"></i>
+            </div>
+            <div class="accordion-content">
+              <p></p>
+              <div class="sub-accordion">
+                <div class="sub-accordion-item">
+                  <!-- <div id="sub-accordion-header" class="sub-accordion-header">
+                    <img src="./assets/newfile.png" />Resources
+                    <i id="Sub-video" class="fas fa-angle-right"></i>
+                  </div> -->
+                  <div class="sub-accordion-content"></div>
+                </div>
+
+                <div class="sub-accordion-item">
+                  <div id="sub-accordion-header" class="sub-accordion-header">
+                    <img src="{% static 'video-icons.png' %}" />Video<i
+                      id="Sub-video"
+                      class="fas fa-angle-right"
+                    ></i>
+                  </div>
+
+                  <div class="sub-accordion-content">
+                    <div class="video-list">
+                      <a href="#Display">
+                        <div class="vid">
+                          <video src="{% static 'videoplayback.mp4' %}" muted></video>
+                          <h3 class="title">02. Radiology</h3>
+
+                          <div class="Video-sub-container">
+                            <input class="Check-icons" type="checkbox" />
+                            <div></div>
+
+                            <h4>1:36</h4>
+                          </div>
+                        </div>
+                      </a>
+
+                      <a href="#Display">
+                        <div class="vid">
+                          <video src="{% static 'videoplayback.mp4' %}" muted></video>
+                          <h3 class="title">04. Genetics</h3>
+
+                          <div class="Video-sub-container">
+                            <input class="Check-icons" type="checkbox" />
+                            <div></div>
+
+                            <h4>1:36</h4>
+                          </div>
+                        </div>
+                      </a>
+                      <a href="#Display">
+                        <div class="vid">
+                          <video src="{% static 'videoplayback.mp4' %}" muted></video>
+                          <h3 class="title">05. immunology</h3>
+
+                          <div class="Video-sub-container">
+                            <input class="Check-icons" type="checkbox" />
+                            <div></div>
+
+                            <h4>1:36</h4>
+                          </div>
+                        </div>
+                      </a>
+                      <a href="#Display">
+                        <div class="vid">
+                          <video src="{% static 'videoplayback.mp4' %}" muted></video>
+                          <h3 class="title">06. Biochemistry</h3>
+
+                          <div class="Video-sub-container">
+                            <input class="Check-icons" type="checkbox" />
+                            <div></div>
+
+                            <h4>1:36</h4>
+                          </div>
+                        </div>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="sub-accordion-item">
+                  <div class="sub-accordion-header">
+                    <img src="{% static 'referance-icons.png' %}" /> Reference<i
+                      id="Ref-icons"
+                      id="Ref-icons"
+                      class="fas fa-angle-right"
+                    ></i>
+                  </div>
+                  <div class="sub-accordion-content">
+                    <li>Book Name</li>
+                    <li>Book Name</li>
+                    <li>Book Name</li>
+                  </div>
+                </div>
+                <!-- Add more sub-accordion items here as needed -->
+              </div>
+            </div>
+          </div>
         </div>
+        <!-- ====================================Genetics============================================ -->
+        <div class="accordion">
+          <div id="module-one" class="accordion-item">
+            <div class="accordion-header">
+              <!-- <i class="fas fa-angle-right"></i> -->
+              <img src="{% static 'files.png' %}" /> Module:2 Genetics
+              <i class="fas fa-angle-right"></i>
+            </div>
+            <div class="accordion-content">
+              <p></p>
+              <div class="sub-accordion">
+                <div class="sub-accordion-item">
+                  <!-- <div id="sub-accordion-header" class="sub-accordion-header">
+                    <img src="./assets/newfile.png" />Resources
+                    <i id="Sub-video" class="fas fa-angle-right"></i>
+                  </div> -->
+                  <div class="sub-accordion-content"></div>
+                </div>
 
-    {% endwith %}
+                <div class="sub-accordion-item">
+                  <div id="sub-accordion-header" class="sub-accordion-header">
+                    <img src="{% static 'video-icons.png' %}" />Video<i
+                      id="Sub-video"
+                      class="fas fa-angle-right"
+                    ></i>
+                  </div>
+
+                  <div class="sub-accordion-content">
+                    <div class="video-list">
+                      <a href="#Display">
+                        <div class="vid">
+                          <video src="{% static 'videoplayback.mp4' %}" muted></video>
+                          <h3 class="title">02. Radiology</h3>
+
+                          <div class="Video-sub-container">
+                            <input class="Check-icons" type="checkbox" />
+                            <div></div>
+
+                            <h4>1:36</h4>
+                          </div>
+                        </div>
+                      </a>
+
+                      <a href="#Display">
+                        <div class="vid">
+                          <video src="{% static 'videoplayback.mp4' %}" muted></video>
+                          <h3 class="title">04. Genetics</h3>
+
+                          <div class="Video-sub-container">
+                            <input class="Check-icons" type="checkbox" />
+                            <div></div>
+
+                            <h4>1:36</h4>
+                          </div>
+                        </div>
+                      </a>
+                      <a href="#Display">
+                        <div class="vid">
+                          <video src="{% static 'videoplayback.mp4' %}" muted></video>
+                          <h3 class="title">05. immunology</h3>
+
+                          <div class="Video-sub-container">
+                            <input class="Check-icons" type="checkbox" />
+                            <div></div>
+
+                            <h4>1:36</h4>
+                          </div>
+                        </div>
+                      </a>
+                      <a href="#Display">
+                        <div class="vid">
+                          <video src="{% static 'videoplayback.mp4' %}" muted></video>
+                          <h3 class="title">06. Biochemistry</h3>
+
+                          <div class="Video-sub-container">
+                            <input class="Check-icons" type="checkbox" />
+                            <div></div>
+
+                            <h4>1:36</h4>
+                          </div>
+                        </div>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="sub-accordion-item">
+                  <div class="sub-accordion-header">
+                    <img src="{% static 'referance-icons.png' %}" /> Reference<i
+                      id="Ref-icons"
+                      id="Ref-icons"
+                      class="fas fa-angle-right"
+                    ></i>
+                  </div>
+                  <div class="sub-accordion-content">
+                    <li>Book Name</li>
+                    <li>Book Name</li>
+                    <li>Book Name</li>
+                  </div>
+                </div>
+                <!-- Add more sub-accordion items here as needed -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- ====================================Pharmacology============================================ -->
+        <div class="accordion">
+          <div id="module-one" class="accordion-item">
+            <div class="accordion-header">
+              <!-- <i class="fas fa-angle-right"></i> -->
+              <img src="{% static 'files.png'%}" /> Module:3 Pharmacology
+              <i class="fas fa-angle-right"></i>
+            </div>
+            <div class="accordion-content">
+              <p></p>
+              <div class="sub-accordion">
+                <div class="sub-accordion-item">
+                  <!-- <div id="sub-accordion-header" class="sub-accordion-header">
+                    <img src="./assets/newfile.png" />Resources
+                    <i id="Sub-video" class="fas fa-angle-right"></i>
+                  </div> -->
+                  <div class="sub-accordion-content"></div>
+                </div>
+
+                <div class="sub-accordion-item">
+                  <div id="sub-accordion-header" class="sub-accordion-header">
+                    <img src="{% static 'video-icons.png' %}" />Video<i
+                      id="Sub-video"
+                      class="fas fa-angle-right"
+                    ></i>
+                  </div>
+
+                  <div class="sub-accordion-content">
+                    <div class="video-list">
+                      <a href="#Display">
+                        <div class="vid">
+                          <video src="{% static 'videoplayback.mp4' %}" muted></video>
+                          <h3 class="title">02. Radiology</h3>
+
+                          <div class="Video-sub-container">
+                            <input class="Check-icons" type="checkbox" />
+                            <div></div>
+
+                            <h4>1:36</h4>
+                          </div>
+                        </div>
+                      </a>
+
+                      <a href="#Display">
+                        <div class="vid">
+                          <video src="{% static 'videoplayback.mp4' %}" muted></video>
+                          <h3 class="title">04. Genetics</h3>
+
+                          <div class="Video-sub-container">
+                            <input class="Check-icons" type="checkbox" />
+                            <div></div>
+
+                            <h4>1:36</h4>
+                          </div>
+                        </div>
+                      </a>
+                      <a href="#Display">
+                        <div class="vid">
+                          <video src="{% static 'videoplayback.mp4' %}" muted></video>
+                          <h3 class="title">05. immunology</h3>
+
+                          <div class="Video-sub-container">
+                            <input class="Check-icons" type="checkbox" />
+                            <div></div>
+
+                            <h4>1:36</h4>
+                          </div>
+                        </div>
+                      </a>
+                      <a href="#Display">
+                        <div class="vid">
+                          <video src="{% static 'videoplayback.mp4' %}" muted></video>
+                          <h3 class="title">06. Biochemistry</h3>
+
+                          <div class="Video-sub-container">
+                            <input class="Check-icons" type="checkbox" />
+                            <div></div>
+
+                            <h4>1:36</h4>
+                          </div>
+                        </div>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="sub-accordion-item">
+                  <div class="sub-accordion-header">
+                    <img src="{% static 'referance-icons.png' %}" /> Reference<i
+                      id="Ref-icons"
+                      id="Ref-icons"
+                      class="fas fa-angle-right"
+                    ></i>
+                  </div>
+                  <div class="sub-accordion-content">
+                    <li>Book Name</li>
+                    <li>Book Name</li>
+                    <li>Book Name</li>
+                  </div>
+                </div>
+                <!-- Add more sub-accordion items here as needed -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- ====================================immunology============================================ -->
+        <div class="accordion">
+          <div id="module-one" class="accordion-item">
+            <div class="accordion-header">
+              <!-- <i class="fas fa-angle-right"></i> -->
+              <img src="{% static 'files.png' %}" /> Module:4 immunology
+              <i class="fas fa-angle-right"></i>
+            </div>
+            <div class="accordion-content">
+              <p></p>
+              <div class="sub-accordion">
+                <div class="sub-accordion-item">
+                  <!-- <div id="sub-accordion-header" class="sub-accordion-header">
+                    <img src="./assets/newfile.png" />Resources
+                    <i id="Sub-video" class="fas fa-angle-right"></i>
+                  </div> -->
+                  <div class="sub-accordion-content"></div>
+                </div>
+
+                <div class="sub-accordion-item">
+                  <div id="sub-accordion-header" class="sub-accordion-header">
+                    <img src="{% static 'video-icons.png' %}" />Video<i
+                      id="Sub-video"
+                      class="fas fa-angle-right"
+                    ></i>
+                  </div>
+
+                  <div class="sub-accordion-content">
+                    <div class="video-list">
+                      <a href="#Display">
+                        <div class="vid">
+                          <video src="{% static 'videoplayback.mp4' %}" muted></video>
+                          <h3 class="title">02. Radiology</h3>
+
+                          <div class="Video-sub-container">
+                            <input class="Check-icons" type="checkbox" />
+                            <div></div>
+
+                            <h4>1:36</h4>
+                          </div>
+                        </div>
+                      </a>
+
+                      <a href="#Display">
+                        <div class="vid">
+                          <video src="{% static 'videoplayback.mp4' %}" muted></video>
+                          <h3 class="title">04. Genetics</h3>
+
+                          <div class="Video-sub-container">
+                            <input class="Check-icons" type="checkbox" />
+                            <div></div>
+
+                            <h4>1:36</h4>
+                          </div>
+                        </div>
+                      </a>
+                      <a href="#Display">
+                        <div class="vid">
+                          <video src="{% static 'videoplayback.mp4' %}" muted></video>
+                          <h3 class="title">05. immunology</h3>
+
+                          <div class="Video-sub-container">
+                            <input class="Check-icons" type="checkbox" />
+                            <div></div>
+
+                            <h4>1:36</h4>
+                          </div>
+                        </div>
+                      </a>
+                      <a href="#Display">
+                        <div class="vid">
+                          <video src="{% static 'videoplayback.mp4' %}" muted></video>
+                          <h3 class="title">06. Biochemistry</h3>
+
+                          <div class="Video-sub-container">
+                            <input class="Check-icons" type="checkbox" />
+                            <div></div>
+
+                            <h4>1:36</h4>
+                          </div>
+                        </div>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="sub-accordion-item">
+                  <div class="sub-accordion-header">
+                    <img src="./assets/referance-icons.png" /> Reference<i
+                      id="Ref-icons"
+                      id="Ref-icons"
+                      class="fas fa-angle-right"
+                    ></i>
+                  </div>
+                  <div class="sub-accordion-content">
+                    <li>Book Name</li>
+                    <li>Book Name</li>
+                    <li>Book Name</li>
+                  </div>
+                </div>
+                <!-- Add more sub-accordion items here as needed -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--  -------------------------------Accordion Js------------------------------------->
+        <script>
+          const accordions = document.querySelectorAll(
+            ".accordion .accordion-item .accordion-header"
+          );
+          accordions.forEach((accordion) => {
+            accordion.addEventListener("click", function () {
+              const content = this.nextElementSibling;
+              const icon = this.querySelector("i");
+              content.style.display =
+                content.style.display === "block" ? "none" : "block";
+
+              // Change the icon
+              if (content.style.display === "block") {
+                icon.classList.remove("fa-angle-right");
+                icon.classList.add("fa-angle-down");
+              } else {
+                icon.classList.remove("fa-angle-down");
+                icon.classList.add("fa-angle-right");
+              }
+
+              // Close other open accordions
+              accordions.forEach((otherAccordion) => {
+                if (otherAccordion !== accordion) {
+                  otherAccordion.nextElementSibling.style.display = "none";
+                  const otherIcon = otherAccordion.querySelector("i");
+                  otherIcon.classList.remove("fa-angle-down");
+                  otherIcon.classList.add("fa-angle-right");
+                }
+              });
+            });
+          });
+
+          const subAccordions = document.querySelectorAll(
+            ".sub-accordion .sub-accordion-item .sub-accordion-header"
+          );
+          subAccordions.forEach((subAccordion) => {
+            subAccordion.addEventListener("click", function () {
+              const content = this.nextElementSibling;
+              const icon = this.querySelector("i");
+              content.style.display =
+                content.style.display === "block" ? "none" : "block";
+
+              // Change the icon
+              if (content.style.display === "block") {
+                icon.classList.remove("fa-angle-right");
+                icon.classList.add("fa-angle-down");
+              } else {
+                icon.classList.remove("fa-angle-down");
+                icon.classList.add("fa-angle-right");
+              }
+
+              // Close other open sub-accordions
+              subAccordions.forEach((otherSubAccordion) => {
+                if (otherSubAccordion !== subAccordion) {
+                  otherSubAccordion.nextElementSibling.style.display = "none";
+                  const otherIcon = otherSubAccordion.querySelector("i");
+                  otherIcon.classList.remove("fa-angle-down");
+                  otherIcon.classList.add("fa-angle-right");
+                }
+              });
+            });
+          });
+        </script>
+        <!-- ==========================================Attach File====================================== -->
+        <div id="left" class="attach">
+          <div id="Attach" class="container">
+            <h1>Attach File</h1>
+            <form id="fileForm">
+              <label for="fileInput">Select a file:</label>
+              <input type="file" id="fileInput" name="fileInput" />
+
+              <button class="Upload__btns">Upload</button>
+            </form>
+            <div id="selectedFile"></div>
+          </div>
+        </div>
+      </div>
+      <!-- ============================================== -->
+
+      <div id="right" class="course-overview">
+        <h2>Course Overview</h2>
+        <div class="course-list">
+          <!-- Course 1 -->
+          <div class="course">
+            <h3 class="course-header">Course 1</h3>
+            <div id="Display" class="video">
+              <div class="main-video">
+                <div class="video">
+                  <video
+                    src="./video//videoplayback.mp4"
+                    controls
+                    muted
+                    autoplay
+                  ></video>
+
+                  <h3 class="title">01.Biomedical</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="right" class="discription">
+          <div id="filters" class="filter-buttons">
+            <button class="filter-button active" data-filter="button1">
+              Overview
+            </button>
+            <button class="filter-button" data-filter="button2">
+              Learning tools
+            </button>
+            <button class="filter-button" data-filter="button3">
+              Upcoming tasks
+            </button>
+            <button class="filter-button" data-filter="button4">
+              Discussion form
+            </button>
+            <button class="filter-button" data-filter="button5">Note</button>
+          </div>
+          <div class="items">
+            <div class="item button1">
+              <h4>About course</h4>
+              <p>
+                Medical studies are academic programs that prepare individuals
+                to become healthcare professionals, providing them with the
+                knowledge and skills necessary to diagnose, treat, and prevent
+                illnesses and injuries. These courses are comprehensive and
+                rigorous, combining theoretical knowledge with practical
+                training, and they are typically pursued at medical schools,
+                universities, and other healthcare institutions
+              </p>
+              <ul>
+                <li>Skill level: Beginner Level</li>
+                <li>Students: 32157</li>
+                <li>Languages: English</li>
+                <li>Lectures: 10</li>
+                <li>Video: 1 total hour</li>
+              </ul>
+            </div>
+            <div class="item button2">
+              <div id="pdf-list">
+                <h1>Pdf Files</h1>
+                <ul id="dynamic-list"></ul>
+              </div>
+
+              <script>
+                const pdfs = [
+                  { name: "Modeule 1", url: "pdf/certficate.pdf" },
+                  { name: "Modeule 2", url: "pdf/certficate.pdf" },
+                  { name: "Modeule 3", url: "pdf/certficate.pdf" },
+                ];
+
+                const dynamicList = document.getElementById("dynamic-list");
+
+                pdfs.forEach((pdf) => {
+                  const li = document.createElement("li");
+                  const icon = document.createElement("img");
+                  icon.src = "assets/pfds.jpg"; // Replace with the path to your PDF icon image
+                  icon.className = "pdf-icon";
+                  const link = document.createElement("a");
+                  link.href = pdf.url;
+                  link.textContent = pdf.name;
+                  link.target = "_blank"; // Open the PDF in a new tab
+
+                  li.appendChild(icon);
+                  li.appendChild(link);
+                  dynamicList.appendChild(li);
+                });
+              </script>
+            </div>
+            <div class="item button3">
+              <ul>
+                <h4>Module:7</h4>
+                <p>Medical Imaging and Diagnostics</p>
+
+                <li>
+                  Task: Prepare case-based assessments using medical imaging
+                  data.
+                </li>
+                <li>
+                  Description: Compile actual medical images (X-rays, MRI scans,
+                  etc.)
+                </li>
+
+                <h4>Module:8</h4>
+                <p>Research Methods in Medicine</p>
+
+                <li>
+                  Task: Design a group project on conducting medical research..
+                </li>
+                <li>
+                  Description: Compile actual medical images (X-rays, MRI scans,
+                  etc.)
+                </li>
+                <h4>Module:9</h4>
+                <p>Patient Communication and Cultural Competency</p>
+
+                <li>
+                  Task: Prepare case-based assessments using medical imaging
+                  data.
+                </li>
+                <li>
+                  Description: Compile actual medical images (X-rays, MRI scans,
+                  etc.)
+                </li>
+              </ul>
+            </div>
+            <div class="item button4">
+              <div class="qna-container">
+                <!-- <h1>Discussion form</h1> -->
+                <div class="qna-form">
+                  <h3 class="ask-header">Ask a Question</h3>
+                  <textarea
+                    id="question-title"
+                    placeholder="Question Title"
+                  ></textarea>
+                  <textarea
+                    class="First-text"
+                    id="question-content"
+                    placeholder="Question Content"
+                  ></textarea>
+                  <button id="ask-button">Ask</button>
+                </div>
+                <div class="qna-list" id="qna-list"></div>
+              </div>
+            </div>
+            <div class="item button5">
+              <div class="note-container container my-3">
+                <div class="">
+                  <div class="card-body">
+                    <h5 class="card-title">Add a Note</h5>
+                    <div class="form-group">
+                      <textarea class="form-control" id="addTxt" rows="3">
+                      </textarea>
+                    </div>
+                    <button class="" id="addBtn">Add Note</button>
+                  </div>
+                </div>
+                <h1>Your Notes List</h1>
+
+                <div id="notes" class="row container-fluid"></div>
+              </div>
+
+              <script>
+                showNotes();
+
+                // If user adds a note, add it to the localStorage
+                let addBtn = document.getElementById("addBtn");
+                addBtn.addEventListener("click", function (e) {
+                  let addTxt = document.getElementById("addTxt");
+                  let notes = localStorage.getItem("notes");
+
+                  if (notes == null) notesObj = [];
+                  else notesObj = JSON.parse(notes);
+
+                  notesObj.push(addTxt.value);
+                  localStorage.setItem("notes", JSON.stringify(notesObj));
+                  addTxt.value = "";
+
+                  showNotes();
+                });
+
+                // Function to show elements from localStorage
+                function showNotes() {
+                  let notes = localStorage.getItem("notes");
+
+                  if (notes == null) notesObj = [];
+                  else notesObj = JSON.parse(notes);
+
+                  let html = "";
+
+                  notesObj.forEach(function (element, index) {
+                    html += `<div class="noteCard my-2 mx-2 card" 
+                          style="">
+                              <div class="card-body">
+                                  <h5 class="card-title">
+                                      Note ${index + 1}
+                                  </h5>
+                                  <p class="card-text"> 
+                                      ${element}
+                                  </p>
+                 
+                                <button id="${index}" onclick=
+                                  "deleteNote(this.id)"
+                                  class="btn btn-primary">
+                                  Delete Note
+                              </button>
+                          </div>
+                      </div>`;
+                  });
+
+                  let notesElm = document.getElementById("notes");
+
+                  if (notesObj.length != 0) notesElm.innerHTML = html;
+                  else notesElm.innerHTML = ``;
+                }
+
+                // Function to delete a note
+                function deleteNote(index) {
+                  let notes = localStorage.getItem("notes");
+
+                  if (notes == null) notesObj = [];
+                  else notesObj = JSON.parse(notes);
+
+                  notesObj.splice(index, 1);
+
+                  localStorage.setItem("notes", JSON.stringify(notesObj));
+
+                  showNotes();
+                }
+              </script>
+            </div>
+            <script>
+              // ===================================================disscution form============================
+              const askButton = document.getElementById("ask-button");
+              const questionTitleInput =
+                document.getElementById("question-title");
+              const questionContentInput =
+                document.getElementById("question-content");
+              const qnaList = document.getElementById("qna-list");
+
+              askButton.addEventListener("click", () => {
+                const title = questionTitleInput.value;
+                const content = questionContentInput.value;
+
+                if (title && content) {
+                  createQnaPair(title, content);
+                  questionTitleInput.value = "";
+                  questionContentInput.value = "";
+                }
+              });
+
+              function createQnaPair(question, answer) {
+                const qnaDiv = document.createElement("div");
+                qnaDiv.classList.add("qna-list");
+                qnaDiv.innerHTML = `
+        <h2>Q: ${question}</h2>
+        <p>A: ${answer}</p>
+      `;
+                qnaList.appendChild(qnaDiv);
+              }
+            </script>
+            <script>
+              const filterButtons = document.querySelectorAll(".filter-button");
+              const items = document.querySelectorAll(".item");
+
+              filterButtons.forEach((button) => {
+                button.addEventListener("click", () => {
+                  filterButtons.forEach((btn) =>
+                    btn.classList.remove("active")
+                  );
+                  button.classList.add("active");
+                  const filter = button.getAttribute("data-filter");
+                  items.forEach((item) => item.classList.remove("active"));
+                  document
+                    .querySelectorAll(`.${filter}`)
+                    .forEach((item) => item.classList.add("active"));
+                });
+              });
+
+              // Show the default button and items
+              document
+                .querySelector('.filter-button[data-filter="button1"]')
+                .click();
+            </script>
+            <script src="script.js"></script>
+          </div>
+        </div>
+      </div>
+    </div>
+   
+    <script src="./video.js"></script>
+    <script>
+      let listVideo = document.querySelectorAll(".video-list .vid");
+      let mainVideo = document.querySelector(".main-video video");
+      let title = document.querySelector(".main-video .title");
+      listVideo.forEach((video) => {
+        video.onclick = () => {
+          listVideo.forEach((vid) => vid.classList.remove("active"));
+          video.classList.add("active");
+          if (video.classList.contains("active")) {
+            let src = video.children[0].getAttribute("src");
+            mainVideo.src = src;
+            let text = video.children[1].innerHTML;
+            title.innerHTML = text;
+          }
+        };
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+  {% endwith %}
 {% endblock %}

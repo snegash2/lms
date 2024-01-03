@@ -17,8 +17,10 @@
               <input type="submit" value="Enroll now" class="First">
             </form>
             {% else %}
-            <a href="{% url "account_login" %}" class="First">
+            <a href="{% url "account_login" %}">
+            <button class="First">
             Login to enroll
+          </button>
             </a>
           {% endif %}
 

@@ -270,6 +270,7 @@ def view_egiliable_detail(request,id):
 def course_filter(request,category,subcategory):
     print("Category filter selected ",category,subcategory)
     courses = Course.objects.filter(published = True).filter(sub_category__name__icontains = subcategory)
+
     categories = Category.objects.all()
 
 

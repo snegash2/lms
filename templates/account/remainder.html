@@ -1,5 +1,35 @@
    <!-- {% url 'courses:course_detail' course.slug %} -->
 
+
+   <h1>{{ object.name }}</h1>
+   <div>
+       <h2>overview</h2>
+
+       <p>
+           <a href="{% url 'courses:course_list_category' category.slug %}">
+           {{ category.title }}</a>.
+           {{ object.modules.count }} modules.
+           Instructor: {{ object.teacher.get_full_name }}
+           </p>
+           {{ object.overview|safe|linebreaks }}
+           {% if request.user.is_authenticated %}
+           <form action="{% url "student_enroll_course" %}" method="post">
+           {{ enroll_form }}
+           {% csrf_token %}
+           <input type="submit" value="Enroll now">
+           </form>
+           {% else %}
+           <a href="{% url "account_login" %}" class="button">
+           Login to enroll
+           </a>
+           {% endif %}
+
+
+        
+   </div>
+
+
+   
 <ul class="dropdown dropdown-2">
   <li class="parent">
     <a href="#"
