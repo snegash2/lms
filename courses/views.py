@@ -221,6 +221,8 @@ class CourseDetailView(DetailView):
 
         context['enroll_form'] = CourseEnrollForm(
             initial={'course': self.object})
+        
+        context['course'] =  self.object
         return context
 
 
