@@ -45,17 +45,22 @@
           </li>
         </div>
         <div class="All__Btn">
-          <!--  -->
+
+          {% if not request.user.is_authenticated %}
           <li>
-            <button +>
-              <a href="{% url 'account_login' %}"><h6>Sing In</h6></a>
-            </button>
+            <div class="Sign">
+              <a   href="{%url 'account_login'%}" ><h6>Log in</h6></a>
+            </div>
           </li>
+
+          {% else %}
           <li>
-            <button class="Sign">
-              <a href="#"><h6>Sing up</h6></a>
-            </button>
+            <div class="Sign">
+              <a     href="{%url 'account_logout'%}"  ><h6>Logout</h6></a>
+            </div>
           </li>
+
+          {% endif %}
         </div>
       </ul>
     </div>
