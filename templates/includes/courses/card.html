@@ -9,10 +9,23 @@
         </p>
         <h4 id="Birr">400 <span class="Birr_span">ETB</span></h4>
         <div class="Enroll__Container">
-          <a href="#"><button class="First"><p>Enroll now</button></a>
-          <a href=""><button class="Second"><p>View Courses</button></a>
+
+
+            {% if request.user.is_authenticated %}
+            <form action="{% url "student_enroll_course" %}" method="post">
+            {% csrf_token %}
+              <input type="submit" value="Enroll now" class="First">
+            </form>
+            {% else %}
+            <a href="{% url "account_login" %}" class="First">
+            Login to enroll
+            </a>
+          {% endif %}
+
+          <a href="{% url 'courses:course_detail' course.slug %}"><button class="Second"><p>View Courses</button></a>
         </div>
       </div>
     </div>
   </div>
 </div>
+

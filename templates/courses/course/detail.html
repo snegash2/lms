@@ -15,7 +15,7 @@
                 Instructor: {{ object.teacher.get_full_name }}
                 </p>
                 {{ object.overview|safe|linebreaks }}
-                    {% if request.user.is_authenticated %}
+                {% if request.user.is_authenticated %}
                 <form action="{% url "student_enroll_course" %}" method="post">
                 {{ enroll_form }}
                 {% csrf_token %}

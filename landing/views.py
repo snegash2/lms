@@ -3,6 +3,7 @@ from courses.models import Course,SubCategory,Category
 from django.contrib.auth.models import Group,User
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
+from students.forms import CourseEnrollForm
 
 def landing_page(request):
     courses = Course.objects.filter(published = True)
@@ -19,9 +20,10 @@ def landing_page(request):
         'courses':courses,
         'instructors':instructors,
         'students_num':student_num,
-        'categories':categories
+        'categories':categories,
+        'enroll_form': CourseEnrollForm
     }
-    
+
     return render(request, 'landing/index.html',context)
 
 
