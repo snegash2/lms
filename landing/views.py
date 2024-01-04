@@ -1,36 +1,35 @@
 from django.shortcuts import render
-from courses.models import Course,SubCategory,Category
+from courses.models import Course,SubCategory,Category,CourseName
 from django.contrib.auth.models import Group,User
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from students.forms import CourseEnrollForm
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
+import json
 
 
 @require_POST
 def filter_courses(request):
-    print("request is reached here")
-    category = request.POST.get('category')  # Assuming you're filtering by category
+    if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
+        category = None
+        # Filter the courses based on the category
+        
+        category = json.loads(request.body)
 
-    # Filter the courses based on the category
-    courses = Course.objects.filter( course_name__category = category)
+        try:
+            category = Category.objects.get(category=category.get('category'))
+            courses = Course.objects.filter(category=category)
+            print("courses ",courses)
+        except Category.DoesNotExist:
+            raise ValueError("Category ")
+        # Prepare the data to be sent as JSON
+        data = {
+            'courses': json.loads(courses)
+           
+        }
 
-    print("courses ",request.POST)
-
-    # Prepare the data to be sent as JSON
-    data = {
-        'courses': [
-            {
-                'id': course.id,
-                'name': course.name,
-                'category': course.category
-            }
-            for course in courses
-        ]
-    }
-
-    return JsonResponse(data)
+        return JsonResponse(data)
 
 def landing_page(request):
     courses = Course.objects.filter(published = True)

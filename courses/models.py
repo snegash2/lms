@@ -83,9 +83,9 @@ class Course(models.Model):
                                 null=True,
                               related_name='courses_created',
                               on_delete=models.SET_NULL)
-
-    course_name = models.ForeignKey(CourseName,
-                                verbose_name='Name',
+    name = models.CharField("Course Name ",max_length=200)
+    category = models.ForeignKey(Category,
+                                verbose_name='Category',
                                 related_name='names',
                                 on_delete=models.CASCADE,
                                 null = True)
@@ -118,7 +118,7 @@ class Course(models.Model):
         verbose_name = "Course Content"
 
     def __str__(self):
-        return f"{self.course_name}"
+        return f"{self.name}"
     
     @property
     def detail(self):
@@ -128,7 +128,7 @@ class Course(models.Model):
     
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        self.slug = slugify(self.course_name)
+        self.slug = slugify(self.name)
 
 
     # def save(self, *args, **kwargs):
