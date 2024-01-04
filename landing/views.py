@@ -4,6 +4,33 @@ from django.contrib.auth.models import Group,User
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from students.forms import CourseEnrollForm
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+
+
+@require_POST
+def filter_courses(request):
+    print("request is reached here")
+    category = request.POST.get('category')  # Assuming you're filtering by category
+
+    # Filter the courses based on the category
+    courses = Course.objects.filter( course_name__category = category)
+
+    print("courses ",request.POST)
+
+    # Prepare the data to be sent as JSON
+    data = {
+        'courses': [
+            {
+                'id': course.id,
+                'name': course.name,
+                'category': course.category
+            }
+            for course in courses
+        ]
+    }
+
+    return JsonResponse(data)
 
 def landing_page(request):
     courses = Course.objects.filter(published = True)

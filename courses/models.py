@@ -12,6 +12,7 @@ from django.contrib.auth import get_user_model
 from django.conf import settings
 # from django.contrib.auth.models import User
 import re
+from PIL import Image
 
 
 User = get_user_model()
@@ -128,6 +129,24 @@ class Course(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         self.slug = slugify(self.course_name)
+
+
+    # def save(self, *args, **kwargs):
+    #     # Open the original image using PIL
+    #     original_image = Image.open(self.image.path)
+
+    #     # Set the desired size for the resized image
+    #     resized_size = (800, 600)
+    #     self.slug = slugify(self.course_name)
+    #     # Resize the image
+    #     original_image.thumbnail(resized_size)
+
+    #     # Save the resized image back to the same field
+    #     # Note: This will overwrite the original image file
+    #     original_image.save(self.image.path)
+
+    #     # Call the superclass's save() method to save the model
+    #     super().save(*args, **kwargs)
 
 
 

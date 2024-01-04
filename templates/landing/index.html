@@ -1,6 +1,48 @@
 {% extends '_base.html'%}
-{% load static %}   
+{% load static %} 
+
+{% block include_js %}
+
+{% endblock %}
 {% block content %}
+<script>
+  // document.addEventListener("DOMContentLoaded", function() {
+
+        function filterCourses(category) {
+          data: {
+                  category: category  // Pass the category as data
+              }
+          $.ajax({
+              url: '/filter-courses/',  // URL for the AJAX view
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRFToken': '{{ csrf_token }}'
+                },
+                 contentType: 'application/json',
+                  data: JSON.stringify(data),
+            
+              success: function(response) {
+                  // Handle the successful response
+                  var courses = response.courses;
+
+                  // Update the course list in the 
+                  console.log("courses ",courses)
+                
+              },
+              error: function(xhr, status, error) {
+                  // Handle any error that occurred during the AJAX request
+                  console.error(error);
+              }
+          });
+      }
+        
+          
+  
+    // });
+   
+
+</script>  
      <!-- ==================================================Second section================== -->
      {% include 'includes/Navbar.html' %}
      <section class="Main__site">
@@ -242,15 +284,13 @@
         <div class="row">
           <div class="gallery-filter">
             <span class="filter-item active" data-filter="all">Show All</span>
-            <span class="filter-item" data-filter="watch">Pharmacology</span>
-            <span class="filter-item" data-filter="headphone">Biochemistry</span>
-            <span class="filter-item" data-filter="camera">Immunology</span>
-            <span class="filter-item" data-filter="phone">Physiology</span>
+            {% for category in categories %}
+            <span class="filter-item" data-filter="watch" onclick="filterCourses('{{category}}')">{{category|title}}</span>
+     
+            {% endfor %}
           </div>
         </div>
 
-       
-       
           <div class="row">
               {% for course in courses %}
              
@@ -429,5 +469,8 @@
       </div>
     </section>
 
+ 
+
 
  {% endblock content %}
+
