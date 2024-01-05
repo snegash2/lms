@@ -9,6 +9,13 @@ from django.views.decorators.http import require_POST
 import json
 
 
+
+@require_POST
+def enroll_form(request):
+    pass
+    
+
+
 @require_POST
 def filter_courses(request):
     if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
@@ -31,10 +38,12 @@ def filter_courses(request):
         courses_dict = []
         for course in courses:
             data = {
+                "id":course.id,
                 "name" : course.name,
                 "slug": course.slug,
                 'image_url':course.image.url,
                 'detail':course.detail
+                # 'students':[student for student in course.students.all],
 
             }
             courses_dict.append(data)
@@ -54,7 +63,6 @@ def landing_page(request):
     user_num = users.count()
     student_num = int(user_num) - int(instructors)
     categories = Category.objects.all()
-
 
     context = {
         'courses':courses,

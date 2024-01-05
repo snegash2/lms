@@ -6,10 +6,13 @@ from django.contrib.auth import authenticate, login
 from django.views.generic.edit import FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
+# from django.urls import reverse,redirect
+from django.shortcuts import get_object_or_404,redirect
 from courses.models import Course
 from .forms import CourseEnrollForm
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from crendential.models import Crendential
+from django.contrib.auth.models import User
 
 
 class StudentRegistrationView(CreateView):
@@ -29,11 +32,27 @@ class StudentRegistrationView(CreateView):
 class StudentEnrollCourseView(LoginRequiredMixin,FormView):
     course = None
     form_class = CourseEnrollForm
-    # template_name = "courses/course/detail.html"
+    template_name = "courses/course/detail.html"
+
+    def post(self,request):
+        user_id = request.POST.get("user")
+        course_id   = request.POST.get("id")
+        course = get_object_or_404(Course,id = course_id)
+        user = get_object_or_404(User,id = user_id)
+        print("course ",course,"user ",user)
+        course.students.add(user)
+        course.save()
+        
+        return redirect("student_course_detail",pk = course_id)
+
+
     def form_valid(self, form):
         self.course = form.cleaned_data['course']
         self.course.students.add(self.request.user)
         return super().form_valid(form)
+    
+
+
     def get_success_url(self):
         return reverse_lazy('student_course_detail', args=[self.course.id])
 

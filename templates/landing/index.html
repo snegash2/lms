@@ -47,8 +47,13 @@
 
 
                               {% if request.user.is_authenticated %}
+                             
                               <form action="{% url "student_enroll_course" %}" method="post">
                               {% csrf_token %}
+                                {{ enroll_form }}
+                                <input type="hidden" value="${course.id}" name="id" />
+                                <input type="hidden" value="{{request.user.id}}" name="user" />
+                            
                                 <input type="submit" value="Enroll now" class="First">
                               </form>
                               {% else %}
