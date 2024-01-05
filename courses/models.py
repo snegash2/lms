@@ -137,7 +137,7 @@ class Course(models.Model):
 
     #     # Set the desired size for the resized image
     #     resized_size = (800, 600)
-    #     self.slug = slugify(self.course_name)
+    #     self.slug = slugify(self.-name)
     #     # Resize the image
     #     original_image.thumbnail(resized_size)
 
