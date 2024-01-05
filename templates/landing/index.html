@@ -27,6 +27,8 @@
                   var courses = response.courses;
                   const row = document.getElementById('row')
                   row.innerText = ""
+
+                  if(courses.length > 0) {
                   for(let course of courses) {
                      const card = document.createElement('div');
                      card.classList.add('gallery-item');
@@ -65,6 +67,9 @@
                       `
                       row.append(card)
                   }
+                } else {
+                  row.innerHTML = `<h1> No course in this category </h1>`
+                }
                 
               },
               error: function(xhr, status, error) {
