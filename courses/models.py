@@ -89,7 +89,7 @@ class Course(models.Model):
                                 related_name='names',
                                 on_delete=models.CASCADE,
                                 null = True)
-    
+    # skill_level = models.CharField(choices)
 
     sub_category = models.ForeignKey(SubCategory,
                                 verbose_name='Sub Category',
@@ -162,6 +162,10 @@ class Module(models.Model):
 
     class Meta:
         ordering = ['order']
+
+    @property
+    def detail(self):
+        return f'{self.title[:10]}'
 
 
 
