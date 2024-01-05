@@ -18,9 +18,13 @@ def filter_courses(request):
         category = json.loads(request.body)
 
         try:
-            category = Category.objects.get(category=category.get('category'))
-            courses = Course.objects.filter(category=category)
-            print("courses ",courses)
+          
+            if category.get('category') == "All":
+                courses = Course.objects.all()
+            else:
+                category = Category.objects.get(category=category.get('category'))
+                courses = Course.objects.filter(category=category)
+
         except Category.DoesNotExist:
             raise ValueError("Category ")
         # Prepare the data to be sent as JSON
