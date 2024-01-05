@@ -29,33 +29,39 @@
                   row.innerText = ""
 
                   if(courses.length > 0) {
-                  for(let course of courses) {
+                  for(let jcourse of courses) {
+
+                    const registered =  jcourse.students.indexOf(jcourse.user) == -1
+                
                      const card = document.createElement('div');
                      card.classList.add('gallery-item');
                      card.classList.add('camera');
                      card.innerHTML = `
                      <div class="gallery-item-inner">
                       <div class="card__new">
-                        <img src="${course.image_url}" alt="${course.name}" />
+                        <img src="${jcourse.image_url}" alt="${jcourse.name}" />
                         <div class="container__new">
                           <h4>{{course.name}}</h4>
                           <p>
-                            ${course.detail}
+                            ${jcourse.detail}
                           </p>
                           <h4 id="Birr">400 <span class="Birr_span">ETB</span></h4>
                           <div class="Enroll__Container">
 
 
                               {% if request.user.is_authenticated %}
-                             
+
+                             ${registered && `
                               <form action="{% url "student_enroll_course" %}" method="post">
                               {% csrf_token %}
                                 {{ enroll_form }}
-                                <input type="hidden" value="${course.id}" name="id" />
+                                <input type="hidden" value="${jcourse.id}" name="id" />
                                 <input type="hidden" value="{{request.user.id}}" name="user" />
                             
                                 <input type="submit" value="Enroll now" class="First">
                               </form>
+                              `}
+                           
                               {% else %}
                               <a href="{% url "account_login" %}">
                               <button class="First">
@@ -64,7 +70,7 @@
                               </a>
                             {% endif %}
 
-                            <a href="/course/${course.slug}/"><button class="Second"><p>View Courses</button></a>
+                            <a href="/course/${jcourse.slug}/"><button class="Second"><p>View Courses</button></a>
                           </div>
                         </div>
                       </div>

@@ -42,8 +42,9 @@ def filter_courses(request):
                 "name" : course.name,
                 "slug": course.slug,
                 'image_url':course.image.url,
-                'detail':course.detail
-                # 'students':[student for student in course.students.all],
+                'detail':course.detail,
+                'students':[student.id for student in course.students.all()],
+                'user':request.user.id
 
             }
             courses_dict.append(data)
