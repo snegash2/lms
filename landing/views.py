@@ -24,8 +24,18 @@ def filter_courses(request):
         except Category.DoesNotExist:
             raise ValueError("Category ")
         # Prepare the data to be sent as JSON
+        courses_dict = []
+        for course in courses:
+            data = {
+                "name" : course.name,
+                "slug": course.slug,
+                'image_url':course.image.url,
+                'detail':course.detail
+
+            }
+            courses_dict.append(data)
         data = {
-            'courses': json.loads(courses)
+            'courses': courses_dict
            
         }
 

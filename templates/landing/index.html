@@ -25,9 +25,46 @@
               success: function(response) {
                   // Handle the successful response
                   var courses = response.courses;
+                  const row = document.getElementById('row')
+                  row.innerText = ""
+                  for(let course of courses) {
+                     const card = document.createElement('div');
+                     card.classList.add('gallery-item');
+                     card.classList.add('camera');
+                     card.innerHTML = `
+                     <div class="gallery-item-inner">
+                      <div class="card__new">
+                        <img src="${course.image_url}" alt="${course.name}" />
+                        <div class="container__new">
+                          <h4>{{course.name}}</h4>
+                          <p>
+                            ${course.detail}
+                          </p>
+                          <h4 id="Birr">400 <span class="Birr_span">ETB</span></h4>
+                          <div class="Enroll__Container">
 
-                  // Update the course list in the 
-                  console.log("courses ",courses)
+
+                              {% if request.user.is_authenticated %}
+                              <form action="{% url "student_enroll_course" %}" method="post">
+                              {% csrf_token %}
+                                <input type="submit" value="Enroll now" class="First">
+                              </form>
+                              {% else %}
+                              <a href="{% url "account_login" %}">
+                              <button class="First">
+                              Login to enroll
+                            </button>
+                              </a>
+                            {% endif %}
+
+                            <a href="course/${course.slug}/"><button class="Second"><p>View Courses</button></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                      `
+                      row.append(card)
+                  }
                 
               },
               error: function(xhr, status, error) {
@@ -291,7 +328,7 @@
           </div>
         </div>
 
-          <div class="row">
+          <div class="row" id="row">
               {% for course in courses %}
              
               {% include 'includes/courses/card.html' %}
