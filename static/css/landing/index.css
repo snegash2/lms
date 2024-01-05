@@ -637,6 +637,7 @@ body {
   }
   div.gallery-item.camera {
     width: calc(100% / 3);
+  
   }
   div.gallery-item.headphone {
     width: calc(100% / 3);
