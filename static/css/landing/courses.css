@@ -58,10 +58,17 @@ img {
   width: calc(100% / 3);
   padding: 30px;
 }
+
+
+
+
 .gallery .gallery-item-inner img {
   width: 99.8%;
+  height: 11rem;
   /* border: 3px solid #d4dad9; */
 }
+
+
 .gallery .gallery-item.show {
   animation: fadeIn 0.5s ease;
 }

@@ -57,6 +57,7 @@ def filter_courses(request):
 
 def landing_page(request):
     courses = Course.objects.filter(published = True)
+    print("request ",request.path)
   
     group = Group.objects.get(name='instructors')
     users = User.objects.all()

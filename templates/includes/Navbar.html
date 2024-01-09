@@ -47,9 +47,16 @@
         <div class="All__Btn">
 
           {% if not request.user.is_authenticated %}
+
           <li>
             <div class="Sign">
-              <a   href="{%url 'account_login'%}" ><h6>Log in</h6></a>
+            
+              {% if request.path == '/accounts/login/' %}
+              <a   href="{%url 'account_signup'%}" ><h6>Sign up</h6></a>
+
+              {% else %}
+              <a   href="{%url 'account_login'%}" ><h6>Log in </h6></a>
+              {% endif %}
             </div>
           </li>
 

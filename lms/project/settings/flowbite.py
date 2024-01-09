@@ -4,7 +4,4 @@
 
 # STATICFILES_FINDERS = ('compressor.finders.CompressorFinder',)
 
-
-CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
-
-CRISPY_TEMPLATE_PACK = "tailwind"
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

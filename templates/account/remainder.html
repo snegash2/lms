@@ -1,5 +1,24 @@
    <!-- {% url 'courses:course_detail' course.slug %} -->
 
+   <div class="Main-container">
+    <div class="container">
+      <h2>Welcome to <span> Lorem </span> LMS</h2>
+      <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+        {% csrf_token %}
+        {{form|crispy}}
+        {% if redirect_field_value %}
+        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+        {% endif %}
+        <button type="submit" class="submit-button">{% trans "Sign Up" %} &raquo;</button>
+      </form>
+    </div>
+
+   
+    <div class="image">
+      <img src="{% static 'doters-removebg-preview.png' %}" alt="" />
+    </div>
+  </div>
+
 
    <h1>{{ object.name }}</h1>
    <div>

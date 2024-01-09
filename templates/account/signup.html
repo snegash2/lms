@@ -1,5 +1,6 @@
-{% extends "account/base.html" %}
-{% load tailwind_filters %}
+{% extends "_base.html" %}
+{% load crispy_forms_tags %}
+<!--  -->
 {% load static %}
 {% load i18n %}
 {% block css %} 
@@ -13,22 +14,33 @@
 
 
   <!-- Body -->
-  <div class="Main-container">
-    <div class="container">
-      <h2>Welcome to <span> Lorem </span> LMS</h2>
+  {% include 'includes/Navbar.html' %}
+
+
+ 
+  <div class="grid__container">
+    <div id="mobile" class="container">
+      <h3>Sign up to your LMS account</h3>
+      <!-- <h3>Welcome back  <span> Username </span> </h3> -->
       <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
         {% csrf_token %}
-        {{form|crispy}}
+        {{form|crispy }}
+        <div class="error-message" id="error-message"></div>
         {% if redirect_field_value %}
         <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
         {% endif %}
         <button type="submit" class="submit-button">{% trans "Sign Up" %} &raquo;</button>
       </form>
+      <div class="forgot-password">
+        <a href="{% url 'account_reset_password' %}">Forgot Password?</a>
+      </div>
     </div>
-    <div>
-      <img class="img" src="{% static 'doters-removebg-preview.png' %}" alt="" />
+    <div class="image">
+      <img src="{% static 'doters-removebg-preview.png' %}" alt="" />
     </div>
   </div>
+
+
   <!-- Second- Socail Meda -->
     <!-- Second- Socail Meda -->
     <div class="Socail-Container">
@@ -95,6 +107,9 @@
   <!-- Scripts -->
   <script src="./script.js"></script>
   <script type="text/javascript" src="dropdown.js"></script>
-
+  <br />
+  <br />
+  <br />
+  {% include "includes/footer.html"%}
 
 {% endblock %}

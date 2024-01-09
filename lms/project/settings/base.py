@@ -36,12 +36,12 @@ INSTALLED_APPS = [
 
     #thrid party packages
     'compressor',
-    "crispy_forms",
-    "crispy_tailwind",
+    'crispy_forms',
+    'crispy_bootstrap5',
     'embed_video',
     'ckeditor',
     'ckeditor_uploader',
-    'rest_framework',
+    # 'rest_framework',
     'channels',
     # 'debug_toolbar',
     # 'social_django',
@@ -88,13 +88,14 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+                'django.template.context_processors.request',
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'courses.context_processors.my_context_processor',
                  # `allauth` needs this from django
-                'django.template.context_processors.request',
+                
             ],
         },
     },
@@ -218,22 +219,18 @@ AUTHENTICATION_BACKENDS = [
 
 
 # Django Allauth settings
-
+ACCOUNT_AUTHENTICATION_METHOD = 'username'
 ACCOUNT_EMAIL_REQUIRED= True
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS=10 
 ACCOUNT_LOGIN_ATTEMPTS_LIMIT=5
-ACCOUNT_EMAIL_VERIFICATION="mandatory"
+ACCOUNT_EMAIL_VERIFICATION="optional"
 ACCOUNT_REDIRECT_URL='/course/course_list/'
 ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT=86400
-ACCOUNT_UNIQUE_EMAIL=True
+ACCOUNT_UNIQUE_EMAIL=False
 ACCOUNT_EMAIL_CONFORMATION=180
 ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = True
 
 
-# ACCOUNT_FORMS = {
-#     'signup': 'lms.forms.LmsSignupForm',
-  
-#     }
 
 
 # This setting will redirect users to the homepage after a successful login.
@@ -284,3 +281,5 @@ LOGIN_URL = '/'
 #admin custimization
 X_FRAME_OPTIONS = "SAMEORIGIN"
 SILENCED_SYSTEM_CHECKS = ["security.W019"]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap5' 

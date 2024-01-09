@@ -23,7 +23,7 @@ urlpatterns = [
     path('quiz/',include('exam.quiz.urls')),   
     path('course/', include('courses.urls')),
     path('students/', include('students.urls')),
-    path('api/', include('courses.api.urls', namespace='api')),
+    # path('api/', include('courses.api.urls', namespace='api')),
     path('course-list/', CourseListView.as_view(), name='course_list'),
     path('chat/', include('chat.urls', namespace='chat')),
     path('ckeditor/', include('ckeditor_uploader.urls')),

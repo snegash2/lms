@@ -73,6 +73,29 @@ class CourseName(models.Model):
 
     def __str__(self):
         return self.name
+    
+
+
+class Note(models.Model):
+    course = models.ForeignKey("Course",
+                                verbose_name='noteCourse',
+                                related_name='note_courses',
+                                on_delete=models.CASCADE,
+                                default=None)
+    user   = models.ForeignKey(User,
+                                verbose_name='User',
+                                related_name='users',
+                                on_delete=models.CASCADE,
+                                default=None)
+    
+    content = models.TextField(blank = True,null = True)
+
+
+
+    def __str__(self):
+        return self.course.name + self.user.username
+
+
 
 
 
