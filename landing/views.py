@@ -57,7 +57,7 @@ def filter_courses(request):
 
 def landing_page(request):
     courses = Course.objects.filter(published = True)
-    print("request ",request.path)
+    print("request ",request.session.get('is_loading'))
   
     group = Group.objects.get(name='instructors')
     users = User.objects.all()

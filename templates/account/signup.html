@@ -24,6 +24,7 @@
       <!-- <h3>Welcome back  <span> Username </span> </h3> -->
       <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
         {% csrf_token %}
+        
         {{form|crispy }}
         <div class="error-message" id="error-message"></div>
         {% if redirect_field_value %}

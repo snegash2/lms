@@ -143,6 +143,15 @@ body {
     padding-left: 10%;
   }
   
+
+  .input-box {
+    width: 100%;
+    padding: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding-left: 10%;
+  }
+  
   .show-password {
     display: inline-block;
     margin-left: 10px;

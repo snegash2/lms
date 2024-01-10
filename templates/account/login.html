@@ -17,7 +17,7 @@
       <div id="mobile" class="container">
         <h3>Log in to your LMS account</h3>
         <!-- <h3>Welcome back  <span> Username </span> </h3> -->
-        <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+        <form class="signup" id="signup_form" method="post" action="{% url 'account_login' %}">
       
           {% csrf_token %}
           {{form|crispy }}

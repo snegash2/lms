@@ -2,7 +2,10 @@ from django.core.mail import send_mail
 from .models import Course
 from django.dispatch import receiver
 from django.db.models.signals import post_save
+from allauth.account.signals import user_logged_in,user_logged_out
+from django.contrib.auth import get_user_model
 
+User = get_user_model()
 
 @receiver(post_save, sender=Course)
 def send_new_email(sender, instance, created,**kwargs):
@@ -27,3 +30,9 @@ def send_new_email(sender, instance, created,**kwargs):
     #         fail_silently=False
     #     )
 
+
+
+
+@receiver(user_logged_in, sender=User)
+def user_logged_in_handler(sender, user, request, **kwargs):
+    request.session['is_loading'] = True

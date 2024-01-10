@@ -12,6 +12,8 @@
           let data =  {
                   category: category  // Pass the category as data
               }
+
+        
           $.ajax({
               url: '/filter-courses/',  // URL for the AJAX view
               method: 'POST',
@@ -26,6 +28,22 @@
                   // Handle the successful response
                   var courses = response.courses;
                   const row = document.getElementById('row')
+                  const card_list = document.getElementsByClassName('filter-item')
+                 
+                  
+                  for(let ca of card_list) {
+                    ca.classList.remove('active')
+                  }
+                  const card = document.getElementById(`${category}`)
+
+                  if(category == 'All') {
+                    const show_all = document.getElementById('All')
+                    show_all.classList.toggle('active')
+                  }
+
+                  card.classList.add('active')
+                 
+                
                   row.innerText = ""
 
                   if(courses.length > 0) {
@@ -77,6 +95,8 @@
                     </div>
                       `
                       row.append(card)
+                   
+                    
                   }
                 } else {
                   row.innerHTML = `<h1> No course in this category </h1>`
@@ -336,10 +356,9 @@
       <div class="container">
         <div class="row">
           <div class="gallery-filter">
-            <span class="filter-item active" data-filter="all" onclick="filterCourses('All')">Show All</span>
+            <span class="filter-item active" id="All" data-filter="all" onclick="filterCourses('All')">Show All</span>
             {% for category in categories %}
-            <span class="filter-item" data-filter="watch" onclick="filterCourses('{{category}}')">{{category|title}}</span>
-     
+              <span class="filter-item" id="{{category}}" data-filter="watch" onclick="filterCourses('{{category}}')">{{category|title}}</span>
             {% endfor %}
           </div>
         </div>
