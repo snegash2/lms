@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import  Course, Module,SubCategory
+from .models import  Course, Module,SubCategory,Content,File,Task
 from django.contrib import admin
 from .models import File
 from .models import Category,CourseName
@@ -56,6 +56,12 @@ class CourseAdmin(admin.ModelAdmin):
     def unpublish_selected(self, request, queryset):
         queryset.update(published=False)
 
+
+
+admin.site.register(Module)
+admin.site.register(Content)
+admin.site.register(File)
+admin.site.register(Task)
 
 
 

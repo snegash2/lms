@@ -102,61 +102,34 @@
                   </div>
 
                   <div class="sub-accordion-content">
+
+                 
+                    
                     <div class="video-list">
-                      <a href="#Display">
-                        <div class="vid">
-                          <video src="{% static 'videoplayback.mp4' %}" muted></video>
-                          <h3 class="title">02. Radiology</h3>
 
-                          <div class="Video-sub-container">
-                            <input class="Check-icons" type="checkbox" />
-                            <div></div>
+                     {% for content in  module.contents.all %}
+                        {% if  content.content_type.model == "video"  %}
+                            <a href="#Display">
 
-                            <h4>1:36</h4>
-                          </div>
-                        </div>
-                      </a>
+                              <div class="vid">
+                                <video src="https://www.youtube.com/shorts/PV8lnF5uc2o?feature=share" muted></video>
+                                <h3 class="title">01. Radiology</h3>
 
-                      <a href="#Display">
-                        <div class="vid">
-                          <video src="{% static 'videoplayback.mp4' %}" muted></video>
-                          <h3 class="title">04. Genetics</h3>
+                                <div class="Video-sub-container">
+                                  <input class="Check-icons" type="checkbox" />
+                                  <div></div>
 
-                          <div class="Video-sub-container">
-                            <input class="Check-icons" type="checkbox" />
-                            <div></div>
-
-                            <h4>1:36</h4>
-                          </div>
-                        </div>
-                      </a>
-                      <a href="#Display">
-                        <div class="vid">
-                          <video src="{% static 'videoplayback.mp4' %}" muted></video>
-                          <h3 class="title">05. immunology</h3>
-
-                          <div class="Video-sub-container">
-                            <input class="Check-icons" type="checkbox" />
-                            <div></div>
-
-                            <h4>1:36</h4>
-                          </div>
-                        </div>
-                      </a>
-                      <a href="#Display">
-                        <div class="vid">
-                          <video src="{% static 'videoplayback.mp4' %}" muted></video>
-                          <h3 class="title">06. Biochemistry</h3>
-
-                          <div class="Video-sub-container">
-                            <input class="Check-icons" type="checkbox" />
-                            <div></div>
-
-                            <h4>1:36</h4>
-                          </div>
-                        </div>
-                      </a>
+                                  <h4>1:36</h4>
+                                </div>
+                              </div>
+                            </a>
+                        
+                        {% endif %}
+                          
+                    {% endfor %}
                     </div>
+
+                   
                   </div>
                 </div>
 
@@ -315,10 +288,26 @@
             <div class="item button2">
               <div id="pdf-list">
                 <h1>Pdf Files</h1>
-                <ul id="dynamic-list"></ul>
+                <ul id="dynamic-list">
+                  {% for module in course.modules.all %}
+                  
+                    {% for pdf in module.pdfs.all %}
+
+                        <li>
+                        
+                          <a href="{{pdf.file.url}}">
+                          {{pdf.title}}
+                          <img class="pdf-icon" src="{% static 'pfds.jpg' %}" alt="">
+                        </a>
+                        </li>
+                    
+                    {% endfor %}
+                  {% endfor %}
+
+                </ul>
               </div>
 
-              <script>
+              <!-- <script>
                 const pdfs = [
                   { name: "Modeule 1", url: "pdf/certficate.pdf" },
                   { name: "Modeule 2", url: "pdf/certficate.pdf" },
@@ -341,45 +330,39 @@
                   li.appendChild(link);
                   dynamicList.appendChild(li);
                 });
-              </script>
+              </script> -->
+
+
+
+
             </div>
             <div class="item button3">
+
+
+
               <ul>
-                <h4>Module:7</h4>
-                <p>Medical Imaging and Diagnostics</p>
+                {% for module in course.modules.all %}
+                  {% for task in module.tasks.all %}
 
-                <li>
-                  Task: Prepare case-based assessments using medical imaging
-                  data.
-                </li>
-                <li>
-                  Description: Compile actual medical images (X-rays, MRI scans,
-                  etc.)
-                </li>
+                    <h4>Module:{{module.order}}</h4>
+                    <p>{{task.title}}</p>
 
-                <h4>Module:8</h4>
-                <p>Research Methods in Medicine</p>
+                    <li>
+                       {{task.description}}
+                    </li>
+                    <li>
+                      Description: {{task.task}}
+                    </li>
+                  {% endfor %}
 
-                <li>
-                  Task: Design a group project on conducting medical research..
-                </li>
-                <li>
-                  Description: Compile actual medical images (X-rays, MRI scans,
-                  etc.)
-                </li>
-                <h4>Module:9</h4>
-                <p>Patient Communication and Cultural Competency</p>
+                {% endfor %}
 
-                <li>
-                  Task: Prepare case-based assessments using medical imaging
-                  data.
-                </li>
-                <li>
-                  Description: Compile actual medical images (X-rays, MRI scans,
-                  etc.)
-                </li>
+           
               </ul>
             </div>
+
+
+
             <div class="item button4">
               <div class="qna-container">
                 <!-- <h1>Discussion form</h1> -->

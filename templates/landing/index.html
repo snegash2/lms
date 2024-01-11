@@ -1,5 +1,5 @@
 {% extends '_base.html'%}
-{% load static %} 
+{% load static %}
 
 {% block include_js %}
 
@@ -8,53 +8,53 @@
 <script>
   // document.addEventListener("DOMContentLoaded", function() {
 
-        function filterCourses(category) {
-          let data =  {
-                  category: category  // Pass the category as data
-              }
+  function filterCourses(category) {
+    let data = {
+      category: category  // Pass the category as data
+    }
 
-        
-          $.ajax({
-              url: '/filter-courses/',  // URL for the AJAX view
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json',
-                  'X-CSRFToken': '{{ csrf_token }}'
-                },
-                 contentType: 'application/json',
-                  data: JSON.stringify(data),
-            
-              success: function(response) {
-                  // Handle the successful response
-                  var courses = response.courses;
-                  const row = document.getElementById('row')
-                  const card_list = document.getElementsByClassName('filter-item')
-                 
-                  
-                  for(let ca of card_list) {
-                    ca.classList.remove('active')
-                  }
-                  const card = document.getElementById(`${category}`)
 
-                  if(category == 'All') {
-                    const show_all = document.getElementById('All')
-                    show_all.classList.toggle('active')
-                  }
+    $.ajax({
+      url: '/filter-courses/',  // URL for the AJAX view
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': '{{ csrf_token }}'
+      },
+      contentType: 'application/json',
+      data: JSON.stringify(data),
 
-                  card.classList.add('active')
-                 
-                
-                  row.innerText = ""
+      success: function (response) {
+        // Handle the successful response
+        var courses = response.courses;
+        const row = document.getElementById('row')
+        const card_list = document.getElementsByClassName('filter-item')
 
-                  if(courses.length > 0) {
-                  for(let jcourse of courses) {
 
-                    const registered =  jcourse.students.indexOf(jcourse.user) == -1
-                
-                     const card = document.createElement('div');
-                     card.classList.add('gallery-item');
-                     card.classList.add('camera');
-                     card.innerHTML = `
+        for (let ca of card_list) {
+          ca.classList.remove('active')
+        }
+        const card = document.getElementById(`${category}`)
+
+        if (category == 'All') {
+          const show_all = document.getElementById('All')
+          show_all.classList.toggle('active')
+        }
+
+        card.classList.add('active')
+
+
+        row.innerText = ""
+
+        if (courses.length > 0) {
+          for (let jcourse of courses) {
+
+            const registered = jcourse.students.indexOf(jcourse.user) == -1
+
+            const card = document.createElement('div');
+            card.classList.add('gallery-item');
+            card.classList.add('camera');
+            card.innerHTML = `
                      <div class="gallery-item-inner">
                       <div class="card__new">
                         <img src="${jcourse.image_url}" alt="${jcourse.name}" />
@@ -94,387 +94,381 @@
                       </div>
                     </div>
                       `
-                      row.append(card)
-                   
-                    
-                  }
-                } else {
-                  row.innerHTML = `<h1> No course in this category </h1>`
-                }
-                
-              },
-              error: function(xhr, status, error) {
-                  // Handle any error that occurred during the AJAX request
-                  console.error(error);
-              }
-          });
+            row.append(card)
+
+
+          }
+        } else {
+          row.innerHTML = `<h1> No course in this category </h1>`
+        }
+
+      },
+      error: function (xhr, status, error) {
+        // Handle any error that occurred during the AJAX request
+        console.error(error);
       }
-        
-          
-  
-    // });
-   
+    });
+  }
 
-</script>  
-     <!-- ==================================================Second section================== -->
-     {% include 'includes/Navbar.html' %}
-     <section class="Main__site">
-      <div >
-      <div class="slide__Second">
-        <div class="slider__container">
-          <div class="swiper">
-            <div class="swiper-wrapper">
-           
-              <div class="swiper-slide">
-                <div class="Slide__contents">
-                  <div> 
-                    <p>
-                      Best <span>LMS </span> For Healthcare, Medical &
-                      <span>Telemedicine </span> Sector
-                    </p>
-                                        <button class="Home__btn"><a href="#">Learn More</a></button>
 
-                    <button class="Home__btn"><a href="#">Learn More</a></button>
-                  </div>
-                  <div><img src="{% static 'new-doc.png' %}" alt="" /></div>
+
+  // });
+
+
+</script>
+<!-- ==================================================Second section================== -->
+{% include 'includes/Navbar.html' %}
+<section class="Main__site">
+  <div>
+    <div class="slide__Second">
+      <div class="slider__container">
+        <div class="swiper">
+          <div class="swiper-wrapper">
+
+            <div class="swiper-slide">
+              <div class="Slide__contents">
+                <div>
+                  <p>
+                    Best <span>LMS </span> For Healthcare, Medical &
+                    <span>Telemedicine </span> Sector
+                  </p>
+                  <button class="Home__btn"><a href="#">Learn More</a></button>
+
+                  <button class="Home__btn"><a href="#">Learn More</a></button>
                 </div>
+                <div><img src="{% static 'new-doc.png' %}" alt="" /></div>
               </div>
-              <div class="swiper-slide">
-                <div class="Slide__contents">
-                  <div> 
-                    <p>
-                      How an <span>LMS </span> improves training in the 
-                      <span>Healthcare </span> sector
-                    </p>
-                                        <button class="Home__btn"><a href="#">Learn More</a></button>
+            </div>
+            <div class="swiper-slide">
+              <div class="Slide__contents">
+                <div>
+                  <p>
+                    How an <span>LMS </span> improves training in the
+                    <span>Healthcare </span> sector
+                  </p>
+                  <button class="Home__btn"><a href="#">Learn More</a></button>
 
-                  </div>
-                  <div><img src="{% static 'doc-slide.png' %}" alt="" />
-                  </div>
                 </div>
-              </div>  
-               <div class="swiper-slide">
-                <div class="Slide__contents">
-                  <div> 
-                    <p>
-                      Interpretation of <span>Diagnostic</span> Tests and Collaborative
-                      <span>Problems </span>
-                    </p>
-                                        
-                    <button class="Home__btn"><a href="#">Learn More</a></button>
-
-                  </div>
-                  <div>
-                    <img class="Third__img" src="{% static 'doc-slide2.png' %}" alt="" />
-                  </div>
-                </div>
-              </div>   <div class="swiper-slide">
-                <div class="Slide__contents">
-                  <div> 
-                    <p>
-                      Live Medical <span>Consultation </span> With the Best
-                      <span>Doctors </span>
-                    </p>
-                                        <button class="Home__btn"><a href="#">Learn More</a></button>
-
-                  </div>
-                  <div> <img
-                    src="{% static 'undraw_online_learning_re_qw08.svg' %}"
-                    alt=""
-                  /></div>
-                </div>
-              </div> 
-                <div class="swiper-slide">
-                <div class="Slide__contents">
-                  <div> 
-                    <p>
-                      Medical, <span> Scientific</span> and data 
-                      <span>knowledge </span>
-                    </p>
-                                        <button class="Home__btn"><a href="#">Learn More</a></button>
-
-                  </div>
-                  <div><img src="{% static 'doc-slide1.png' %}" alt="" /></div>
-                </div>
-              </div>
-              <div class="swiper-slide">
-                <div class="Slide__contents">
-                  <div > 
-                    <p>
-                      Effective Peer <span>Review </span>  for Medical </br> 
-                      <span>Peofessionals </span>
-                    </p>
-                    <button class="Home__btn"><a href="#">Learn More</a></button>
-
-                  </div>
-                  <div>
-                    <img class="peer-img"  src="{% static 'peer1.png' %}" alt="" />
-                  </div>
-                </div>
-              </div>   <div class="swiper-slide">
-                <div class="Slide__contents">
-                  <div> 
-                    <p>
-                      Providing direct practical <span>experience </span> in the medical 
-                      <span>operation </span>
-                    </p>
-                                        <button class="Home__btn"><a href="#">Learn More</a></button>
-
-                  </div>
-                  <div><img src="{% static 'hands.png' %}" alt="" /></div>
+                <div><img src="{% static 'doc-slide.png' %}" alt="" />
                 </div>
               </div>
             </div>
+            <div class="swiper-slide">
+              <div class="Slide__contents">
+                <div>
+                  <p>
+                    Interpretation of <span>Diagnostic</span> Tests and Collaborative
+                    <span>Problems </span>
+                  </p>
 
-            <div class="swiper-pagination"></div>
+                  <button class="Home__btn"><a href="#">Learn More</a></button>
 
-            <div class="swiper-button-prev"></div>
-            <div class="swiper-button-next"></div>
+                </div>
+                <div>
+                  <img class="Third__img" src="{% static 'doc-slide2.png' %}" alt="" />
+                </div>
+              </div>
+            </div>
+            <div class="swiper-slide">
+              <div class="Slide__contents">
+                <div>
+                  <p>
+                    Live Medical <span>Consultation </span> With the Best
+                    <span>Doctors </span>
+                  </p>
+                  <button class="Home__btn"><a href="#">Learn More</a></button>
+
+                </div>
+                <div> <img src="{% static 'undraw_online_learning_re_qw08.svg' %}" alt="" /></div>
+              </div>
+            </div>
+            <div class="swiper-slide">
+              <div class="Slide__contents">
+                <div>
+                  <p>
+                    Medical, <span> Scientific</span> and data
+                    <span>knowledge </span>
+                  </p>
+                  <button class="Home__btn"><a href="#">Learn More</a></button>
+
+                </div>
+                <div><img src="{% static 'doc-slide1.png' %}" alt="" /></div>
+              </div>
+            </div>
+            <div class="swiper-slide">
+              <div class="Slide__contents">
+                <div>
+                  <p>
+                    Effective Peer <span>Review </span> for Medical </br>
+                    <span>Peofessionals </span>
+                  </p>
+                  <button class="Home__btn"><a href="#">Learn More</a></button>
+
+                </div>
+                <div>
+                  <img class="peer-img" src="{% static 'peer1.png' %}" alt="" />
+                </div>
+              </div>
+            </div>
+            <div class="swiper-slide">
+              <div class="Slide__contents">
+                <div>
+                  <p>
+                    Providing direct practical <span>experience </span> in the medical
+                    <span>operation </span>
+                  </p>
+                  <button class="Home__btn"><a href="#">Learn More</a></button>
+
+                </div>
+                <div><img src="{% static 'hands.png' %}" alt="" /></div>
+              </div>
+            </div>
           </div>
+
+          <div class="swiper-pagination"></div>
+
+          <div class="swiper-button-prev"></div>
+          <div class="swiper-button-next"></div>
         </div>
       </div>
     </div>
-    <div class="Sub__container">
-      <div class="Second__container">
-        <img class="Icons__img" src="{% static 'icons-img (1).png' %}" alt="" />
-        <h2>Medical Coursers</h2>
-      </div>
-      <div class="Second__container">
-        <img class="Icons__img" src="{% static 'icons-img (2).png' %}" alt="" />
-
-        <h2>Learning Material</h2>
-      </div>
-      <div class="Second__container">
-        <img class="Icons__img" src="{% static 'icons-img (3).png' %}" alt="" />
-        <h2>Creative Thinking</h2>
-      </div>
-      <div class="Second__container">
-        <img class="Icons__img" src="{% static 'icons-img (4).png' %}" alt="" />
-        <h2>Self Assesement</h2>
-      </div>
+  </div>
+  <div class="Sub__container">
+    <div class="Second__container">
+      <img class="Icons__img" src="{% static 'icons-img (1).png' %}" alt="" />
+      <h2>Medical Coursers</h2>
     </div>
-    </section>
+    <div class="Second__container">
+      <img class="Icons__img" src="{% static 'icons-img (2).png' %}" alt="" />
 
-    <!-- ============================== What expected====================================== -->
-    <div>
-      <section>
-        <div class="Expect__Main">
-          <div class="Expect__Text">
-            <div>
-              <h2>What to Expect from a Collab Course</h2>
-
-              <h6>
-                We value your interest and look forward to hearing from you.
-              </h6>
-            </div>
-            <div>
-              <button><p><a href="#">Explore Course</a>
-              </p></button>
-            </div>
-          </div>
-        </div>
-
-        <div class="Expect__Container">
-          <div>
-            <img class="Student-img" src="{% static 'afr.jpg' %}" alt="" />
-          </div>
-          <div class="Cards__Container">
-            <div class="first">
-              <div class="card">
-                <img class="Expect__icons" src="{% static 'hat.png' %}" alt="" />
-                <div class="container-card">
-                  <h4><b>Knowledge</b></h4>
-
-                  <p>All Health Professionals</p>
-                </div>
-              </div>
-              <div id="cards" class="card">
-                <img
-                  class="Expect__icons"
-                  src="{% static 'ulimited.jpg' %}"
-                  alt=""
-                />
-                <div class="container-card">
-                  <h4><b>Unlimited access</b></h4>
-                  <p>All Health Professionals</p>
-                </div>
-              </div>
-            </div>
-            <div class="second">
-              <div class="card">
-                <img class="Expect__icons" src="{% static 'skills.jpg' %}" alt="" />
-                <div class="container-card">
-                  <h4><b>Practical Skills</b></h4>
-                  <p>All Health Professionals</p>
-                </div>
-              </div>
-              <div id="cards" class="card">
-                <img
-                  class="Expect__icons"
-                  src="{% static 'certficate.jpg' %}"
-                  alt=""
-                />
-                <div class="container-card">
-                  <h4><b>Certificates</b></h4>
-                  <p>All Health Professionals</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <h2>Learning Material</h2>
     </div>
-    <!-- ============================== Number section====================================== -->
-    <div>
-      <section class="Whole__Number">
-        <div class="grid-numbers">
-          <div class="no1">
-            <div class="Sup">50<sup>+</sup></div>
-            <p class="Text">Courses</p>
-          </div>
-          <div class="no2">
-            <div class="Sup">13<sup>+</sup></div>
-            <p class="Text">Instructors</p>
-          </div>
-          <div class="no3">
-            <div class="Sup">300<sup>+</sup></div>
-            <p class="Text">Students</p>
-          </div>
-          <div class="no4">
-            <div class="Sup">500<sup>+</sup></div>
-            <p class="Text">Learning Materials</p>
-          </div>
-        </div>
-      </section>
+    <div class="Second__container">
+      <img class="Icons__img" src="{% static 'icons-img (3).png' %}" alt="" />
+      <h2>Creative Thinking</h2>
     </div>
- 
-    <!-- ==========Main coursers======================= -->
-    <section class="gallery">
-      <div class="Coursers__Container">
-        <h1>Popular <span>Medical </span> Courses</h1>
-      </div>
-      <div class="container">
-        <div class="row">
-          <div class="gallery-filter">
-            <span class="filter-item active" id="All" data-filter="all" onclick="filterCourses('All')">Show All</span>
-            {% for category in categories %}
-              <span class="filter-item" id="{{category}}" data-filter="watch" onclick="filterCourses('{{category}}')">{{category|title}}</span>
-            {% endfor %}
-          </div>
-        </div>
-
-          <div class="row" id="row">
-              {% for course in courses %}
-             
-              {% include 'includes/courses/card.html' %}
-             {% endfor %}
-             
-          </div>
-
-    
-
-      </div>
-    </section>
-    <!--================== Testmonial================ -->
-    <div class="hero">
-      <h1>Real-life success stories from <span> Students</span></h1>
-
-      <div class="container__test">
-        <div class="indicator">
-          <span class="btns active"></span>
-          <span class="btns"></span>
-          <span class="btns"></span>
-          <span class="btns"></span>
-        </div>
-        <div class="testimonial">
-          <div class="slide-row" id="slide">
-            <div class="slide-col">
-              <div class="user-text">
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Tenetur, quo. Facere tempore nam consequuntur natus adipisci
-                  ut perferendis quas unde aliquam ipsam libero, officiis
-                  quaerat magnam consectetur ab, ea hic!
-                </p>
-                <h3>Leslie</h3>
-                <p>Alexander</p>
-              </div>
-              <div class="user-img">
-                <img src="{% static 'student.jpg' %}" alt="" />
-              </div>
-            </div>
-            <div class="slide-col">
-              <div class="user-text">
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Tenetur, quo. Facere tempore nam consequuntur natus adipisci
-                  ut perferendis quas unde aliquam ipsam libero, officiis
-                  quaerat magnam consectetur ab, ea hic!
-                </p>
-                <h3>Leslie</h3>
-                <p>Alexander</p>
-              </div>
-              <div class="user-img">
-                <img src="{% static 'undraw_doctors_p6aq.svg' %}" alt="" />
-              </div>
-            </div>
-            <div class="slide-col">
-              <div class="user-text">
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Tenetur, quo. Facere tempore nam consequuntur natus adipisci
-                  ut perferendis quas unde aliquam ipsam libero, officiis
-                  quaerat magnam consectetur ab, ea hic!
-                </p>
-                <h3>Leslie</h3>
-                <p>Alexander</p>
-              </div>
-              <div class="user-img">
-                <img src="{% static 'undraw_medicine_b-1-ol.svg' %}" alt="" />
-              </div>
-            </div>
-            <div class="slide-col">
-              <div class="user-text">
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Tenetur, quo. Facere tempore nam consequuntur natus adipisci
-                  ut perferendis quas unde aliquam ipsam libero, officiis
-                  quaerat magnam consectetur ab, ea hic!
-                </p>
-                <h3>Leslie</h3>
-                <p>Alexander</p>
-              </div>
-              <div class="user-img">
-                <img src="{% static 'coursers.jpg' %}" alt="" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div class="Second__container">
+      <img class="Icons__img" src="{% static 'icons-img (4).png' %}" alt="" />
+      <h2>Self Assesement</h2>
     </div>
-    <!-- =================Contact us================= -->
-    <section class="Contacts__Lnading">
-      <h1>Contact <span> Us</span></h1>
+  </div>
+</section>
 
-      <div class="Contacts__Lnading__container">
-        <div class="first">
-          <img src="{% static 'contactus.svg' %}" alt="" />
+<!-- ============================== What expected====================================== -->
+<div>
+  <section>
+    <div class="Expect__Main">
+      <div class="Expect__Text">
+        <div>
+          <h2>What to Expect from a Collab Course</h2>
+
+          <h6>
+            We value your interest and look forward to hearing from you.
+          </h6>
         </div>
         <div>
-          <h3>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore
-            voluptate rem expedita eius accusantium quasi perspiciatis. Eaque,
-            libero necessitatibus enim consequatur unde eos? Unde odio tenetur
-            exercitationem at voluptas molestias.
-          </h3>
-          <button><a href="">Contact Us</a></button>
+          <button>
+            <p><a href="#">Explore Course</a>
+            </p>
+          </button>
         </div>
       </div>
-    </section>
-    <!-- ==============================Updated and news======================================== -->
-    <section class="News__section">
-      <h1 class="News__Header">News & <span> Articles </span> <br/>Take a look at our latest Articles & Resources</h1>
-      <!-- <div class="News__Container">
+    </div>
+
+    <div class="Expect__Container">
+      <div>
+        <img class="Student-img" src="{% static 'afr.jpg' %}" alt="" />
+      </div>
+      <div class="Cards__Container">
+        <div class="first">
+          <div class="card">
+            <img class="Expect__icons" src="{% static 'hat.png' %}" alt="" />
+            <div class="container-card">
+              <h4><b>Knowledge</b></h4>
+
+              <p>All Health Professionals</p>
+            </div>
+          </div>
+          <div id="cards" class="card">
+            <img class="Expect__icons" src="{% static 'ulimited.jpg' %}" alt="" />
+            <div class="container-card">
+              <h4><b>Unlimited access</b></h4>
+              <p>All Health Professionals</p>
+            </div>
+          </div>
+        </div>
+        <div class="second">
+          <div class="card">
+            <img class="Expect__icons" src="{% static 'skills.jpg' %}" alt="" />
+            <div class="container-card">
+              <h4><b>Practical Skills</b></h4>
+              <p>All Health Professionals</p>
+            </div>
+          </div>
+          <div id="cards" class="card">
+            <img class="Expect__icons" src="{% static 'certficate.jpg' %}" alt="" />
+            <div class="container-card">
+              <h4><b>Certificates</b></h4>
+              <p>All Health Professionals</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<!-- ============================== Number section====================================== -->
+<div>
+  <section class="Whole__Number">
+    <div class="grid-numbers">
+      <div class="no1">
+        <div class="Sup">50<sup>+</sup></div>
+        <p class="Text">Courses</p>
+      </div>
+      <div class="no2">
+        <div class="Sup">13<sup>+</sup></div>
+        <p class="Text">Instructors</p>
+      </div>
+      <div class="no3">
+        <div class="Sup">300<sup>+</sup></div>
+        <p class="Text">Students</p>
+      </div>
+      <div class="no4">
+        <div class="Sup">500<sup>+</sup></div>
+        <p class="Text">Learning Materials</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ==========Main coursers======================= -->
+<section class="gallery">
+  <div class="Coursers__Container">
+    <h1>Popular <span>Medical </span> Courses</h1>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="gallery-filter">
+        <span class="filter-item active" id="All" data-filter="all" onclick="filterCourses('All')">Show All</span>
+        {% for category in categories %}
+        <span class="filter-item" id="{{category}}" data-filter="watch"
+          onclick="filterCourses('{{category}}')">{{category|title}}</span>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="row" id="row">
+      {% for course in courses %}
+
+      {% include 'includes/courses/card.html' %}
+      {% endfor %}
+
+    </div>
+
+
+
+  </div>
+</section>
+<!--================== Testmonial================ -->
+<div class="hero">
+  <h1>Real-life success stories from <span> Students</span></h1>
+
+  <div class="container__test">
+    <div class="indicator">
+      <span class="btns active"></span>
+      <span class="btns"></span>
+      <span class="btns"></span>
+      <span class="btns"></span>
+    </div>
+    <div class="testimonial">
+      <div class="slide-row" id="slide">
+        <div class="slide-col">
+          <div class="user-text">
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+              Tenetur, quo. Facere tempore nam consequuntur natus adipisci
+              ut perferendis quas unde aliquam ipsam libero, officiis
+              quaerat magnam consectetur ab, ea hic!
+            </p>
+            <h3>Leslie</h3>
+            <p>Alexander</p>
+          </div>
+          <div class="user-img">
+            <img src="{% static 'student.jpg' %}" alt="" />
+          </div>
+        </div>
+        <div class="slide-col">
+          <div class="user-text">
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+              Tenetur, quo. Facere tempore nam consequuntur natus adipisci
+              ut perferendis quas unde aliquam ipsam libero, officiis
+              quaerat magnam consectetur ab, ea hic!
+            </p>
+            <h3>Leslie</h3>
+            <p>Alexander</p>
+          </div>
+          <div class="user-img">
+            <img src="{% static 'undraw_doctors_p6aq.svg' %}" alt="" />
+          </div>
+        </div>
+        <div class="slide-col">
+          <div class="user-text">
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+              Tenetur, quo. Facere tempore nam consequuntur natus adipisci
+              ut perferendis quas unde aliquam ipsam libero, officiis
+              quaerat magnam consectetur ab, ea hic!
+            </p>
+            <h3>Leslie</h3>
+            <p>Alexander</p>
+          </div>
+          <div class="user-img">
+            <img src="{% static 'undraw_medicine_b-1-ol.svg' %}" alt="" />
+          </div>
+        </div>
+        <div class="slide-col">
+          <div class="user-text">
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+              Tenetur, quo. Facere tempore nam consequuntur natus adipisci
+              ut perferendis quas unde aliquam ipsam libero, officiis
+              quaerat magnam consectetur ab, ea hic!
+            </p>
+            <h3>Leslie</h3>
+            <p>Alexander</p>
+          </div>
+          <div class="user-img">
+            <img src="{% static 'coursers.jpg' %}" alt="" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- =================Contact us================= -->
+<section class="Contacts__Lnading">
+  <h1>Contact <span> Us</span></h1>
+
+  <div class="Contacts__Lnading__container">
+    <div class="first">
+      <img src="{% static 'contactus.svg' %}" alt="" />
+    </div>
+    <div>
+      <h3>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore
+        voluptate rem expedita eius accusantium quasi perspiciatis. Eaque,
+        libero necessitatibus enim consequatur unde eos? Unde odio tenetur
+        exercitationem at voluptas molestias.
+      </h3>
+      <button><a href="">Contact Us</a></button>
+    </div>
+  </div>
+</section>
+<!-- ==============================Updated and news======================================== -->
+<section class="News__section">
+  <h1 class="News__Header">News & <span> Articles </span> <br />Take a look at our latest Articles & Resources</h1>
+  <!-- <div class="News__Container">
        <di class="">
         <h1>betty</h1>
        </div>
@@ -482,67 +476,64 @@
           <h1>betty</h1>
          </div>
       </div> -->
-      <div class="News__Container">
-        <div>
-          <div class="cards">
-            <img src="{% static 'covide.jpg' %}" alt="Avatar" style="width:100%">
-            <div class="container">
-              <h2>Covid-19</h2>
-              <p>Researchers found that people who carry a genetic variant of a protein found on cell surfaces are less likely to get sick from Covid, even if they were infected with the vi...</p>
-              <!-- <p>Interior Designer</p>  -->
-            </div>
-          </div>
-          <div class="">
-          <button id="vertical-center" class="news__btn"><a href="#">MORE INFO</a></button>
-        </div>
-        </div>
-        <div>
-          <div class="cards">
-            <img src="{% static 'news-2.jpg' %}" alt="Avatar" style="width:100%">
-            <div class="container">
-              <h2>Postpartum</h2>
-              <p>Postpartum depression pill is safe and effective, new trial data shows,  Medications shouldn’t be the first of treatment for mental health conditi...</p>
-              <!-- <p>Interior Designer</p>  -->
-            </div>
-          </div>
-          <button id="vertical-center"  class="news__btn"><a href="#">MORE INFO</a></button>
-        </div>
-        <div>
-          <div class="cards">
-            <img src="{% static 'news3.jpg' %}" alt="Avatar" style="width:100%">
-            <div class="container">
-              <h2>Blood pressure</h2>
-                      <p>Blood pressure is measured in units of millimeters of mercury (abbreviated as mmHg), and written as two numbers, one above the o...</p>              <!-- <p>Interior Designer</p>  -->
-            </div>
-          </div>
-          <button id="vertical-center"  class="news__btn"><a href="#">MORE INFO</a></button>
+  <div class="News__Container">
+    <div>
+      <div class="cards">
+        <img src="{% static 'covide.jpg' %}" alt="Avatar" style="width:100%">
+        <div class="container">
+          <h2>Covid-19</h2>
+          <p>Researchers found that people who carry a genetic variant of a protein found on cell surfaces are less
+            likely to get sick from Covid, even if they were infected with the vi...</p>
+          <!-- <p>Interior Designer</p>  -->
         </div>
       </div>
-    </section>
-    <!-- ====================  Subscribe Text============================ -->
-    <section class=subscrib__container>
-      <div class="Start-text">
-        <h1>Never Miss a Single News</h1>
-        <h2>
-          Subscribe for Creative Software and get to know more about latest
-          informations
-        </h2>
-        <div class="newsletter">
-          <form action="#" method="post">
-            <input
-              type="email"
-              name="email"
-              placeholder="Enter your email"
-              required
-            />
-            <button type="submit">Subscribe</button>
-          </form>
+      <div class="">
+        <button id="vertical-center" class="news__btn"><a href="#">MORE INFO</a></button>
+      </div>
+    </div>
+    <div>
+      <div class="cards">
+        <img src="{% static 'news-2.jpg' %}" alt="Avatar" style="width:100%">
+        <div class="container">
+          <h2>Postpartum</h2>
+          <p>Postpartum depression pill is safe and effective, new trial data shows, Medications shouldn’t be the first
+            of treatment for mental health conditi...</p>
+          <!-- <p>Interior Designer</p>  -->
         </div>
       </div>
-    </section>
+      <button id="vertical-center" class="news__btn"><a href="#">MORE INFO</a></button>
+    </div>
+    <div>
+      <div class="cards">
+        <img src="{% static 'news3.jpg' %}" alt="Avatar" style="width:100%">
+        <div class="container">
+          <h2>Blood pressure</h2>
+          <p>Blood pressure is measured in units of millimeters of mercury (abbreviated as mmHg), and written as two
+            numbers, one above the o...</p> <!-- <p>Interior Designer</p>  -->
+        </div>
+      </div>
+      <button id="vertical-center" class="news__btn"><a href="#">MORE INFO</a></button>
+    </div>
+  </div>
+</section>
+<!-- ====================  Subscribe Text============================ -->
+<section class=subscrib__container>
+  <div class="Start-text">
+    <h1>Never Miss a Single News</h1>
+    <h2>
+      Subscribe for Creative Software and get to know more about latest
+      informations
+    </h2>
+    <div class="newsletter">
+      <form action="#" method="post">
+        <input type="email" name="email" placeholder="Enter your email" required />
+        <button type="submit">Subscribe</button>
+      </form>
+    </div>
+  </div>
+</section>
 
- 
 
 
- {% endblock content %}
 
+{% endblock content %}

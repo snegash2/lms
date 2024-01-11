@@ -179,7 +179,7 @@ class Module(models.Model):
     title = models.CharField(max_length=200)
     description = RichTextUploadingField(blank=True)
     order = OrderingField(blank=True, for_fields=['course'])
-
+    pdfs =  models.ManyToManyField("File",blank= True)
     def __str__(self):
         return f'{self.order}. {self.title}'
 
@@ -201,6 +201,7 @@ class Content(models.Model):
     module = models.ForeignKey(Module,
                                related_name='contents',
                                on_delete=models.CASCADE)
+    
     content_type = models.ForeignKey(ContentType,on_delete=models.CASCADE,limit_choices_to={'model__in':(
                                 'text',
                                 'video',
@@ -263,5 +264,18 @@ class Video(GenericItem):
     url = models.URLField(blank=True,null=True)
     video = models.FileField(upload_to="couses/videos", blank=True, null=True, validators=[])
     # objects = VideoManager()
+
+
+
+# actually Tasks
+class Task(GenericItem):
+    module = models.ForeignKey(Module,related_name = "tasks", on_delete=models.CASCADE)
+    title = models.CharField(max_length= 255,blank = True,null = False)
+    task   = models.TextField(max_length=255, blank = True, null =False)
+    description = models.TextField(max_length=255, blank = True)
+
+    def __str__(self):
+        return f"{self.title}"
+
 
 
