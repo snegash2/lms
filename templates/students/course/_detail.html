@@ -1,0 +1,86 @@
+{% extends "_base.html" %}
+{% load cache %}
+{% block title %}
+{{ object.title }}
+{% endblock %}
+
+{% block content %}
+<h1>
+    {{ module.title }}
+</h1>
+<div class="contents">
+    <h3>Modules</h3>
+    <ul id="modules">
+        {% cache 600 module_contents module %}
+        {% for m in object.modules.all %}
+        <li data-id="{{ m.id }}" {% if m == module %}class="selected" {% endif %}>
+            <a href="{% url "student_course_detail_module" object.id m.id %}">
+                <span>
+                    Module <span class="order">{{ m.order|add:1 }}</span>
+                </span>
+                <br>
+                {{ m.title }}
+            </a>
+        </li>
+        {% empty %}
+        <li>No modules yet.</li>
+        {% endfor %}
+        {% endcache %}
+    </ul>
+</div>
+<div class="mb-6" style="margin-bottom: 50px;">
+    {% for content in module.contents.all %}
+    {% with item=content.item %}
+    <h2>{{ item.title }}</h2>
+    {{ item.render }}
+    {% endwith %}
+    {% endfor %}
+
+    <h3>
+        <a href="{% url "chat:course_chat_room" object.id %}">
+        Course chat room 
+        </a>
+        </h3>
+
+
+  
+
+{% if course.has_practice %}
+
+
+    {% if request.user.groups.all  %}
+
+     <a href="/quiz/"  class="bg-blue-500 text-white font-bold py-2 px-4 rounded-md"> Take exam</a>
+    {% else %}
+
+     <div class="mt-12">
+      <p class="text-gray-700 text-sm">
+        please upload the certificate and other necessary material in order to verify your egiability to take quiz
+      <cite>
+        <a href="https://www.akc.org/expert-advice/health/dog-lifespan/" class="underline">
+          The American Kennel Club
+        </a>
+      </cite>
+      </p>
+
+
+      <form  method="post" enctype="multipart/form-data">
+      <div class="mb-4">
+      <label for="file" class="block text-gray-700">name</label>
+      <input type="text" name="name" id="name" class="w-full bg-gray-100 border border-gray-300 rounded-md p-2">
+      <label for="file" class="block text-gray-700">File</label>
+      <input type="file" name="file" id="file" class="w-full bg-gray-100 border border-gray-300 rounded-md p-2">
+      </div>
+
+      {%csrf_token%}
+      <button type="submit" class="bg-blue-500 text-white font-bold py-2 px-4 rounded-md">Upload</button>
+      </form>
+     </div>
+
+
+      {% endif %}
+    
+     {%endif %}
+    
+</div>
+{% endblock %}

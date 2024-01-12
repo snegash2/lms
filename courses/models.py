@@ -134,6 +134,7 @@ class Course(models.Model):
     ceu          = models.IntegerField(default= 0)
     published   = models.BooleanField(default=False)
     reason_not_published = models.TextField(default="")
+    intro_video = models.FileField("Video",upload_to='videos',blank= True,null=True)
 
 
     class Meta:

@@ -238,16 +238,33 @@
         <div class="course-list">
           <!-- Course 1 -->
           <div class="course">
-            <h3 class="course-header">Course 1</h3>
+            <h3 class="course-header">{{course.name}}</h3>
             <div id="Display" class="video">
               <div class="main-video">
                 <div class="video">
+
+                {% if course.intro_video %}
                   <video
-                    src="./video//videoplayback.mp4"
+                    src="{{course.intro_video.url}}"
                     controls
                     muted
-                    autoplay
+                    style="
+                    position: relative;
+                    width: 30%;
+                    height: 30%;
+                    "
+                    
                   ></video>
+
+                  {% else %}
+                    <video
+                    src="#"
+                    controls
+                    muted
+                    
+                  ></video>
+
+                  {%endif%}
 
                   <h3 class="title">01.Biomedical</h3>
                 </div>
@@ -289,20 +306,25 @@
               <div id="pdf-list">
                 <h1>Pdf Files</h1>
                 <ul id="dynamic-list">
-                  {% for module in course.modules.all %}
-                  
-                    {% for pdf in module.pdfs.all %}
+                  {% if request.user in course.students.all and request.user.is_authenticated  %}
 
-                        <li>
-                        
-                          <a href="{{pdf.file.url}}">
-                          {{pdf.title}}
-                          <img class="pdf-icon" src="{% static 'pfds.jpg' %}" alt="">
-                        </a>
-                        </li>
+                    {% for module in course.modules.all %}
                     
+                      {% for pdf in module.pdfs.all %}
+
+                    
+                          <li>
+                          
+                            <a href="{{pdf.file.url}}">
+                            {{pdf.title}}
+                            <img class="pdf-icon" src="{% static 'pfds.jpg' %}" alt="">
+                          </a>
+                          </li>
+                      
+                      {% endfor %}
                     {% endfor %}
-                  {% endfor %}
+
+                  {% endif %}
 
                 </ul>
               </div>
