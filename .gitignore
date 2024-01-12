@@ -6,8 +6,8 @@ node_modules
 *.swp
 
 #
-images
-files
+# images
+# files
 
 # Tailwind
 tailwind.config.js
