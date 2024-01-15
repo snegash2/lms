@@ -34,7 +34,7 @@ class OwnerEditMixin:
 
 class OwnerCourseMixin(OwnerMixin,LoginRequiredMixin,PermissionRequiredMixin):
     model = Course
-    fields = ['course_name', 'slug', 'overview','image']
+    fields = ['category', 'slug', 'overview','image']
     success_url = reverse_lazy('courses:manage_course_list')
 
 class OwnerCourseEditMixin(OwnerCourseMixin, OwnerEditMixin):
@@ -217,12 +217,19 @@ class CourseDetailView(DetailView):
     template_name = 'courses/course/detail.html'
 
     def get_context_data(self, **kwargs):
+        crendentials = None
         context = super().get_context_data(**kwargs)
-
+        if self.request.user.is_authenticated:
+            crendentials =  Crendential.objects.filter(course = self.object,user = self.request.user).first()
+         
+     
         context['enroll_form'] = CourseEnrollForm(
             initial={'course': self.object})
         
         context['course'] =  self.object
+        if crendentials:
+            context['crendentials'] = crendentials
+
         return context
 
 

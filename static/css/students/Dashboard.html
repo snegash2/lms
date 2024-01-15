@@ -1,0 +1,438 @@
+<html lang="en">
+  <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cabin:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Cormorant+Upright:wght@300;400;600;700&family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,700&family=Great+Vibes&family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Lexend:wght@100;200;300;400;500;600;700;800;900&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;0,1000;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900;1,1000&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Syne:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      src="https://kit.fontawesome.com/84ceadd20f.js"
+      crossorigin="anonymous"
+    ></script>
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unicons.iconscout.com/release/v4.0.0/css/line.css"
+    />
+    <link rel="icon" href="./assets/logo.png" type="image/x-icon" />
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Course</title>
+
+    <link rel="stylesheet" href="./footer.css" />
+    <link rel="stylesheet" href="./studentnewmenu.css" />
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
+    <link rel="stylesheet" href="dashboard.css" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+    <!-- new -->
+  </head>
+  <body class="main-body">
+    <!--  -->
+    <header>
+      <h1 class="Header-Title">Welcome Abel Mulegate</h1>
+      <div id="dashboard-container">
+        <div id="profile-picture-container" onclick="openFileInput()">
+          <img
+            id="profile-picture"
+            src="./assets/download.jpg"
+            alt="Profile Picture"
+          />
+        </div>
+        <label for="file-input" id="profile-upload-btn"
+          >Upload Profile Picture</label
+        >
+        <input
+          type="file"
+          id="file-input"
+          accept="image/*"
+          onchange="displayImage(this)"
+        />
+      </div>
+      <script>
+        // JavaScript functions
+        function openFileInput() {
+          document.getElementById("file-input").click();
+        }
+  
+        function displayImage(input) {
+          const file = input.files[0];
+  
+          if (file) {
+            const reader = new FileReader();
+  
+            reader.onload = function (e) {
+              document.getElementById("profile-picture").src = e.target.result;
+            };
+  
+            reader.readAsDataURL(file);
+          }
+        }
+      </script>
+    </header>
+
+    <section class="dashboard">
+      <div class="sidebar" id="sidebar">
+        <ul>
+          <li>
+            <a href="#" id="home"
+              ><span class="icons fas fa-home"></span>Home</a
+            >
+          </li>
+          <li>
+            <a href="#" id="profile"
+              ><span class="icons fas fa-user"></span>Profile</a
+            >
+          </li>
+          <li>
+            <a href="#" id="grades"><span class="icons fa fa-cog" aria-hidden="true""></span>Setting</a>
+          </li>
+          <li>
+            <a href="#" id="schedule"
+              ><span class="icons fa fa-sign-out"></span>Logout
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="content">
+        <div id="home-content">
+          <div class="dashboard">
+            <div class="counter" id="registeredCourses">
+              <i class="icon fas fa-book"></i>
+              <h2>My Courses</h2>
+              <p id="registeredCoursesCount">
+                0<span class="plus-sign">+</span>
+              </p>
+            </div>
+            <div class="counter" id="certifications">
+              <i class="icon fas fa-certificate"></i>
+              <h2>Certifications</h2>
+              <p id="certificationsCount">0<span class="plus-sign">+</span></p>
+            </div>
+            <div class="counter" id="popularCourses">
+              <i class="icon fas fa-fire"></i>
+              <h2>Popular Courses</h2>
+              <p id="popularCoursesCount">0<span class="plus-sign">+</span></p>
+            </div>
+          </div>
+          <h1 class="activity">Recent Activity</h1>
+       <!-- ======Course====== -->
+       <div class="card-container" id="card-container"></div>
+
+       <script>
+         // Card data
+         const cardData = [
+           {
+             video: "./video/videoplayback.mp4",
+             poster: "./assets/banner2.jpg", // Add the poster image URL
+             header: "Biomedical",
+             content: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ex, distinctio. dolorum provident ullam ducim of card 1.",
+             link: "https://example.com/card1",
+           },
+           {
+             video: "./video/videoplayback.mp4",
+             poster: "./assets/banner2.jpg", // Add the poster image URL
+             header: "Genetics",
+             content: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ex, distinctio. dolorum provident ullam ducim of card 2.",
+             link: "https://example.com/card2",
+           },
+           {
+             video: "./video/videoplayback.mp4",
+             poster: "./assets/banner2.jpg", // Add the poster image URL
+             header: "Dental",
+             content: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ex, distinctio. dolorum provident ullam ducim of card 3.",
+             link: "https://example.com/card3",
+           },
+         ];
+   
+         // Populate cards
+         const cardContainer = document.getElementById("card-container");
+   
+         cardData.forEach((data) => {
+           const card = document.createElement("div");
+           card.classList.add("card");
+   
+           const video = document.createElement("video");
+           video.src = data.video;
+           video.poster = data.poster; // Set the poster image
+           video.controls = true; // Add controls for user interaction
+           card.appendChild(video);
+   
+           const cardContent = document.createElement("div");
+           cardContent.classList.add("card-content");
+   
+           const cardHeader = document.createElement("div");
+           cardHeader.classList.add("card-header");
+           cardHeader.textContent = data.header;
+   
+           const cardText = document.createElement("p");
+           cardText.textContent = data.content;
+   
+           const cardButton = document.createElement("a");
+           cardButton.href = data.link; // Use the link from the data
+           cardButton.classList.add("card-button");
+           cardButton.textContent = "Continue";
+   
+           cardContent.appendChild(cardHeader);
+           cardContent.appendChild(cardText);
+           cardContent.appendChild(cardButton);
+   
+           card.appendChild(cardContent);
+   
+           cardContainer.appendChild(card);
+         });
+       </script>
+<!--  -->
+          <script>
+            // Function to update the counter value with counting effect
+            function updateCounterWithEffect(counterId, maxCount) {
+              let currentCount = 0;
+              const counterElement = document.getElementById(counterId);
+
+              const intervalId = setInterval(function () {
+                if (currentCount < maxCount) {
+                  currentCount++;
+                  counterElement.innerText = currentCount;
+                } else {
+                  clearInterval(intervalId);
+                }
+              }, 70);
+            }
+
+            // Sample values, you can replace these with actual data or fetch from a backend
+            let registeredCoursesCount = 25;
+            let certificationsCount = 10;
+            let popularCoursesCount = 15;
+            let AnnouncementCount = 3;
+            // Update counters with counting effect initially
+            updateCounterWithEffect(
+              "registeredCoursesCount",
+              registeredCoursesCount
+            );
+            updateCounterWithEffect("certificationsCount", certificationsCount);
+            updateCounterWithEffect("popularCoursesCount", popularCoursesCount);
+            updateCounterWithEffect("AnnouncementCount", AnnouncementCount);
+          </script>
+        </div>
+
+        <div id="profile-content" class="hidden">
+          <h2>Profile Information</h2>
+          <p>Your profile details go here.</p>
+        
+        </div>
+
+        <div id="grades-content" class="hidden">
+          <h2>Settings</h2>
+          <p>Your Setting.</p>
+        </div>
+
+        <div id="schedule-content" class="hidden">
+          <h2>Logout</h2>
+            <p>logout</p>
+        </div>
+      </div>
+
+      <!-- Hamburger menu -->
+      <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </section>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const tabs = ["home", "profile", "grades", "schedule"];
+        const sidebar = document.getElementById("sidebar");
+        const hamburger = document.getElementById("hamburger");
+
+        tabs.forEach((tab) => {
+          const tabElement = document.getElementById(tab);
+          const contentElement = document.getElementById(`${tab}-content`);
+
+          tabElement.addEventListener("click", function () {
+            tabs.forEach((t) => {
+              const tContent = document.getElementById(`${t}-content`);
+              tContent.classList.add("hidden");
+            });
+
+            contentElement.classList.remove("hidden");
+
+            // Close the sidebar on mobile view after clicking a tab
+            if (window.innerWidth <= 600) {
+              sidebar.classList.remove("show");
+              hamburger.classList.remove("active");
+            }
+          });
+        });
+
+        // Toggle sidebar visibility on mobile view
+        hamburger.addEventListener("click", function (event) {
+          event.stopPropagation(); // Prevents the click event from reaching the document and closing the sidebar
+
+          sidebar.classList.toggle("show");
+          hamburger.classList.toggle("active");
+        });
+
+        // Close the sidebar on mobile view when clicking outside of it
+        document.addEventListener("click", function () {
+          sidebar.classList.remove("show");
+          hamburger.classList.remove("active");
+        });
+      });
+    </script>
+    <!--  -->
+    <!-- Footer and Dropdwon content  -->
+    <section>
+      <footer>
+        <div class="containers">
+          <div class="column">
+            <img src="./assets/logo.png" alt="LMS Logo" />
+          </div>
+          <div class="column">
+            <h4>Active Pages</h4>
+            <ul>
+              <li><a href="#">Home</a></li>
+              <li><a href="#">About</a></li>
+              <li><a href="#">Services</a></li>
+              <li><a href="#">Contact</a></li>
+            </ul>
+          </div>
+
+          <div class="column">
+            <h4>Contact Us</h4>
+            <p>Email: example@example.com</p>
+            <p>Address: 123 ABC Street, City, Country</p>
+          </div>
+          <div class="column">
+            <h4>Social Media</h4>
+            <p>do you need our help? Feel free to contact us.</p>
+            <div class="social-icons">
+              <a href="#"><i class="fa fa-facebook"></i></a>
+              <a href="#"><i class="fa fa-linkedin"></i></a>
+              <a href="#"><i class="fa fa-telegram"></i></a>
+              <a href="#"><i class="fa fa-youtube"></i></a>
+            </div>
+          </div>
+        </div>
+        <h1 class="footer__class">
+          <hr />
+          © Copyright <span><a href="">MarkAb Solutions</a> </span> - 2023. All
+          Rights Reserved
+        </h1>
+      </footer>
+    </section>
+    <script>
+      // JavaScript to toggle the active class on hamburger click
+      document.addEventListener("DOMContentLoaded", function () {
+        var navbarHamburger = document.querySelector(".navbar-hamburger");
+        var navbarMenu = document.querySelector(".navbar-menu");
+
+        navbarHamburger.addEventListener("click", function () {
+          navbarHamburger.classList.toggle("active");
+          navbarMenu.classList.toggle("active");
+        });
+
+        document.addEventListener("click", function (event) {
+          var targetElement = event.target;
+          if (
+            !targetElement.closest(".navbar") &&
+            navbarHamburger.classList.contains("active")
+          ) {
+            navbarHamburger.classList.remove("active");
+            navbarMenu.classList.remove("active");
+          }
+        });
+      });
+    </script>
+    <!--  -->
+    <script>
+      // JavaScript to toggle the active class on hamburger click
+      document.addEventListener("DOMContentLoaded", function () {
+        var navbarHamburger = document.querySelector(".navbar-hamburger");
+        var navbarMenu = document.querySelector(".navbar-menu");
+
+        navbarHamburger.addEventListener("click", function () {
+          navbarHamburger.classList.toggle("active");
+          navbarMenu.classList.toggle("active");
+        });
+
+        document.addEventListener("click", function (event) {
+          var targetElement = event.target;
+          if (
+            !targetElement.closest(".navbar") &&
+            navbarHamburger.classList.contains("active")
+          ) {
+            navbarHamburger.classList.remove("active");
+            navbarMenu.classList.remove("active");
+          }
+        });
+      });
+    </script>
+    <!-- Catgory dropdown -->
+    <script>
+      const newdropdowns = document.querySelectorAll(".newdropdown");
+      newdropdowns.forEach((newdropdown) => {
+        const select = newdropdown.querySelector(".select");
+        const caret = newdropdown.querySelector(".caret");
+        const menu = newdropdown.querySelector(".menu");
+        const options = newdropdown.querySelector(".menu li");
+        const selected = newdropdown.querySelector(".selected");
+
+        select.addEventListener("click", () => {
+          select.classList.toggle("select-clicked");
+          caret.classList.toggle("caret-rotate");
+          menu.classList.toggle("menu-open");
+        });
+        options.forEach((option) => {
+          option.addEventListener("click", () => {
+            selected.innerText = option.innerText;
+            select.classList.remove("select-clicked");
+            caret.classList.remove("caret-rotate");
+            menu.classList.remove("menu-open");
+            options.forEach((option) => {
+              option.classList.remove("active");
+            });
+            option.classList.add("active");
+          });
+        });
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+  </body>
+</html>

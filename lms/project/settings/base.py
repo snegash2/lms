@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     # 'social_django',
     'django_extensions',
      'widget_tweaks',
+      'tempus_dominus',
 
    
 
@@ -287,3 +288,7 @@ X_FRAME_OPTIONS = "SAMEORIGIN"
 SILENCED_SYSTEM_CHECKS = ["security.W019"]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap5' 
+
+
+TEMPUS_DOMINUS_LOCALIZE = True
+TEMPUS_DOMINUS_INCLUDE_ASSETS = False

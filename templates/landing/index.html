@@ -350,6 +350,7 @@
     <div class="row">
       <div class="gallery-filter">
         <span class="filter-item active" id="All" data-filter="all" onclick="filterCourses('All')">Show All</span>
+   
         {% for category in categories %}
         <span class="filter-item" id="{{category}}" data-filter="watch"
           onclick="filterCourses('{{category}}')">{{category|title}}</span>

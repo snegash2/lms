@@ -1,6 +1,8 @@
+from typing import Any
+from django.db.models.query import QuerySet
 from django.urls import reverse_lazy,resolve,reverse
 from django.views.generic import DetailView, ListView
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView,UpdateView
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
 from django.views.generic.edit import FormView
@@ -13,6 +15,9 @@ from .forms import CourseEnrollForm
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from crendential.models import Crendential
 from django.contrib.auth.models import User
+from students.models import Certification,StudentActivity,Profile
+from .forms import StudentProfile
+from django.shortcuts import  render
 
 
 class StudentRegistrationView(CreateView):
@@ -23,11 +28,44 @@ class StudentRegistrationView(CreateView):
         result = super().form_valid(form)
         cd = form.cleaned_data
         user = authenticate(username=cd['username'],
+        # activity = StudentActivity.objects.create(user = self.request.user,activity = "Student Registred")
+        # activity.save()
         password=cd['password1'])
         login(self.request, user)
         return result
 
 
+
+class StudentDashboard(DetailView):
+    model = User
+    template_name = 'students/student/student_dashboard.html'
+
+    
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context =  super().get_context_data(**kwargs)
+        course_nums = 0
+        courses = Course.objects.all()
+      
+        
+        for course in courses:
+            students = course.students.all()
+            if self.request.user in students:
+                course_nums += 1
+        context['course_nums'] = course_nums
+        if self.request.user.is_authenticated:            
+            context['certifications'] = self.request.user.certifications.count()
+        actvities = self.request.user.actvities
+        profile = self.request.user.profile
+        if profile:
+            context['profile'] = profile
+          
+        
+        if actvities:
+            context['actvities'] = actvities
+    
+      
+            
+        return context
 
 class StudentEnrollCourseView(LoginRequiredMixin,FormView):
     course = None
@@ -39,9 +77,11 @@ class StudentEnrollCourseView(LoginRequiredMixin,FormView):
         course_id   = request.POST.get("id")
         course = get_object_or_404(Course,id = course_id)
         user = get_object_or_404(User,id = user_id)
-        print("course ",course,"user ",user)
+        
         course.students.add(user)
         course.save()
+        activity = StudentActivity.objects.create(user = self.request.user,activity = f"Student Enroled")
+        activity.save()
         
         return redirect("student_course_detail",pk = course_id)
 
@@ -107,4 +147,55 @@ class StudentCourseDetailView(DetailView):
         cr.file = file
         cr.save()
         return reverse(resolve('student_enroll_course'))
+    
+    
+    
+    
+class StudentProfileView(LoginRequiredMixin,UpdateView):
+    
+    
+    # form_class = StudentProfile
+    model = Profile
+    fields = "avatar","bio"
+    template_name =  'students/student/student_dashboard.html'
+    
+    
+
+    
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context =  super().get_context_data(**kwargs)
+        course_nums = 0
+        courses = Course.objects.all()
+      
+        
+        for course in courses:
+            students = course.students.all()
+            if self.request.user in students:
+                course_nums += 1
+        context['course_nums'] = course_nums
+        if self.request.user.is_authenticated:            
+            context['certifications'] = self.request.user.certifications.count()
+        actvities = self.request.user.actvities
+        profile = self.request.user.profile
+        if profile:
+            context['profile'] = profile
+          
+        
+        if actvities:
+            context['actvities'] = actvities
+            
+        return context
+    
+    
+ 
+
+
+    # def form_valid(self, form):
+    #     print("form is valled ")
+    #     instance = Profile.objects.get(user = self.request.user)
+    #     form = form.save(instance=instance)
+    #     return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('student_course_detail', args=[self.course.id])
           
