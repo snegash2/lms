@@ -67,6 +67,12 @@
             </div>
           </li>
 
+          <li>
+            <div class="Sign">
+              <a     href="{%url 'students:student_update_profile' request.user.profile.pk %}"  ><h6>Profile</h6></a>
+            </div>
+          </li>
+
           {% endif %}
         </div>
       </ul>

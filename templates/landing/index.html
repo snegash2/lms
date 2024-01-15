@@ -70,7 +70,7 @@
                               {% if request.user.is_authenticated %}
 
                              ${registered && `
-                              <form action="{% url "student_enroll_course" %}" method="post">
+                              <form action="{% url "students:student_enroll_course" %}" method="post">
                               {% csrf_token %}
                                 {{ enroll_form }}
                                 <input type="hidden" value="${jcourse.id}" name="id" />

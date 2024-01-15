@@ -2,7 +2,7 @@ from django.urls import path
 from . import views
 from django.views.decorators.cache import cache_page
 
-# app_name = "students"
+app_name = "students"
 urlpatterns = [
     path('register/',views.StudentRegistrationView.as_view(),name='student_registration'),
     path('dashboard/<pk>/',views.StudentDashboard.as_view(),name='student-dashboard'),

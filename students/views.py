@@ -18,6 +18,9 @@ from django.contrib.auth.models import User
 from students.models import Certification,StudentActivity,Profile
 from .forms import StudentProfile
 from django.shortcuts import  render
+from django.contrib import messages
+from django.http import JsonResponse
+
 
 
 class StudentRegistrationView(CreateView):
@@ -156,11 +159,14 @@ class StudentProfileView(LoginRequiredMixin,UpdateView):
     
     # form_class = StudentProfile
     model = Profile
-    fields = "avatar","bio"
+    fields = "bio","location","birth_date"
     template_name =  'students/student/student_dashboard.html'
     
     
 
+        
+        
+        
     
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context =  super().get_context_data(**kwargs)
@@ -187,15 +193,10 @@ class StudentProfileView(LoginRequiredMixin,UpdateView):
         return context
     
     
- 
 
 
-    # def form_valid(self, form):
-    #     print("form is valled ")
-    #     instance = Profile.objects.get(user = self.request.user)
-    #     form = form.save(instance=instance)
-    #     return super().form_valid(form)
-
-    def get_success_url(self):
-        return reverse_lazy('student_course_detail', args=[self.course.id])
+    def get_success_url(self,**kwargs):
+        messages.success(self.request, 'Profile update success fully.')
+        return reverse_lazy('students:student_update_profile', args=[self.request.user.profile.pk])
+      
           

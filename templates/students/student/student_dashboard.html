@@ -68,15 +68,23 @@
 {%endblock%}
 
 {% block  content %}
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+
     <header>
       <h1 class="Header-Title">Welcome {{request.user.username|title}}</h1>
       <div id="dashboard-container">
         <div id="profile-picture-container" onclick="openFileInput()">
+
+          {% if profile.avatar %}
           <img
             id="profile-picture"
             src="{{profile.avatar.url}}"
             alt="Profile Picture"
-          />
+          /> 
+
+          {%endif %}
         </div>
         <label for="file-input" id="profile-upload-btn"
           >Upload Profile Picture</label
@@ -258,11 +266,53 @@
 
         <div id="profile-content" class="hidden">
           <h2>Profile Information</h2>
-          <p>Your profile details go here.</p>
 
-          {{form|crispy}}
+          <form method="post" enctype="multipart/form-data" id="myform">
+            {% csrf_token %}
+             {{form.location}}
+             {{form.bio}}
+            <input type="submit" value="Update Profile"  />
+          </form>
+         
         
         </div>
+      
+    
+      
+      <script>
+          $(document).ready(function() {
+           
+              $('#myForm').submit(function(event) {
+                  event.preventDefault();  // Prevent default form submission
+                  
+                  // Serialize the form data
+                  var formData = $(this).serialize();
+                  
+                  // Send an AJAX request
+                  $.ajax({
+                      url: "{% url 'students:student_update_profile' request.user.profile.pk %}",  // Replace with your Django view URL
+                      type: 'post',
+                      data: formData,
+                      dataType: 'json',
+                      success: function(response) {
+                          if (response.success) {
+                              // Handle successful form submission
+                              alert(response.message);
+                          } else {
+                              // Handle form validation errors
+                              alert('Form submission failed: ' + response.errors);
+                          }
+                      },
+                      error: function(xhr, status, error) {
+                          // Handle AJAX error
+                          console.error('AJAX error: ' + status + ' - ' + error);
+                      }
+                  });
+              });
+          });
+      </script>
+
+
 
         <div id="grades-content" class="hidden">
           <h2>Settings</h2>
