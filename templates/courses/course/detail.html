@@ -224,7 +224,8 @@
             <div id="left" class="attach">
               <div id="Attach" class="container">
                 <h1>Attach File</h1>
-                <form id="fileForm">
+                <form id="fileForm" method="post" action="{%url 'students:student_course_detail' course.id %}" enctype="multipart/form-data" >
+                  {% csrf_token %}
                   <label for="fileInput">Select a file:</label>
                   <input type="file" id="fileInput" name="fileInput" />
 
@@ -238,7 +239,8 @@
           <div id="left" class="attach">
             <div id="Attach" class="container">
               <h1>Change File</h1>
-              <form id="fileForm">
+              <form id="fileForm" action="{%url 'students:student_course_detail' course.id %}" enctype="multipart/form-data">
+                {% csrf_token %}
                 <label for="fileInput">Select a file:</label>
                 <input type="file" id="fileInput" name="fileInput" />
                 {% if crendentials %}

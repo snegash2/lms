@@ -140,17 +140,29 @@ class StudentCourseDetailView(DetailView):
 
 
     def post(self, request, *args, **kwargs):
-        print("Hello ",request.FILES)
         user = request.user
-        name  = request.POST.get('name')
-        file = request.FILES['file']
-        cr = Crendential()
-        cr.name = name
-        cr.user = user
-        cr.file = file
-        cr.save()
-        return reverse(resolve('student_enroll_course'))
-    
+        # name  = request.POST.get('name')
+        file = request.FILES['fileInput']
+        
+        cr = Crendential.objects.filter(user = request.user)
+        
+        if not cr.exists():
+            cr = Crendential()
+            cr.user = user
+            cr.file = file
+            cr.save()
+            messages.success(self.request, 'you uploaded crendentials success fully.')
+            return redirect('students:student_course_detail', pk=self.get_object().id)
+        
+        else:
+            cr = cr.first()
+            cr.file = file
+            cr.save()
+            messages.success(self.request, 'you update  crendentials success fully.')
+            return redirect('students:student_course_detail', pk=self.get_object().id)
+        # return reverse('students:student_course_detail', args=[self.get_object().id])
+        
+
     
     
     
