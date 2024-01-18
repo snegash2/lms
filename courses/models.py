@@ -94,6 +94,26 @@ class Note(models.Model):
 
     def __str__(self):
         return self.course.name + self.user.username
+    
+    
+    
+    
+class Reference(models.Model):
+    module = models.ForeignKey("Module",
+                                verbose_name='Reference Module',
+                                related_name='rmodules',
+                                blank = True,
+                                null = True,
+                                on_delete=models.CASCADE,
+                                default=None)
+
+    
+    files = models.FileField(upload_to= 'files',blank = True,null = True)
+    link = models.URLField(blank = True,null = True)
+
+
+    def __str__(self):
+        return f"{self.module.title}"
 
 
 
@@ -134,7 +154,7 @@ class Course(models.Model):
     ceu          = models.IntegerField(default= 0)
     published   = models.BooleanField(default=False)
     reason_not_published = models.TextField(default="")
-    intro_video = models.FileField("Video",upload_to='videos',blank= True,null=True)
+    intro_video = models.URLField(default ="https://youtu.be/S-rOWaiKPgk")
 
 
     class Meta:
@@ -146,7 +166,7 @@ class Course(models.Model):
     
     @property
     def detail(self):
-        return f"{self.overview[3:40]} ..."
+        return f"{self.overview[3:70]} ..."
 
 
     

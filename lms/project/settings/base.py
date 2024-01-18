@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'django_extensions',
      'widget_tweaks',
       'tempus_dominus',
+       "bootstrap_datepicker_plus",
 
    
 
@@ -154,6 +155,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR,'static')# type:ignore
+
+
 
 # MEDIA_URL = 'media/'
 # MEDIA_ROOT = os.path.join(BASE_DIR,'media')# type:ignore

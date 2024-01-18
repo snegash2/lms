@@ -1,8 +1,7 @@
 from django.contrib import admin
 from .models import  Course, Module,SubCategory,Content,File,Task
 from django.contrib import admin
-from .models import File
-from .models import Category,CourseName
+from .models import Category,CourseName,Reference,File
 
 
 
@@ -62,6 +61,7 @@ admin.site.register(Module)
 admin.site.register(Content)
 admin.site.register(File)
 admin.site.register(Task)
+admin.site.register(Reference)
 
 
 

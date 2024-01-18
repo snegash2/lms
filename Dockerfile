@@ -8,11 +8,15 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /code
 
 COPY requirements.txt ./
-
-RUN poetry install #pip install -r requirements.txt
+RUN pip install poetry
 
 COPY . /code
+RUN poetry install #pip install -r requirements.txt
+RUN pip install gunicorn
+
 
 EXPOSE 8000
 
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "lms.project.wsgi:application"]
+# CMD ["gunicorn", "--bind", "0.0.0.0:8000", "lms.project.wsgi:application"]
+
+CMD [CMD ["python", "manage.py","runserver"]]

@@ -21,6 +21,11 @@ from django.shortcuts import  render
 from django.contrib import messages
 from django.http import JsonResponse
 
+    # File: views.py
+from bootstrap_datepicker_plus.widgets import DateTimePickerInput
+from django.views import generic
+
+
 
 
 class StudentRegistrationView(CreateView):
@@ -159,28 +164,35 @@ class StudentCourseDetailView(DetailView):
             cr.file = file
             cr.save()
             messages.success(self.request, 'you update  crendentials success fully.')
-            return redirect('students:student_course_detail', pk=self.get_object().id)
+            return redirect('courses:course_detail', slug=self.get_object().slug)
         # return reverse('students:student_course_detail', args=[self.get_object().id])
         
 
-    
-    
+
+
+
     
 class StudentProfileView(LoginRequiredMixin,UpdateView):
     
     
-    # form_class = StudentProfile
+    form_class = StudentProfile
     model = Profile
-    fields = "bio","location","birth_date"
+    # fields = "bio","location","birth_date"
     template_name =  'students/student/student_dashboard.html'
-    
+
     
 
         
         
-        
+    def get_form(self):
+        form = super().get_form()
+        form.fields["birth_date"].widget = DateTimePickerInput()
+        return form
+    
     
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        
+    
         context =  super().get_context_data(**kwargs)
         course_nums = 0
         courses = Course.objects.all()

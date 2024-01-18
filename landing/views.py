@@ -57,11 +57,18 @@ def filter_courses(request):
 
 def landing_page(request):
     courses = Course.objects.filter(published = True)
-    print("request ",request.session.get('is_loading'))
-  
-    group = Group.objects.get(name='instructors')
+    group = None
+    instructors = None
+    
+    try:
+        group = Group.objects.get(name='instructors')
+    except Group.DoesNotExist:
+        pass
+    
     users = User.objects.all()
-    instructors = group.user_set.count()
+    if group:
+        instructors = group.user_set.count()
+        
     user_num = users.count()
     student_num = int(user_num) - int(instructors)
     categories = Category.objects.all()

@@ -142,9 +142,35 @@
                     ></i>
                   </div>
                   <div class="sub-accordion-content">
-                    <li>Book Name</li>
-                    <li>Book Name</li>
-                    <li>Book Name</li>
+
+                    {%if request.user.is_authenticated %}
+                      {% if request.user in course.students.all%}
+                      
+                        {% for reference in module.rmodules.all %}
+                        <li>
+
+                          <div class="card">
+                            <div class="card-body">
+                              <h5 class="card-title">Reference Materials</h5>
+                              <p class="card-text">Here are some helpful reference materials for your learning:</p>
+                              <ul class="list-group">
+                                
+                                <li class="list-group-item">
+                                  <a href="{{reference.files.url}}"" class="card-link">Reference Material</a>
+                                </li>
+                                <li class="list-group-item">
+                                  <a href="{{reference.link}}" class="card-link">Refere more in this site</a>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </li>
+                        {% endfor %}
+
+                      {%endif%}
+
+                    {%endif%}
+                      
                   </div>
                 </div>
                 <!-- Add more sub-accordion items here as needed -->
@@ -227,7 +253,7 @@
                 <form id="fileForm" method="post" action="{%url 'students:student_course_detail' course.id %}" enctype="multipart/form-data" >
                   {% csrf_token %}
                   <label for="fileInput">Select a file:</label>
-                  <input type="file" id="fileInput" name="fileInput" />
+                  <input type="file" id="fileInput" name="fileInput" required />
 
                   <button class="Upload__btns">Upload</button>
                 </form>
@@ -242,7 +268,7 @@
               <form id="fileForm" action="{%url 'students:student_course_detail' course.id %}" enctype="multipart/form-data">
                 {% csrf_token %}
                 <label for="fileInput">Select a file:</label>
-                <input type="file" id="fileInput" name="fileInput" />
+                <input type="file" id="fileInput" name="fileInput" required />
                 {% if crendentials %}
                 <a href="{{crendentials.file.url}}" >view file</a>
                  {% endif %}

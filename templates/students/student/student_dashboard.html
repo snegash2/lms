@@ -163,14 +163,33 @@
               <p id="popularCoursesCount">0<span class="plus-sign">+</span></p>
             </div>
           </div>
-          <h1 class="activity">Recent Activity</h1>
+          <h1 class="activity">Recent Activity </h1>
        <!-- ======Course====== -->
-       <div class="card-container" id="card-container"></div>
-       {{activities}}
+       <div class="card-container" id="card-container">
+
+        {% for course in request.user.courses_joined.all %}
+          <div class="card">
+            
+
+            <iframe width="560" height="200" src="{{course.intro_video}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            <div class="card-content">
+              <div class="card-header">
+                {{title}}
+                <p>{{course.detail|safe}}</p>
+                <a href="{% url 'courses:course_detail' course.slug %}" class="card-button">Continue</a>
+              </div>
+            </div>
+        </div>
+
+        {% endfor %}
+
+
+       </div>
+     
 
        <script>
          // Card data
-         const cardData = [
+         <!-- const cardData = [
            {
              video: "./video/videoplayback.mp4",
              poster: "./assets/banner2.jpg", // Add the poster image URL
@@ -192,10 +211,15 @@
              content: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ex, distinctio. dolorum provident ullam ducim of card 3.",
              link: "https://example.com/card3",
            },
-         ];
-           
+         ]; 
+
+        -->
+
+  
          // Populate cards
          const cardContainer = document.getElementById("card-container");
+
+    
    
          cardData.forEach((data) => {
            const card = document.createElement("div");
@@ -268,9 +292,12 @@
           <h2>Profile Information</h2>
 
           <form method="post" enctype="multipart/form-data" id="myform">
+            
             {% csrf_token %}
+        
              {{form.location}}
              {{form.bio}}
+             <!-- {{form.birth_date}} -->
             <input type="submit" value="Update Profile"  />
           </form>
          
@@ -380,7 +407,7 @@
       <footer>
         <div class="containers">
           <div class="column">
-            <img src="./assets/logo.png" alt="LMS Logo" />
+            <img src="{% static 'logo.png' %}" alt="LMS Logo" />
           </div>
           <div class="column">
             <h4>Active Pages</h4>
