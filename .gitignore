@@ -6,9 +6,10 @@ node_modules
 *.swp
 
 #
-# images
-# files
-
+images/
+files/
+/courses/migrations/
+/students/migrations/
 # Tailwind
 tailwind.config.js
 tailwind.css

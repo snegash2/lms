@@ -3,6 +3,7 @@ from django.conf.urls.static import static
 from courses.views import CourseListView
 from django.contrib import admin
 from django.urls import path,re_path, include
+import spirit.urls
 from lms.project.views import index
 from django.contrib import admin
 from django.contrib.auth.models import User
@@ -28,6 +29,7 @@ urlpatterns = [
     path('chat/', include('chat.urls', namespace='chat')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path('',include('landing.urls')),
+    path('forum/', include("spirit.urls",namespace="forum") )
     # path('__debug__/', include('debug_toolbar.urls')),
     # path('social-auth/',include('social_django.urls', namespace='social')),
 ]

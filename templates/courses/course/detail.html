@@ -6,7 +6,7 @@
 
 
     <link rel="stylesheet" href="{% static 'cstyles.css' %}" />
-    <link rel="stylesheet" href="{% static 'cstyless.css' %}" />
+    <!-- <link rel="stylesheet" href="{% static 'cstayless.css' %}" /> -->
     <link rel="stylesheet" href="{% static 'cstudentindex.css' %}" />
 
     <link rel="stylesheet" href="{% static 'footer.css' %}" />
@@ -349,9 +349,11 @@
             <button class="filter-button" data-filter="button3">
               Upcoming tasks
             </button>
-            <button class="filter-button" data-filter="button4">
-              Discussion form
-            </button>
+            <a href="{% url 'forum:index' %}" target="_blank" rel="noopener noreferrer">
+              <button class="filter-button" data-filter="button4">
+                Discussion form 
+              </button>
+            </a>
             <button class="filter-button" data-filter="button5">Note</button>
           </div>
           <div class="items">
