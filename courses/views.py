@@ -1,3 +1,4 @@
+from typing import Any
 from braces.views import JsonRequestResponseMixin, CsrfExemptMixin
 from django.apps import apps
 from django.forms import modelform_factory,modelformset_factory
@@ -9,14 +10,17 @@ from django.contrib.auth.mixins import LoginRequiredMixin,PermissionRequiredMixi
 from django.urls import reverse_lazy
 from django.core.cache import cache
 from students.forms import CourseEnrollForm
-from .forms import ModuleFormSet
-from .models import Course, Module, Content
+from .forms import ModuleFormSet,CourseCreateForm
+from .models import Course, Module, Content,Category
 from django.db.models import Count
 from .models import Category
 from django.views.generic.detail import DetailView
 from django.shortcuts import render,get_object_or_404,HttpResponse
 from django.contrib.auth.models import Group,User
 from crendential.models import Crendential
+
+from django.shortcuts import render
+from django.http import JsonResponse
 
 # common behavior for all classes this class return courses which create only by currently logedin user
 class OwnerMixin:
@@ -34,11 +38,12 @@ class OwnerEditMixin:
 
 class OwnerCourseMixin(OwnerMixin,LoginRequiredMixin,PermissionRequiredMixin):
     model = Course
-    fields = ['category', 'slug', 'overview','image']
+    # fields = ['category', 'slug', 'overview','image']
     success_url = reverse_lazy('courses:manage_course_list')
 
 class OwnerCourseEditMixin(OwnerCourseMixin, OwnerEditMixin):
-    template_name = 'courses/manage/course/form.html'
+    # template_name = 'courses/manage/course/form.html'
+    template_name = 'courses/manage/course/AddInstructor.html'
 
 
 class ManageCourseListView(OwnerCourseMixin, ListView):
@@ -49,6 +54,19 @@ class ManageCourseListView(OwnerCourseMixin, ListView):
 
 class CourseCreateView(OwnerCourseEditMixin, CreateView):
     permission_required = 'courses.add_course'
+    form_class = CourseCreateForm
+    
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context =  super().get_context_data(**kwargs)
+        try:
+            categories = Category.objects.all()
+            
+        except Category.DoesNotExist:
+            raise context.clear()
+        
+        context['categories'] = categories
+        
+        return context
 
 
 
@@ -289,4 +307,7 @@ def course_filter(request,category,subcategory):
     }
     
     return render(request, 'landing/index.html',context)
+
+
+
 

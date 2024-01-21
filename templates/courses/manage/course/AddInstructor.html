@@ -1,0 +1,520 @@
+{% extends '_base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+    {% block title %} {{request.user.username }} add course{% endblock %}
+
+    {% block style %}
+    
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Cabin:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Cormorant+Upright:wght@300;400;600;700&family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,700&family=Great+Vibes&family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Lexend:wght@100;200;300;400;500;600;700;800;900&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;0,1000;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900;1,1000&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Syne:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet"
+        />
+        <script
+          src="https://kit.fontawesome.com/84ceadd20f.js"
+          crossorigin="anonymous"
+        ></script>
+        <link
+          href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+          rel="stylesheet"
+        />
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+        />
+        <link
+          href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+          rel="stylesheet"
+        />
+        <link
+          rel="stylesheet"
+          href="https://unicons.iconscout.com/release/v4.0.0/css/line.css"
+        />
+        <link rel="icon" href="{% static 'logo.png' %}" type="image/x-icon" />
+
+
+        <link rel="stylesheet" href="{% static 'instructor_course_add.css' %}" />
+        <link rel="stylesheet" href="{% static 'instructor_course_add_footer.css'%} " />
+        <link rel="stylesheet" href="{% static 'instructor_course_add_css.css' %}" />
+        <link rel="stylesheet" href="{% static 'instructor_course_add_main.css'%}" />
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+        />
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"
+        />
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+        />
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+        />
+
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+        />
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+    {% endblock %}
+  
+
+    <!-- new -->
+ {% block content %}
+      {% include 'includes/Navbar.html'%}
+    <!-- start -->
+    <div class="main__container">
+      <div class="first">
+        <img src="{% static 'back.png' %}" alt="" />
+      </div>
+      <div class="second">
+        <h1>Course guidelines</h1>
+        <hr />
+
+        <div class="guide-notes-container">
+          <div class="guide-note">
+            <i class="fas fa-list-ul"></i>
+
+            <span>Select Category</span>
+          </div>
+
+          <div class="guide-note">
+            <i class="fas fa-plus"></i>
+            <span>Add Course</span>
+          </div>
+
+          <div class="guide-note">
+            <i class="far fa-save"></i>
+            <span>Save Course</span>
+          </div>
+
+          <div class="guide-note">
+            <i class="far fa-eye"></i>
+            <span>See Saved Courses</span>
+          </div>
+        </div>
+        <h1>Add Course</h1>
+        <hr />
+        <label for="categorySelect">Select Category:</label>
+        <select id="categorySelect" onchange="populateCourses()">
+          <option value="">Select...</option>
+          {% for category in categories %}
+            <option value="{{category}}">{{category|title}}</option>
+          {% endfor %}
+
+        </select>
+
+        <label for="courseSelect">Select Course:</label>
+        <select id="courseSelect" onchange="showCourseModal()">
+          <!-- Courses will be populated dynamically using JavaScript -->
+        </select>
+      </div>
+    </div>
+    <!-- Modal -->
+    <div
+      id="myModal"
+      style="overflow-y: hidden"
+      onclick="closeModalOnOutsideClick(event)"
+    >
+      <div class="modal-content">
+        <span id="closeModal" onclick="closeModal()">&times;</span>
+        <h2>Course Information</h2>
+        <div class="popup-field">
+          {{form|crispy}}
+         
+        <br />
+        <button class="buttons" onclick="saveCourse()">Save</button>
+      </div>
+    </div>
+
+    <!-- Container for displaying saved courses -->
+    <div id="coursesContainer"></div>
+ <script>
+  function populateCourses() {
+    var categorySelect = document.getElementById("categorySelect");
+    var courseSelect = document.getElementById("courseSelect");
+
+    // Clear previous options
+    courseSelect.innerHTML = '<option value="">Select...</option>';
+
+    // Get the selected category
+    var selectedCategory = categorySelect.value;
+
+    // If a category is selected, populate courses and show the course dropdown
+    if (selectedCategory) {
+
+
+        let data = {
+          category: selectedCategory  // Pass the category as data
+        }
+    
+    
+        $.ajax({
+          url: '/filter-courses/',  // URL for the AJAX view
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+          },
+          contentType: 'application/json',
+          data: JSON.stringify(data),
+    
+          success: function (response) {
+            // Handle the successful response
+            var courses = response.courses;
+            console.log("courses ",courses);
+
+                      // Add courses to the dropdown
+            courses.forEach(function (course) {
+              var option = document.createElement("option");
+              option.value = course.name;
+              option.text = course.name;
+              courseSelect.add(option);
+            });
+          
+      
+    
+          },
+          error: function (xhr, status, error) {
+            // Handle any error that occurred during the AJAX request
+            console.error(error);
+          }
+        });
+      }
+    
+    
+    
+    
+      // This is a simple example; you may want to fetch courses dynamically based on the selected category
+      var courses;
+
+
+  
+
+      // Show the course dropdown
+      courseSelect.style.display = "block";
+    } 
+  
+
+  function showCourseModal() {
+    var modal = document.getElementById("myModal");
+    modal.style.display = "block";
+    var selectedCourse = document.getElementById("courseSelect").value;
+    document.getElementById("courseName").value = selectedCourse;
+
+    // Populate modal with existing course details
+    var courseCard = findCourseCard(selectedCourse);
+    if (courseCard) {
+      var courseDescription =
+        courseCard.querySelector(".courseDescription");
+      document.getElementById("courseDescription").value =
+        courseDescription.textContent.trim();
+    } else {
+      // Reset modal content when a new course is selected
+      document.getElementById("courseDescription").value = "";
+    }
+
+    document.getElementById("coursePicture").value = "";
+  }
+
+  function closeModal() {
+    var modal = document.getElementById("myModal");
+    modal.style.display = "none";
+  }
+  // Add an event listener to the document body to close the popup when clicked outside
+
+  function findCourseCard(courseName) {
+    var coursesContainer = document.getElementById("coursesContainer");
+    var courseCards = coursesContainer.getElementsByClassName("courseCard");
+    for (var i = 0; i < courseCards.length; i++) {
+      var courseCard = courseCards[i];
+      var cardCourseName = courseCard
+        .querySelector(".courseName")
+        .textContent.trim();
+      if (cardCourseName === courseName) {
+        return courseCard;
+      }
+    }
+    return null;
+  }
+
+  function saveCourse() {
+    var categoryName = document.getElementById("categorySelect").value;
+    var courseName = document.getElementById("courseSelect").value;
+    var courseDescription =
+      document.getElementById("courseDescription").value;
+    var coursePictureInput = document.getElementById("coursePicture");
+    var coursePicture = coursePictureInput.files[0];
+
+    if (categoryName && courseName && courseDescription) {
+      var courseCard = findCourseCard(courseName);
+
+      if (courseCard) {
+        // Update existing course card
+        var courseDescriptionElement =
+          courseCard.querySelector(".courseDescription");
+        courseDescriptionElement.innerHTML =
+          formatDescription(courseDescription);
+
+        // Update course picture only if a new file is selected
+        var courseImage = courseCard.querySelector(".courseImage");
+        if (coursePicture) {
+          var reader = new FileReader();
+
+          reader.onload = function (e) {
+            courseImage.src = e.target.result;
+          };
+
+          reader.readAsDataURL(coursePicture);
+        }
+      } else {
+        // Create a new course card
+        var coursesContainer = document.getElementById("coursesContainer");
+        courseCard = document.createElement("div");
+        courseCard.className = "courseCard";
+
+        // Display category name
+        // var categoryNameElement = document.createElement("h3");
+        // categoryNameElement.textContent = "Category: " + categoryName;
+        // courseCard.appendChild(categoryNameElement);
+
+        // Display course name
+
+        // Display course picture preview or default image
+        var courseImage = document.createElement("img");
+        courseImage.className = "courseImage";
+        courseImage.style.width = "300px"; // Set the desired width
+        courseImage.style.height = "180px"; // Set the desired height
+
+        if (coursePicture) {
+          var reader = new FileReader();
+
+          reader.onload = function (e) {
+            courseImage.src = e.target.result;
+          };
+
+          reader.readAsDataURL(coursePicture);
+        } else {
+          // Use a default image if no image is selected
+          courseImage.src = "./assets/banner2.jpg";
+
+          courseCard.appendChild(courseImage);
+          // ... (rest of the code)
+        }
+        courseCard.appendChild(courseImage);
+        var courseNameElement = document.createElement("h3");
+        courseNameElement.className = "courseName";
+        courseNameElement.textContent = "" + courseName;
+        courseCard.appendChild(courseNameElement);
+
+        // Display course description
+        var courseDescriptionElement = document.createElement("p");
+        courseDescriptionElement.className = "courseDescription";
+        courseDescriptionElement.innerHTML =
+          formatDescription(courseDescription);
+        courseCard.appendChild(courseDescriptionElement);
+        // Add Edit and Delete buttons
+        var editDeleteButtons = document.createElement("div");
+        editDeleteButtons.className = "editDeleteButtons";
+
+        var editButton = document.createElement("button");
+        editButton.textContent = "Edit Course";
+        editButton.onclick = function () {
+          // Set the selected course in the dropdown
+          document.getElementById("courseSelect").value = courseName;
+
+          // Populate the modal with course details
+          showCourseModal();
+        };
+        editDeleteButtons.appendChild(editButton);
+
+        var deleteButton = document.createElement("button");
+        deleteButton.textContent = "Delete Course";
+        deleteButton.onclick = function () {
+          // Remove the course card from the display
+          coursesContainer.removeChild(courseCard);
+        };
+        editDeleteButtons.appendChild(deleteButton);
+        /////////// Add "Add Module" button
+        var addModuleButton = document.createElement("button");
+        addModuleButton.className = "addModuleButton";
+        addModuleButton.textContent = "Add Module";
+        addModuleButton.onclick = function () {
+          // Replace 'your-module-link' with the actual link you want to redirect to
+          window.location.href = "#";
+        };
+        /////////// Add "students" button
+        var addstudents = document.createElement("button");
+        addstudents.className = "addstudents";
+        addstudents.textContent = "Students";
+        addstudents.onclick = function () {
+          // Replace 'your-module-link' with the actual link you want to redirect to
+          window.location.href = "#";
+        };
+
+        editDeleteButtons.appendChild(addModuleButton);
+        editDeleteButtons.appendChild(addstudents);
+
+        courseCard.appendChild(editDeleteButtons);
+
+        // Append the course card to the container
+        coursesContainer.appendChild(courseCard);
+      }
+
+      // Close the modal
+      closeModal();
+    } else {
+      alert("Please enter category, course name, and description.");
+    }
+  }
+
+  function formatDescription(description) {
+    var formattedDescription = "";
+    var words = description.split(" ");
+    var wordLimit = 15;
+
+    for (var i = 0; i < words.length; i++) {
+      var word = words[i];
+      if (i >= wordLimit) {
+        break;
+      }
+      if (word.length > 10) {
+        // Insert line breaks after every 10 characters
+        word = word.replace(/(.{10})/g, "$1<wbr>");
+      }
+      formattedDescription += word + " ";
+    }
+
+    return formattedDescription.trim();
+  }
+</script>
+
+
+    <!-- end -->
+    <!-- Footer and Dropdwon content  -->
+    <section>
+      <footer>
+        <div class="containers">
+          <div class="column">
+            <img src="{% static 'logo.png'" alt="LMS Logo" />
+          </div>
+          <div class="column">
+            <h4>Active Pages</h4>
+            <ul>
+              <li><a href="#">Home</a></li>
+              <li><a href="#">About</a></li>
+              <li><a href="#">Services</a></li>
+              <li><a href="#">Contact</a></li>
+            </ul>
+          </div>
+
+          <div class="column">
+            <h4>Contact Us</h4>
+            <p>Email: example@example.com</p>
+            <p>Address: 123 ABC Street, City, Country</p>
+          </div>
+          <div class="column">
+            <h4>Social Media</h4>
+            <p>do you need our help? Feel free to contact us.</p>
+            <div class="social-icons">
+              <a href="#"><i class="fa fa-facebook"></i></a>
+              <a href="#"><i class="fa fa-linkedin"></i></a>
+              <a href="#"><i class="fa fa-telegram"></i></a>
+              <a href="#"><i class="fa fa-youtube"></i></a>
+            </div>
+          </div>
+        </div>
+        <h1 class="footer__class">
+          <hr />
+          © Copyright <span><a href="">MarkAb Solutions</a> </span> - 2023. All
+          Rights Reserved
+        </h1>
+      </footer>
+    </section>
+    <script>
+      // JavaScript to toggle the active class on hamburger click
+      document.addEventListener("DOMContentLoaded", function () {
+        var navbarHamburger = document.querySelector(".navbar-hamburger");
+        var navbarMenu = document.querySelector(".navbar-menu");
+
+        navbarHamburger.addEventListener("click", function () {
+          navbarHamburger.classList.toggle("active");
+          navbarMenu.classList.toggle("active");
+        });
+
+        document.addEventListener("click", function (event) {
+          var targetElement = event.target;
+          if (
+            !targetElement.closest(".navbar") &&
+            navbarHamburger.classList.contains("active")
+          ) {
+            navbarHamburger.classList.remove("active");
+            navbarMenu.classList.remove("active");
+          }
+        });
+      });
+    </script>
+    <!--  -->
+    <script>
+      // JavaScript to toggle the active class on hamburger click
+      document.addEventListener("DOMContentLoaded", function () {
+        var navbarHamburger = document.querySelector(".navbar-hamburger");
+        var navbarMenu = document.querySelector(".navbar-menu");
+
+        navbarHamburger.addEventListener("click", function () {
+          navbarHamburger.classList.toggle("active");
+          navbarMenu.classList.toggle("active");
+        });
+
+        document.addEventListener("click", function (event) {
+          var targetElement = event.target;
+          if (
+            !targetElement.closest(".navbar") &&
+            navbarHamburger.classList.contains("active")
+          ) {
+            navbarHamburger.classList.remove("active");
+            navbarMenu.classList.remove("active");
+          }
+        });
+      });
+    </script>
+    <!-- Catgory dropdown -->
+    <script>
+      const newdropdowns = document.querySelectorAll(".newdropdown");
+      newdropdowns.forEach((newdropdown) => {
+        const select = newdropdown.querySelector(".select");
+        const caret = newdropdown.querySelector(".caret");
+        const menu = newdropdown.querySelector(".menu");
+        const options = newdropdown.querySelector(".menu li");
+        const selected = newdropdown.querySelector(".selected");
+
+        select.addEventListener("click", () => {
+          select.classList.toggle("select-clicked");
+          caret.classList.toggle("caret-rotate");
+          menu.classList.toggle("menu-open");
+        });
+        options.forEach((option) => {
+          option.addEventListener("click", () => {
+            selected.innerText = option.innerText;
+            select.classList.remove("select-clicked");
+            caret.classList.remove("caret-rotate");
+            menu.classList.remove("menu-open");
+            options.forEach((option) => {
+              option.classList.remove("active");
+            });
+            option.classList.add("active");
+          });
+        });
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+{% endblock %}

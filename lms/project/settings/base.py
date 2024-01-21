@@ -206,6 +206,7 @@ STATIC_ROOT = os.path.join(BASE_DIR,'static')# type:ignore
 STATICFILES_DIRS = [
   BASE_DIR / 'static' / 'css' / 'landing',
   BASE_DIR /'static' / 'css' / 'courses',
+  BASE_DIR /'static' / 'css' / 'courses' / 'manage',
   BASE_DIR /'static' / 'css' /'students',
   BASE_DIR /'static' / 'css' / 'exam',
   BASE_DIR /'static' / 'css' / 'chat',

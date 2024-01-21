@@ -23,3 +23,12 @@ class EgiabilityForm(forms.Form):
             return file
         else:
             raise forms.ValidationError('Only JPEG files are allowed.')
+        
+        
+        
+
+class CourseCreateForm(forms.ModelForm):
+    class Meta:
+        model = Course
+        fields = 'image',
+
