@@ -1,0 +1,384 @@
+* {
+  font-family: Kanit;
+}
+body {
+  background-color: #f4f4f4;
+  margin: 0;
+}
+
+h2 {
+  color: #079a85;
+}
+
+label {
+  margin-bottom: 10px;
+  font-size: 22px;
+  display: block;
+  color: #333;
+  font-weight: 600;
+  margin-top: 1.4rem;
+}
+
+select {
+  width: 51%;
+  padding: 7px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  transition: border-color 0.3s;
+}
+
+select:hover,
+select:focus {
+  border-color: #007bff;
+}
+
+#courseSelect {
+  display: none;
+}
+
+#myModal {
+  overflow-y: hidden;
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  background-color: #fff;
+  margin: 4% auto;
+  padding: 42px;
+  border: 1px solid #ccc;
+  width: 34%;
+  border-radius: 5px;
+  animation: fadeIn 0.3s;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#closeModal {
+  color: #079a85;
+  float: right;
+  font-size: 41px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: -2rem;
+}
+
+#closeModal:hover,
+#closeModal:focus {
+  color: black;
+  text-decoration: none;
+}
+
+#coursesContainer {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 5rem;
+  padding: 2rem;
+  justify-content: start;
+  animation: fadeIn 0.3s;
+}
+
+.courseCard {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 10px;
+  width: 272px;
+  position: relative;
+  border-radius: 5px;
+  transition: box-shadow 0.3s;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.courseCard:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.courseImage {
+  max-width: 100%;
+  height: auto;
+  border-radius: 5px 5px 0 0;
+}
+
+.courseName {
+  margin: 10px 0;
+  color: #333;
+}
+
+.courseDescription {
+  color: #555;
+  padding-bottom: 4rem;
+}
+
+.editDeleteButtons {
+  position: absolute;
+  bottom: -68px;
+  left: 0px;
+  padding-top: 0px;
+  width: 98%;
+  text-align: center;
+  padding: 3px;
+  background-color: white;
+  /* background-color: rgba(255, 255, 255, 0.9); */
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.editDeleteButtons button {
+  margin: 10px;
+  padding: 12px 19px;
+  background-color: #079a85;
+  color: #fff;
+  border: none;
+  border-radius: 13px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.editDeleteButtons button:hover {
+  background-color: #046658;
+}
+
+.popup-field {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.popup-field input,
+.popup-field textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  transition: border-color 0.3s;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+}
+
+.popup-field input:focus,
+.popup-field textarea:focus {
+  border-color: #007bff;
+}
+
+.icon {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  color: #555;
+  cursor: pointer;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+/* ... (previous CSS code) ... */
+
+/* Save button styles */
+.buttons {
+  margin-top: 1rem;
+  width: 11rem;
+  height: 45px;
+  background-color: #079a85;
+  font-size: 19px;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+/* button:hover {
+  background-color: #046658;
+} */
+
+/* Animation for the popup */
+@keyframes slideIn {
+  from {
+    transform: translateY(-50%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.popup-field {
+  position: relative;
+  margin-bottom: 20px;
+  animation: slideIn 0.5s ease;
+}
+/* ... (previous CSS code) ... */
+
+/* Custom-styled select */
+.select-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.select-wrapper select {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  background-color: #fff;
+  background-image: url('data:image/svg+xml;utf8,<svg fill="none" xmlns="http://www.w3.org/2000/svg" height="24" width="24" stroke="%23007BFF" viewBox="0 0 24 24" xmlns:xlink="http://www.w3.org/1999/xlink"><defs><pattern id="pattern-checkers" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45 0 0)"><rect width="5" height="5" x="0" fill="white" y="0"></rect><rect width="5" height="5" x="5" fill="#007BFF" y="0"></rect><rect width="5" height="5" x="0" fill="#007BFF" y="5"></rect><rect width="5" height="5" x="5" fill="white" y="5"></rect></pattern></defs><rect width="100%" height="100%" fill="url(%23pattern-checkers)"></rect></svg>');
+  background-repeat: no-repeat;
+  background-position: right 10px top 50%;
+  cursor: pointer;
+}
+
+/* Updated icon styles */
+.icon {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  color: #555;
+  cursor: pointer;
+}
+
+/* ... (remaining CSS code) ... */
+
+/* ... (remaining CSS code) ... */
+.main__container {
+  display: grid;
+  margin-top: 10rem;
+  grid-template-columns: 56% 44%;
+}
+@media only screen and (max-width: 600px) {
+  .main__container {
+    grid-template-columns: 100%;
+    margin-top: 3rem;
+  }
+  .first img {
+    width: 25rem;
+  }
+  div.second {
+    margin-top: 2rem;
+    margin-left: 3rem;
+  }
+  select {
+    width: 20rem;
+  }
+  .modal-content {
+    width: 75%;
+    padding: 33px;
+  }
+  div.guide-notes-container {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  #coursesContainer {
+    gap: 8rem;
+  }
+}
+/* ===================Note=========== */
+
+/* Conclusion styling with italic font and animation */
+p:last-child {
+  font-style: italic;
+  color: #555;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Animation keyframes */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.second hr {
+  width: 6rem;
+  height: 3px;
+  background-color: #079a85;
+  border: none;
+}
+.second {
+  margin-top: -3rem;
+}
+/* Additional styling for guide notes */
+.guide-notes-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+  background-color: transparent;
+  border-radius: 8px;
+  overflow: hidden;
+  /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+}
+
+.guide-note {
+  background-color: #f0f0f0;
+  padding: 16px;
+  width: 14rem;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+  display: flex;
+  align-items: center;
+}
+
+.guide-note:hover {
+  transform: scale(1.05);
+}
+
+.guide-note i {
+  margin-right: 10px;
+  font-size: 1.2rem;
+}
+/* Add module */
+button.addModuleButton {
+  padding: 12px 19px;
+  background-color: #079a85;
+  color: #fff;
+  border: none;
+  margin-left: 1rem;
+  margin-right: 0rem;
+  cursor: pointer;
+  border-radius: 13px;
+}
+button.addstudents {
+  width: 8rem;
+  margin-left: 19px;
+}
+/* .courseDescription {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+} */
