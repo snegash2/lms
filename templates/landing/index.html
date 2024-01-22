@@ -27,9 +27,9 @@
       success: function (response) {
         // Handle the successful response
         var courses = response.courses;
-        const row = document.getElementById('row')
         const card_list = document.getElementsByClassName('filter-item')
-
+        const row = document.getElementById('row')
+      
 
         for (let ca of card_list) {
           ca.classList.remove('active')
@@ -70,14 +70,31 @@
                               {% if request.user.is_authenticated %}
 
                              ${registered && `
-                              <form action="{% url "students:student_enroll_course" %}" method="post">
-                              {% csrf_token %}
-                                {{ enroll_form }}
-                                <input type="hidden" value="${jcourse.id}" name="id" />
-                                <input type="hidden" value="{{request.user.id}}" name="user" />
-                            
-                                <input type="submit" value="Enroll now" class="First">
-                              </form>
+
+                              {% if request.user not in course.students.all %}
+
+                                <form action="{% url "students:student_enroll_course" %}" method="post">
+                                {% csrf_token %}
+                                  {{ enroll_form }}
+                                  <input type="hidden" value="${jcourse.id}" name="id" />
+                                  <input type="hidden" value="{{request.user.id}}" name="user" />
+                              
+                                  <input type="submit" value="Enroll now" class="First">
+                                </form>
+
+                                {% else %}
+
+                                <form action="{% url "students:student_dropout_course" %}" method="post">
+                                  {% csrf_token %}
+                                    {{ enroll_form }}
+                                    <input type="hidden" value="${jcourse.id}" name="id" />
+                                    <input type="hidden" value="{{request.user.id}}" name="user" />
+                                    <input type="hidden" value="${jcourse.slug}" name="slug" />
+                                
+                                    <input type="submit" value="Drop out" class="First">
+                                </form>
+
+                              {% endif %}
                               `}
                            
                               {% else %}
@@ -352,6 +369,7 @@
         <span class="filter-item active" id="All" data-filter="all" onclick="filterCourses('All')">Show All</span>
    
         {% for category in categories %}
+     
         <span class="filter-item" id="{{category}}" data-filter="watch"
           onclick="filterCourses('{{category}}')">{{category|title}}</span>
         {% endfor %}
