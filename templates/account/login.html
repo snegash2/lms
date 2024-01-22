@@ -16,7 +16,33 @@
     <div class="grid__container">
       <div id="mobile" class="container">
         <h3>Log in to your LMS account</h3>
+
+
         <!-- <h3>Welcome back  <span> Username </span> </h3> -->
+
+
+        <script>
+
+          document.addEventListener("DOMContentLoaded", function(event){
+      
+            const form = document.getElementById("signup_form")
+            form.addEventListener("submit",function(event) {
+             
+              const submit_button  = document.getElementById("submit-button")
+              const container = document.getElementById("container")
+              form.removeChild(submit_button)
+              console.log(container);
+              container.innerHTML =   `
+              <div id="stripe-card" class="form-control" style="font-size:4em; ">
+                <span class="fa fa-spinner fa-spin"></span>
+                <!-- a Stripe Element will be inserted here. -->
+              </div>
+              
+              `
+            })
+            })
+          
+         </script>
         <form class="signup" id="signup_form" method="post" action="{% url 'account_login' %}">
       
           {% csrf_token %}
@@ -25,7 +51,7 @@
           <button type="submit" class="submit-button">Login</button>
         </form>
         <div class="forgot-password">
-          <a href="{% url 'account_reset_password' %}">Forgot Password?</a>
+          <a href="{% url 'account_reset_password' %}">Forgot Password? </a>
         </div>
       </div>
       <div class="image">
@@ -157,5 +183,8 @@
       });
    
    </script>
+
+
+
 {% endblock %}
 

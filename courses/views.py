@@ -73,7 +73,7 @@ class CourseCreateView(OwnerCourseEditMixin, CreateView):
         
     def post(self, request, *args, **kwargs):
         form = CourseCreateForm(request.POST,files=request.FILES)
-        print(request.FILES," Files ")
+      
         try:
             category = Category.objects.get(category =request.session.get('category')['category'] )
         except Category.DoesNotExist:
@@ -85,7 +85,9 @@ class CourseCreateView(OwnerCourseEditMixin, CreateView):
             form.slug = slugify(form.overview)
             form.teacher = self.request.user
             form.category  = category
-            
+            if request.POST.get('image'):
+                form.image = request.POST.get('image')
+    
             form.save()
             messages.success(self.request, 'you added course success fully.')
             return redirect('courses:course_create')
@@ -113,7 +115,8 @@ class CourseDeleteView(OwnerCourseMixin, DeleteView):
     permission_required = 'courses.delete_course'
 
 class CourseModuleUpdateView(TemplateResponseMixin, View):
-    template_name = 'courses/manage/module/formset.html'
+    # template_name = 'courses/manage/module/formset.html'
+    template_name = 'courses/manage/module/module.html'
     course = None
     def get_formset(self, data=None):
         return ModuleFormSet(instance=self.course,data=data)

@@ -48,8 +48,7 @@ class SubCategory(models.Model):
     name = models.CharField(
         verbose_name=_("Sub-Category"),
         max_length=250, blank=True, null=True)
-
-
+   
     # objects = CategoryManager()
 
     class Meta:
@@ -126,7 +125,8 @@ class Course(models.Model):
                                 null=True,
                               related_name='courses_created',
                               on_delete=models.SET_NULL)
-    name = models.CharField("Course Name ",max_length=200)
+    # name = models.CharField("Course Name ",max_length=200)
+    name    = models.ForeignKey(SubCategory,on_delete = models.CASCADE)
     category = models.ForeignKey(Category,
                                 verbose_name='Category',
                                 related_name='names',
@@ -149,7 +149,7 @@ class Course(models.Model):
     overview = RichTextUploadingField()
     created = models.DateTimeField(auto_now_add=True)
     students = models.ManyToManyField(User,related_name='courses_joined',blank=True)
-    image = models.ImageField(null = True,blank = True,upload_to='images')
+    image = models.ImageField(null = False,blank = False,upload_to='images',default="images/avatar.png")
     has_practice = models.BooleanField(default=False)
     ceu          = models.IntegerField(default= 0)
     published   = models.BooleanField(default=False)

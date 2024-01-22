@@ -1,0 +1,196 @@
+* {
+  font-family: "Kanit", sans-serif;
+}
+
+
+
+
+#modulePopup {
+
+
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  z-index: 1;
+  transition: opacity 0.3s ease;
+
+}
+.moduleName {
+  width: 23rem;
+  height: 36px;
+}
+#moduleOverview {
+  width: 23rem;
+  height: 9rem;
+}
+.close-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th,
+td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+.btn {
+  padding: 10px;
+  margin: 5px;
+  cursor: pointer;
+}
+
+/* Animated button */
+/* Add your global styles here */
+body {
+  background-color: #f0f0f0; /* Set a default background color */
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+#modulePopupBackdrop {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3); /* Semi-transparent black */
+  backdrop-filter: blur(5px); /* Apply a blur effect */
+  z-index: 1; /* Place the backdrop above other elements */
+}
+#modulePopup label {
+  color: black;
+}
+
+#modulePopup {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #ffff; /* Set the default background color of the popup */
+  color: #fff; /* Set the text color inside the popup */
+  padding: 45px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.3s ease; /* Add background-color transition */
+  z-index: 2; /* Place the popup above the backdrop */
+}
+
+#modulePopup.show,
+#modulePopupBackdrop.show {
+  display: block;
+  
+}
+
+
+
+#modulePopup.show {
+  display: block;
+  overflow: auto;
+
+
+}
+
+.close-icon {
+  cursor: pointer;
+  color: #079a85;
+}
+
+/* Add animation for the button */
+.btn {
+  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease;
+  width: 9rem;
+  /* margin: 1rem; */
+  background: #079a85;
+  margin-top: 13px;
+  border: none;
+  border-radius: 6px;
+  color: white;
+}
+
+.btn:hover {
+  background-color: rgb(80, 72, 72);
+}
+
+#moduleTable {
+  margin-top: 20px;
+  border-collapse: collapse;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#moduleTable th,
+#moduleTable td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+/*  */
+
+/* Pdf btns */
+#save-btns {
+  margin-left: 37rem;
+  width: 9.5rem;
+  height: 42px;
+  margin-top: 4rem;
+
+  background-color: #079a85;
+  border: none;
+  border-radius: 7px;
+  color: white;
+  font-size: 18px;
+  font-family: "Kanit", sans-serif;
+  cursor: pointer;
+  transition: all 0.5s;
+}
+/* #save-btns a {
+  color: white;
+  font-size: 18px;
+  font-family: "Kanit", sans-serif;
+} */
+#save-btns span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+#save-btns span:after {
+  content: "\00bb";
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+#save-btns:hover span {
+  padding-right: 25px;
+}
+
+#save-btns:hover span:after {
+  opacity: 1;
+  right: 0;
+}

@@ -7,13 +7,12 @@ from .models import Course, Module
 ModuleFormSet = inlineformset_factory(Course,
 Module,
 fields=['title',
-'description'],
-extra=4,
+'description','pdfs'],
+extra=1,
 can_delete=True)
 
 
 
-from django import forms
 
 class EgiabilityForm(forms.Form):
     file = forms.FileField(label='File')
