@@ -108,7 +108,7 @@
         <select id="categorySelect" onchange="populateCourses()">
           <option value="">Select...</option>
           {% for category in categories %}
-            <option value="{{category}}">{{category|title}}</option>
+            <option value="{{category}}" id="{{category}}">{{category|title}}</option>
           {% endfor %}
 
         </select>
@@ -120,22 +120,51 @@
       </div>
     </div>
     <!-- Modal -->
-    <div
-      id="myModal"
-      style="overflow-y: hidden"
-      onclick="closeModalOnOutsideClick(event)"
-    >
-      <div class="modal-content">
-        <span id="closeModal" onclick="closeModal()">&times;</span>
-        <h2>Course Information</h2>
-        <div class="popup-field">
-          {{form|crispy}}
-         
-        <br />
-        <button class="buttons" onclick="saveCourse()">Save</button>
-      </div>
-    </div>
 
+    <!-- Modal -->
+        <div id="myModal" onclick="closeModalOnOutsideClick(event)">
+          <div class="modal-content" style="max-height: 80vh; overflow-y: auto">
+            <span id="closeModal" onclick="closeModal()">&times;</span>
+            <h2>Course Information</h2>
+            <!-- Wrapping the course description section for horizontal scrolling -->
+            <div class="scrollable-section" style="overflow-x: auto">
+              <div class="popup-field">
+                <label for="courseName">Course Name:</label>
+                <input type="text" id="courseName" readonly />
+                <i
+                  class="icon fas fa-pencil-alt"
+                  onclick="enableEdit('courseName')"
+                ></i>
+              </div>
+
+              <form method="post" action=".">   
+                  {% csrf_token %}
+                  <input type="hidden" name="subCategory" value="{{courseName}}" />
+                  <input type="hidden" name="category" value="{{category}}" />
+                 
+                  {{form|crispy}}
+                    
+              
+                    <div class="popup-field">
+                      <label for="courseDescription"></label>
+                      <div
+                        id="courseDescription"
+                        rows="4"
+                        cols="50"
+                  
+                      ></div
+                      <i
+                        class="icon fas fa-pencil-alt"
+                        onclick="enableEdit('courseDescription')"
+                      ></i>
+                    </div>
+                  </div>
+          
+                  <br />
+                  <button type="submit" class="buttons" >Save</button>
+          </form>
+          </div>
+        </div>
     <!-- Container for displaying saved courses -->
     <div id="coursesContainer"></div>
  <script>

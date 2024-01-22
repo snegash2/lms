@@ -2,6 +2,7 @@ from typing import Any
 from braces.views import JsonRequestResponseMixin, CsrfExemptMixin
 from django.apps import apps
 from django.forms import modelform_factory,modelformset_factory
+from django.forms.models import BaseModelForm
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic.base import TemplateResponseMixin, View
 from django.views.generic.list import ListView
@@ -18,9 +19,10 @@ from django.views.generic.detail import DetailView
 from django.shortcuts import render,get_object_or_404,HttpResponse
 from django.contrib.auth.models import Group,User
 from crendential.models import Crendential
-
+from django.utils.text import slugify
 from django.shortcuts import render
 from django.http import JsonResponse
+from django.contrib import messages
 
 # common behavior for all classes this class return courses which create only by currently logedin user
 class OwnerMixin:
@@ -67,6 +69,28 @@ class CourseCreateView(OwnerCourseEditMixin, CreateView):
         context['categories'] = categories
         
         return context
+    
+        
+    def post(self, request, *args, **kwargs):
+        form = CourseCreateForm(request.POST,files=request.FILES)
+        print(request.FILES," Files ")
+        try:
+            category = Category.objects.get(category =request.session.get('category')['category'] )
+        except Category.DoesNotExist:
+            raise ValueError("No category is choice")
+        
+        
+        if form.is_valid():
+            form = form.save(commit=False)
+            form.slug = slugify(form.overview)
+            form.teacher = self.request.user
+            form.category  = category
+            
+            form.save()
+            messages.success(self.request, 'you added course success fully.')
+            return redirect('courses:course_create')
+      
+        return JsonResponse({"course ": "course created"})
 
 
 

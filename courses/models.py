@@ -138,7 +138,7 @@ class Course(models.Model):
                                 verbose_name='Sub Category',
                                 related_name='categories',
                                 on_delete=models.CASCADE,
-                                default=None)
+                                null = True,blank = True)
 
 
     
@@ -172,7 +172,7 @@ class Course(models.Model):
     
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        self.slug = slugify(self.name)
+        self.slug = slugify(self.overview)
 
 
     # def save(self, *args, **kwargs):

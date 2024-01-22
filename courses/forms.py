@@ -1,3 +1,4 @@
+from typing import Any
 from django import forms
 from django.forms.models import inlineformset_factory
 from .models import Course, Module
@@ -30,5 +31,6 @@ class EgiabilityForm(forms.Form):
 class CourseCreateForm(forms.ModelForm):
     class Meta:
         model = Course
-        fields = 'image',
-
+        exclude = 'category','teacher','published','sub_category','students','reason_not_published','name','slug'
+        
+        

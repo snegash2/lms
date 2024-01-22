@@ -23,6 +23,7 @@ def filter_courses(request):
         # Filter the courses based on the category
         
         category = json.loads(request.body)
+        request.session['category'] = category
 
         try:
           
