@@ -83,6 +83,7 @@ class StudentEnrollCourseView(LoginRequiredMixin,FormView):
     def post(self,request):
         user_id = request.POST.get("user")
         course_id   = request.POST.get("id")
+        slug = request.POST.get("slug")
         course = get_object_or_404(Course,id = course_id)
         user = get_object_or_404(User,id = user_id)
         
@@ -91,7 +92,7 @@ class StudentEnrollCourseView(LoginRequiredMixin,FormView):
         activity = StudentActivity.objects.create(user = self.request.user,activity = f"Student Enroled")
         activity.save()
         
-        return redirect("student_course_detail",pk = course_id)
+        return redirect("courses:course_detail",slug = slug)
 
 
     def form_valid(self, form):
@@ -99,10 +100,37 @@ class StudentEnrollCourseView(LoginRequiredMixin,FormView):
         self.course.students.add(self.request.user)
         return super().form_valid(form)
     
+    
+    
+    
+class StudentDropoutCourseView(LoginRequiredMixin,FormView):
+    course = None
+    form_class = CourseEnrollForm
+    template_name = "courses/course/detail.html"
+
+    def post(self,request):
+        user_id = request.POST.get("user")
+        course_id   = request.POST.get("id")
+        slug = request.POST.get("slug")
+        course = get_object_or_404(Course,id = course_id)
+        user = get_object_or_404(User,id = user_id)
+        
+        course.students.remove(user)
+        course.save()
+        activity = StudentActivity.objects.create(user = self.request.user,activity = f"Student Enroled")
+        activity.save()
+        
+        return redirect("courses:course_detail",slug = slug)
 
 
-    def get_success_url(self):
-        return reverse_lazy('student_course_detail', args=[self.course.id])
+    def form_valid(self, form):
+        self.course = form.cleaned_data['course']
+        self.course.students.remove(self.request.user)
+        return super().form_valid(form)
+
+
+    # def get_success_url(self):
+    #     return reverse_lazy('student_course_detail', args=[self.course.id])
 
 
 class StudentCourseListView(LoginRequiredMixin, ListView):

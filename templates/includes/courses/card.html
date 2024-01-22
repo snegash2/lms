@@ -18,10 +18,21 @@
                   {{ enroll_form }}
                   <input type="hidden" value="{{course.id}}" name="id" />
                   <input type="hidden" value="{{request.user.id}}" name="user" />
+                  <input type="hidden" value="{{course.slug}}" name="slug" />
               
                   <input type="submit" value="Enroll now" class="First">
               </form>
+            {% else %}
+
+            <form action="{% url "students:student_dropout_course" %}" method="post">
+              {% csrf_token %}
+                {{ enroll_form }}
+                <input type="hidden" value="{{course.id}}" name="id" />
+                <input type="hidden" value="{{request.user.id}}" name="user" />
+                <input type="hidden" value="{{course.slug}}" name="slug" />
             
+                <input type="submit" value="Drop out" class="First">
+            </form>
             {% endif %}
 
             {% else %}
