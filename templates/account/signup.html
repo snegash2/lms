@@ -25,7 +25,6 @@
 
 
   <!-- Body -->
-  {% include 'includes/Navbar.html' %}
 
 
  
@@ -81,7 +80,7 @@
       document.addEventListener("DOMContentLoaded",function() {
         const form = document.getElementById("signup_form")
         form.addEventListener("submit",function(event) {
-          <!-- event.preventDefault() -->
+     
           const submit_button  = document.getElementById("submit-button")
           const container = document.getElementById("container")
           form.removeChild(submit_button)

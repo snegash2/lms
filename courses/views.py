@@ -130,7 +130,7 @@ class CourseModuleUpdateView(TemplateResponseMixin, View):
         return super().dispatch(request, pk)
 
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request, *args, **kwargs): 
         formset = self.get_formset()
         return self.render_to_response({
         'course': self.course,'formset': formset})
@@ -141,6 +141,8 @@ class CourseModuleUpdateView(TemplateResponseMixin, View):
         if formset.is_valid():
             formset.save()
             return redirect('courses:manage_course_list')
+        
+        messages.success(request,"You added module successfully")
         return self.render_to_response({
         'course': self.course,
         'formset': formset})

@@ -36,6 +36,20 @@
         <link rel="stylesheet" href="{% static 'dropdown.css' %}" />
         <link rel="stylesheet" href="{% static 'newdrop.css' %}" />
 
+        <style>
+          .modal-dialog-centered {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: auto;
+            width: 50%;
+            
+          
+
+          }
+          
+        </style>
+
 
 
         <link
@@ -48,6 +62,10 @@
       />
       
       {% block style %} {%endblock%}
+
+
+
+      <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     
 </head>
 
@@ -56,18 +74,17 @@
     <div>
         <!-- class="mx-auto max-w-screen-xl w-full h-full"> -->
 
+        {% include "includes/Navbar.html"%}
+
 
         {% if messages %}
-        <ul class="messages">
-        {% for message in messages %}
-        <li class="{{ message.tags }}">
-        {{ message|safe }}
-     
-        </li>
-        {% endfor %}
-        </ul>
 
-        
+           {% for message in messages %}
+
+              {% include 'includes/message.html' %}
+              
+            {% endfor %}
+                   
         {% endif %}
 
       

@@ -110,6 +110,8 @@
       
           <button class="btn" onclick="saveModule()" type="submit">Save</button>
           <button class="btn" onclick="closeModulePopup()">Cancel</button>
+          
+         
 
     </form>
     </div>
@@ -118,15 +120,15 @@
       <tr>
         <th>Module Name</th>
         <th>Module Overview</th>
-        <th>Actions</th>
+        
       </tr>
 
 
         {%for module in course.modules.all%}
         <tr>
-          <td>{{module.title|title}}</td>
+          <a href="http://" target="_blank" rel="noopener noreferrer"><td>{{module.title|title}}</td></a> 
           <td>{{module.description|safe}}</td>
-          <td>Actions</td>
+        
         </tr>
         {% endfor %}
       <!-- Table rows will be added dynamically using JavaScript -->
@@ -162,6 +164,29 @@
 
         modulePopupBackdrop.classList.remove("show");
         modulePopup.classList.remove("show");
+      }
+
+
+      function addForm() {
+        $.ajax({
+          url: '/filter-courses/',  // URL for the AJAX view
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+          },
+          contentType: 'application/json',
+          data: JSON.stringify(data),
+    
+          success: function (response) {
+
+          },
+          error: function (xhr, status, error) {
+            // Handle any error that occurred during the AJAX request
+            console.error(error);
+          }
+        });
+      
       }
 
       // Close the popup when clicking outside of it

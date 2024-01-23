@@ -105,8 +105,12 @@ body {
 
 
 #modulePopup.show {
-  display: block;
-  overflow: auto;
+
+  
+  width: auto;
+  height: 100vh; /* Adjust height as needed */
+  overflow-y: scroll !important;;
+  padding: 15px;
 
 
 }

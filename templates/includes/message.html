@@ -1,0 +1,31 @@
+<div class="modal fade" id="notificationModal" tabindex="-1" role="dialog" aria-labelledby="notificationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="notificationModalLabel">Notification</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <ul class="messages">
+                <li class="alert alert-{{ message.level }}">
+                {{ message|safe }}
+                </li>
+  
+              </ul> 
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  <script>
+    $(document).ready(function() {
+        // Set timeout for fading out messages after 5 seconds
+        $('#notificationModal').fadeTo(5000, 0, function() { $(this).remove(); });
+    });
+</script>

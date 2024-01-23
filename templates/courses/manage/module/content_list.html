@@ -65,8 +65,7 @@ Module {{ module.order|add:1 }}: {{ module.title }}
         <a href="{% url "courses:module_content_create" module.id "file" %}">File</a>
       </li>
     </ul>
- 
-
+    
     {%endif%}
   </div>
   {% endwith %}
