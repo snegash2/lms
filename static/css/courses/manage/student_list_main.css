@@ -1,0 +1,157 @@
+/* body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+}
+
+header {
+  background-color: #079a85;
+  color: white;
+  text-align: center;
+  padding: 1em;
+} */
+* {
+  font-family: "Kanit", sans-serif;
+}
+@import url("https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+.reminder {
+  background-color: white;
+  border-bottom: 1px solid;
+  border-left: 1px solid;
+  border-right: 1px solid;
+  border: 1px 2px 4px 4px solid;
+  box-shadow: 0 -10px #079a85;
+  color: #333;
+  height: 4rem;
+  width: 11rem;
+  padding: 10px;
+  margin: 20px;
+  text-align: center;
+  border-radius: 6px;
+  animation: fadeInUp 2s ease;
+}
+.reminder p {
+  font-size: 17px;
+  font-family: "Kanit", sans-serif;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media only screen and (max-width: 600px) {
+  h1 {
+    font-size: 1.5em; /* Adjust font size for smaller screens */
+  }
+
+  .reminder {
+    margin: 85px;
+    padding: 7px; /* Adjust padding for smaller screens */
+  }
+
+  th,
+  td {
+    padding: 8px; /* Adjust padding for smaller screens */
+    font-size: 0.9em; /* Adjust font size for smaller screens */
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    overflow-x: auto; /* Add horizontal scroll for small screens */
+    cursor: pointer;
+  }
+}
+h1 {
+  margin: 20px 0; /* Add margin for better spacing */
+  font-size: 2em; /* Increase font size */
+  letter-spacing: 2px; /* Add letter spacing for emphasis */
+  text-align: center;
+}
+
+table {
+  width: 80%;
+  margin: 20px auto;
+  border-collapse: collapse;
+}
+a {
+  text-decoration: none;
+  padding: 8px;
+  color: #0b6054;
+  font-size: 15px;
+  font-weight: 600;
+}
+table,
+th,
+td {
+  border: 1px solid #ddd;
+}
+
+th,
+td {
+  padding: 12px;
+  text-align: left;
+}
+
+th {
+  background-color: #079a85;
+  color: white;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: #079a85;
+}
+
+input:focus + .slider {
+  background-color: #079a85;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}

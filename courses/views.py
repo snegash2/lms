@@ -12,7 +12,7 @@ from django.urls import reverse_lazy
 from django.core.cache import cache
 from students.forms import CourseEnrollForm
 from .forms import ModuleFormSet,CourseCreateForm
-from .models import Course, Module, Content,Category
+from .models import Course, Module, Content,Category,SubCategory
 from django.db.models import Count
 from .models import Category
 from django.views.generic.detail import DetailView
@@ -23,7 +23,9 @@ from django.utils.text import slugify
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.contrib import messages
-
+from students.models import GlobalSetting
+from django.views.decorators.http import require_POST
+import json
 # common behavior for all classes this class return courses which create only by currently logedin user
 class OwnerMixin:
     def get_queryset(self):
@@ -70,34 +72,43 @@ class CourseCreateView(OwnerCourseEditMixin, CreateView):
         
         return context
     
+
+    
         
     def post(self, request, *args, **kwargs):
         form = CourseCreateForm(request.POST,files=request.FILES)
       
         try:
             category = Category.objects.get(category =request.session.get('category')['category'] )
+            setting  = GlobalSetting.objects.get(user = request.user)
+            name = SubCategory.objects.filter(name = setting.data_stored['value']).first()
         except Category.DoesNotExist:
             raise ValueError("No category is choice")
         
         
         if form.is_valid():
+            subcategory = self.request.POST.get("courseName")
+            
+            print(subcategory,"  subcateory ")
             form = form.save(commit=False)
             form.slug = slugify(form.overview)
             form.teacher = self.request.user
             form.category  = category
+            form.name = name
             if request.POST.get('image'):
                 form.image = request.POST.get('image')
     
             form.save()
-            messages.success(self.request, 'you added course success fully.')
+            # messages.success(self.request, 'you added course success fully.')
             return redirect('courses:course_create')
-      
-        return JsonResponse({"course ": "course created"})
+        messages.success(self.request, 'Course creation Failed please check the input data')
+        return redirect('courses:course_create')
 
 
 
     
 class CourseUpdateView(OwnerCourseEditMixin, UpdateView):
+    form_class = CourseCreateForm
     permission_required = 'courses.change_course'
 
 class ModuleContentListView(TemplateResponseMixin, View):
@@ -283,7 +294,8 @@ class CourseDetailView(DetailView):
 def verify_egiliable_student(request,id):
     # egiliable_students_group = Group.objects.get(name='can_take_exam')
     # egiliable_students = egiliable_students_group.user_set.all()
-    group = Group.objects.get(name='can_take_exam')
+    # group = Group.objects.get(name='can_take_exam')
+    group = Group.objects.all().first()
     user_email = request.POST.get('user')
     if request.method == "POST":
        if request.POST.get('user-to-deny') != None:
@@ -305,11 +317,12 @@ def verify_egiliable_student(request,id):
     candidate_students = course.students.all()
   
     context = {
+        'course':course,
         'course_id':id,
         'group_users':group.user_set.all(),
         'candidate_students':candidate_students
     }
-    return render(request,'courses/course/egiliablity.html',context)
+    return render(request,'courses/course/StudentList.html',context)
 
 
 
@@ -340,3 +353,16 @@ def course_filter(request,category,subcategory):
 
 
 
+
+
+
+@require_POST
+def verify_egiliable_student_ajax(request):
+   
+    if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
+   
+        studentId = json.loads(request.body)
+        print("studentId ",studentId)
+        return JsonResponse({
+            "studentId": studentId
+        })

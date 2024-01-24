@@ -32,9 +32,9 @@
                         ></a>
 
                         <ul class="childs" class="subcategory">
-                          {% for subs in cat.sub_categories.all %}
+                          {% for course in cat.courses.all %}
                           
-                          <li><a id="Sub-lniks" href="{% url 'courses:course_filter' cat.category subs %}">{{subs}}</a></li>
+                          <li><a id="Sub-lniks" href="{% url 'courses:course_detail' course.slug %}">{{course}}</a></li>
                           
                           {% endfor %}
                         </ul>

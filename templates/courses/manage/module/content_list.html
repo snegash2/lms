@@ -66,11 +66,10 @@ Module {{ module.order|add:1 }}: {{ module.title }}
       </li>
     </ul>
     
-    {%endif%}
+    {%endwith%}
   </div>
-  {% endwith %}
-</div>
-{% endblock %}
+  {% endblock %}
+
 
 {% block include_js %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html5sortable/0.13.3/html5sortable.min.js"></script>

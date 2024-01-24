@@ -1,8 +1,7 @@
 {% extends '_base.html' %}
 {% load static %}
-{% load crispy_forms_tags %}
 
-    {% block style %}
+{% block style%}
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -29,14 +28,15 @@
       rel="stylesheet"
       href="https://unicons.iconscout.com/release/v4.0.0/css/line.css"
     />
-    <link rel="icon" href="{% static 'logo.png' %}" type="image/x-icon" />
+    <link rel="icon" href="./assets/logo.png" type="image/x-icon" />
 
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Student Course</title>
 
-    <link rel="stylesheet" href="{% static 'instructor_module_add.css' %}" />
-    <link rel="stylesheet" href="{% static 'instructor_module_add_main.css' %}" />
+ 
+    <link rel="stylesheet" href="{% static 'student_list_main.css' %}" />
+    <link rel="stylesheet" href="{% static 'student_list.css' %}"/>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
@@ -56,15 +56,10 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
 
+ {% endblock %}
 
-    {% endblock %}
-    <!-- new -->
-  </head>
+{% block content %}
 
-  <body class="main-body">
-
-    {% block content %}
-   {
     <script>
       // JavaScript to toggle the active class on hamburger click
       document.addEventListener("DOMContentLoaded", function () {
@@ -89,166 +84,139 @@
       });
     </script>
     <!-- ===========================Main body================================= -->
-    <!-- <button class="btn" onclick="openModulePopup()">Add Module</button> -->
-    <button id="save-btns" class="btn" onclick="openModulePopup()">
-      <span>Add Module/span>
-    </button>
-    <div id="modulePopupBackdrop" onclick="closeModulePopup()"></div>
-
-    <div id="modulePopup">
-      
-      <form class="form" method="post" action=".">
-        {% csrf_token %}
-              {%for form in formset %}
-              <div>
-                  {{form|crispy}}
-              </div>
-          {%endfor%}
-
-          {{ formset.management_form }}
-      
-          <button class="btn" onclick="saveModule()" type="submit">Save</button>
-          <button class="btn" onclick="closeModulePopup()">Cancel</button>
-          
-         
-
-    </form>
+    <div class="reminder">
+      <p>These courses have 2 assignments</p>
     </div>
 
-    <table id="moduleTable">
-      <tr>
-        <th>Module Name</th>
-        <th>Module Overview</th>
-        
-      </tr>
-
-
-        {%for module in course.modules.all%}
-        <tr>
-          <a href="http://" target="_blank" rel="noopener noreferrer"><td>{{module.title|title}}</td></a> 
-          <td>{{module.description|safe}}</td>
-        
-        </tr>
+    <h1>{{course.name|title}} Student List</h1>
+    <div style="overflow-x: auto">
+      <table>
+        <thead>
+          <tr>
+            <th>Student ID</th>
+            <th>Student Name</th>
+            <th>Assignments</th>
+            <th>Activate Switch</th>
+            <th>Take Exam</th>
+          </tr>
+        </thead>
+        <tbody id="table-body">
+          
+      
+          {% for student in  course.students.all %}
+          <tr>
+            <td>{{student.id}}</td>
+            <td>{{student.username}}</td>
+            <td>Assignments</td>
+            <td>Activate Switch</td>
+            <td>
+              <span aria-label="Close modal" class="close"  id="span_{{student.id}}" style="font-size:4em;" onclick="updateStudentAccess('{{student.id}}','{{course.id}}')">&times;</span>
+  
+            </td>
+          </tr>
         {% endfor %}
-      <!-- Table rows will be added dynamically using JavaScript -->
-    </table>
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
+      
+
+        </tbody>
+      </table>
+    </div>
 
     <script>
-      var editingRow = null; // To keep track of the row being edited
+      function updateStudentAccess(studentId,course_id) {
+          let data = {
+            studentId:studentId,
+            courseId:course_id
 
-      function openModulePopup() {
-        var modulePopupBackdrop = document.getElementById(
-          "modulePopupBackdrop"
-        );
-        var modulePopup = document.getElementById("modulePopup");
-
-        modulePopupBackdrop.classList.add("show");
-        modulePopup.classList.add("show");
-      }
-
-      function closeModulePopup() {
-        document.getElementById("moduleName").value = ""; // Reset module name
-        document.getElementById("moduleOverview").value = ""; // Reset module overview
-        editingRow = null;
-
-        var modulePopupBackdrop = document.getElementById(
-          "modulePopupBackdrop"
-        );
-        var modulePopup = document.getElementById("modulePopup");
-
-        modulePopupBackdrop.classList.remove("show");
-        modulePopup.classList.remove("show");
-      }
-
-
-      function addForm() {
-        $.ajax({
-          url: '/filter-courses/',  // URL for the AJAX view
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': '{{ csrf_token }}'
-          },
-          contentType: 'application/json',
-          data: JSON.stringify(data),
-    
-          success: function (response) {
-
-          },
-          error: function (xhr, status, error) {
-            // Handle any error that occurred during the AJAX request
-            console.error(error);
           }
-        });
+
+          const allowed = true;
+
+          $.ajax({
+           
+            url:"/eligibility_ajax/",
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-CSRFToken': '{{ csrf_token }}'
+            },
+          
+            data: JSON.stringify(data),
       
-      }
-
-      // Close the popup when clicking outside of it
-      window.onclick = function (event) {
-        var modulePopup = document.getElementById("modulePopup");
-        if (event.target == modulePopup) {
-          closeModulePopup();
+            success: function (response) {
+              console.log(response," response");
+              $(`#span_${studentId}`).text(allowed ? '&plus;' : '&times;');
+             
+            },
+          
+           // <!-- error block begin here -->
+            error: function (error) {
+              // Handle any error that occurred during the AJAX request
+              console.log("error ",error);
+            }
+          });
         }
-      };
+    
+      </script>
+      
+    
 
-      function saveModule() {
-        var moduleName = document.getElementById("moduleName").value;
-        var moduleOverview = document.getElementById("moduleOverview").value;
+    <script>
+      // Sample data array with multiple assignments for each student
+      const studentData = []
+      // Get the table body element
+      const tableBody = document.getElementById("table-body");
 
-        if (moduleName && moduleOverview) {
-          if (editingRow) {
-            // Update the existing row
-            editingRow.cells[0].innerHTML = moduleName;
-            editingRow.cells[1].innerHTML = moduleOverview;
-            editingRow = null; // Reset editingRow
-          } else {
-            // Add a new row
-            var table = document.getElementById("moduleTable");
-            var newRow = table.insertRow(table.rows.length);
-            var cell1 = newRow.insertCell(0);
-            var cell2 = newRow.insertCell(1);
-            var cell3 = newRow.insertCell(2);
+      // Loop through the data and create table rows
+      studentData.forEach((student) => {
+        const row = document.createElement("tr");
 
-            cell1.innerHTML = moduleName;
-            cell2.innerHTML = moduleOverview;
-            cell3.innerHTML =
-              '<button class="btn" onclick="editModule(this)">Edit</button>' +
-              '<button class="btn" onclick="deleteModule(this)">Delete</button>';
-          }
+        // Create and append table cells
+        ["id", "name"].forEach((key) => {
+          const cell = document.createElement("td");
+          cell.textContent = student[key];
+          row.appendChild(cell);
+        });
 
-          closeModulePopup();
-        } else {
-          alert("Please enter both Module Name and Module Overview.");
-        }
-      }
+        // Create Assignments cell with links
+        const assignmentsCell = document.createElement("td");
+        student.assignments.forEach((assignment) => {
+          const assignmentLink = document.createElement("a");
+          assignmentLink.href = assignment.attachment;
+          assignmentLink.textContent = assignment.name;
+          assignmentLink.target = "_blank"; // Open link in a new tab
+          assignmentLink.style.display = "block"; // Display each link on a new line
+          assignmentsCell.appendChild(assignmentLink);
+        });
+        row.appendChild(assignmentsCell);
 
-      function editModule(btn) {
-        var row = btn.parentNode.parentNode;
-        var moduleName = row.cells[0].innerHTML;
-        var moduleOverview = row.cells[1].innerHTML;
+        // Create Activate Switch cell
+        const activateSwitchCell = document.createElement("td");
+        const activateSwitchLabel = document.createElement("label");
+        activateSwitchLabel.classList.add("switch");
+        const activateSwitchInput = document.createElement("input");
+        activateSwitchInput.type = "checkbox";
+        activateSwitchInput.classList.add("activate-switch");
+        const activateSwitchSlider = document.createElement("span");
+        activateSwitchSlider.classList.add("slider");
+        activateSwitchLabel.appendChild(activateSwitchInput);
+        activateSwitchLabel.appendChild(activateSwitchSlider);
+        activateSwitchCell.appendChild(activateSwitchLabel);
+        row.appendChild(activateSwitchCell);
 
-        // Set the values without resetting
-        document.getElementById("moduleName").value = moduleName;
-        document.getElementById("moduleOverview").value = moduleOverview;
+        // Create Take Exam cell
+        const takeExamCell = document.createElement("td");
+        const takeExamCheckbox = document.createElement("input");
+        takeExamCheckbox.type = "checkbox";
+        takeExamCheckbox.classList.add("take-exam-checkbox");
+        takeExamCell.appendChild(takeExamCheckbox);
+        row.appendChild(takeExamCell);
 
-        editingRow = row; // Set the editingRow to the current row
-
-        openModulePopup();
-      }
-
-      function deleteModule(btn) {
-        var row = btn.parentNode.parentNode;
-        row.parentNode.removeChild(row);
-      }
+        // Append the row to the table body
+        tableBody.appendChild(row);
+      });
     </script>
     <!--  -->
-
-    <!--  -->
+ 
     <script>
       // JavaScript to toggle the active class on hamburger click
       document.addEventListener("DOMContentLoaded", function () {
@@ -302,8 +270,4 @@
       });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
-
-
-   
-    {% endblock %}
-
+{% endblock content %}

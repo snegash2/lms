@@ -37,3 +37,14 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user.username
+    
+    
+    
+class GlobalSetting(models.Model):
+     user = models.OneToOneField(User, related_name = "globals",on_delete=models.CASCADE)
+     data_stored = models.JSONField(default=None)
+     
+     
+     def __str__(self) -> str:
+         return f"global setting of {self.user.username}"
+    

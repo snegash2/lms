@@ -4,6 +4,7 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save
 from allauth.account.signals import user_logged_in,user_logged_out
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Group,Permission
 
 User = get_user_model()
 
@@ -36,3 +37,22 @@ def send_new_email(sender, instance, created,**kwargs):
 @receiver(user_logged_in, sender=User)
 def user_logged_in_handler(sender, user, request, **kwargs):
     request.session['is_loading'] = True
+
+
+
+
+
+@receiver(post_save, sender=Course)
+def create_group_for_student_to_take_exam(sender, instance, created,**kwargs):
+    group = None
+    if instance.published == False:
+        group = Group.objects.get( name = f"{instance.name} students access group")
+        
+        if group:
+             group.user_set.add(instance.teacher)
+             group.save()
+             
+        else:
+            group.name = f"{instance.name} students access group"
+            group.save()
+        

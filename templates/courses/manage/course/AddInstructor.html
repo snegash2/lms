@@ -70,7 +70,7 @@
 
     <!-- new -->
  {% block content %}
-      {% include 'includes/Navbar.html'%}
+   
     <!-- start -->
     <div class="main__container">
       <div class="first">
@@ -128,21 +128,27 @@
             <h2>Course Information</h2>
             <!-- Wrapping the course description section for horizontal scrolling -->
             <div class="scrollable-section" style="overflow-x: auto">
+              
               <div class="popup-field">
                 <label for="courseName">Course Name:</label>
                 <input type="text" id="courseName" readonly />
+                  <script>
+                   
+                  </script>
                 <i
                   class="icon fas fa-pencil-alt"
                   onclick="enableEdit('courseName')"
                 ></i>
               </div>
-
               <form method="post" action=".">   
-                  {% csrf_token %}
+                {% csrf_token %}
+                {{form|crispy}}
+        
+                  
                   <input type="hidden" name="subCategory" value="{{courseName}}" />
                   <input type="hidden" name="category" value="{{category}}" />
                  
-                  {{form|crispy}}
+                
                     
               
                     <div class="popup-field">
@@ -188,7 +194,7 @@
     
     
         $.ajax({
-          url: '/filter-courses/',  // URL for the AJAX view
+          url: '/get_course_name/',  // URL for the AJAX view
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -200,14 +206,16 @@
           success: function (response) {
             // Handle the successful response
             var courses = response.courses;
-            console.log("courses ",courses);
+          
 
                       // Add courses to the dropdown
             courses.forEach(function (course) {
               var option = document.createElement("option");
-              option.value = course.name;
-              option.text = course.name;
+              option.value = course;
+              option.text = course;
               courseSelect.add(option);
+            
+             
             });
           
       
@@ -234,12 +242,41 @@
     } 
   
 
+  function globalDict(key,value) {
+
+
+  let data = {
+    key:key,
+    value:value
+  }
+    $.ajax({
+      url: '/user_global_settings_update/',  // URL for the AJAX view
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': '{{ csrf_token }}'
+      },
+      contentType: 'application/json',
+      data: JSON.stringify(data),
+
+      success: function (response) {
+        
+          console.log("set successfully");
+      },
+      error: function (xhr, status, error) {
+        // Handle any error that occurred during the AJAX request
+        console.error(error);
+      }
+    });
+  
+  }
+
   function showCourseModal() {
     var modal = document.getElementById("myModal");
     modal.style.display = "block";
     var selectedCourse = document.getElementById("courseSelect").value;
     document.getElementById("courseName").value = selectedCourse;
-
+     globalDict(key = "selectedCourse",value = selectedCourse)
     // Populate modal with existing course details
     var courseCard = findCourseCard(selectedCourse);
     if (courseCard) {
@@ -430,45 +467,7 @@
 
     <!-- end -->
     <!-- Footer and Dropdwon content  -->
-    <section>
-      <footer>
-        <div class="containers">
-          <div class="column">
-            <img src="{% static 'logo.png'" alt="LMS Logo" />
-          </div>
-          <div class="column">
-            <h4>Active Pages</h4>
-            <ul>
-              <li><a href="#">Home</a></li>
-              <li><a href="#">About</a></li>
-              <li><a href="#">Services</a></li>
-              <li><a href="#">Contact</a></li>
-            </ul>
-          </div>
-
-          <div class="column">
-            <h4>Contact Us</h4>
-            <p>Email: example@example.com</p>
-            <p>Address: 123 ABC Street, City, Country</p>
-          </div>
-          <div class="column">
-            <h4>Social Media</h4>
-            <p>do you need our help? Feel free to contact us.</p>
-            <div class="social-icons">
-              <a href="#"><i class="fa fa-facebook"></i></a>
-              <a href="#"><i class="fa fa-linkedin"></i></a>
-              <a href="#"><i class="fa fa-telegram"></i></a>
-              <a href="#"><i class="fa fa-youtube"></i></a>
-            </div>
-          </div>
-        </div>
-        <h1 class="footer__class">
-          <hr />
-          © Copyright <span><a href="">MarkAb Solutions</a> </span> - 2023. All
-          Rights Reserved
-        </h1>
-      </footer>
-    </section>
+  
     <script>
       // JavaScript to toggle the active class on hamburger click
       document.addEventListener("DOMContentLoaded", function () {

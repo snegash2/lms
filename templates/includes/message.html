@@ -16,7 +16,7 @@
               </ul> 
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="closeModal()">Close</button>
         </div>
       </div>
     </div>
@@ -27,5 +27,8 @@
     $(document).ready(function() {
         // Set timeout for fading out messages after 5 seconds
         $('#notificationModal').fadeTo(5000, 0, function() { $(this).remove(); });
+        
     });
+
+   
 </script>

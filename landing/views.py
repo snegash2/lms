@@ -6,8 +6,10 @@ from django.shortcuts import get_object_or_404
 from students.forms import CourseEnrollForm
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
+from students.models import GlobalSetting
+from django.contrib import messages
 import json
-
+from django.contrib.auth.models import Group,Permission
 
 
 @require_POST
@@ -28,10 +30,10 @@ def filter_courses(request):
         try:
           
             if category.get('category') == "All":
-                courses = Course.objects.all()
+                courses = Course.objects.filter(published = True)
             else:
                 category = Category.objects.get(category=category.get('category'))
-                courses = Course.objects.filter(category=category)
+                courses = Course.objects.filter(category=category).filter(published = True)
 
         except Category.DoesNotExist:
             raise ValueError("Category ")
@@ -40,7 +42,7 @@ def filter_courses(request):
         for course in courses:
             data = {
                 "id":course.id,
-                "name" : course.name,
+                "name" : course.name.name,
                 "slug": course.slug,
                 'image_url':course.image.url,
                 'detail':course.detail,
@@ -49,18 +51,55 @@ def filter_courses(request):
 
             }
             courses_dict.append(data)
-        data = {
+        _data = {
             'courses': courses_dict
            
         }
+     
+        return JsonResponse(_data)
 
-        return JsonResponse(data)
+
+
+
+
+
+
+
+
+@require_POST
+def get_course_name(request):
+    if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
+        category = None
+        # Filter the courses based on the category
+        
+        category = json.loads(request.body)
+        request.session['category'] = category
+
+        try:
+            category = Category.objects.get(category=category.get('category'))
+            subcategories = SubCategory.objects.filter(category = category)
+         
+                
+
+        except Category.DoesNotExist:
+            raise ValueError("Category ")
+        # Prepare the data to be sent as JSON
+        names = []
+        for sub in subcategories:
+            names.append(sub.name)
+   
+        _data = {
+            'courses': names
+           
+        }
+     
+        return JsonResponse(_data)
 
 def landing_page(request):
     courses = Course.objects.filter(published = True)
     group = None
     instructors = None
-    
+ 
     try:
         group = Group.objects.get(name='instructors')
     except Group.DoesNotExist:
@@ -109,3 +148,61 @@ def get_subcategories(request):
     subcategories_data = [{'id': subcategory.id, 'name': subcategory.name} for subcategory in subcategories]
 
     return JsonResponse(subcategories_data, safe=False)
+
+
+
+
+
+def user_global_settings_update(request):
+    
+      if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
+        data = json.loads(request.body)
+        setting = GlobalSetting()
+        update = GlobalSetting.objects.get(user = request.user)
+        if update:
+            update.data_stored = data
+            update.save()
+        else:
+            setting.user = request.user
+            setting.data_stored = data
+            setting.save()
+            
+        messages.success(request,"Global setting updated successfully")
+         
+        return JsonResponse(data)
+      
+          
+          
+          
+          
+@require_POST
+def verify_egiliable_student_ajax(request):
+   
+    if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
+        body = json.loads(request.body)
+        studentId = int(body.get("studentId"))
+        course = None
+        student = None
+        courseId = int(body.get("courseId"))
+    
+        try:
+            course = Course.objects.get(id = courseId)
+            
+        except Course.DoesNotExist:
+            pass
+     
+     
+        try:
+            student = User.objects.get(id = courseId)
+           
+        except User.DoesNotExist:
+            pass
+        try:
+            group = Group.objects.all().filter(name = f"{course.name} students access group").first()
+            group.user_set.add(student)
+            print("group we have ",group.user_set.all())
+        except Group.DoesNotExist:
+            print("group ",group)
+    
+     
+        return JsonResponse(body)

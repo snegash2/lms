@@ -27,6 +27,7 @@ class Category(models.Model):
         max_length=250, blank=True,
         unique=True, null=True)
     sub_categories = models.ManyToManyField("SubCategory")
+    courses = models.ManyToManyField("Course",related_name="courses")
     slug = models.SlugField()
 
     # objects = CategoryManager()

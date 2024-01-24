@@ -250,5 +250,7 @@ class StudentProfileView(LoginRequiredMixin,UpdateView):
     def get_success_url(self,**kwargs):
         messages.success(self.request, 'Profile update success fully.')
         return reverse_lazy('students:student_update_profile', args=[self.request.user.profile.pk])
-      
-          
+    
+    
+    
+    
