@@ -9,7 +9,10 @@ from courses.fields import OrderingField
 from django.utils.translation import gettext as _
 from django.utils.text import slugify
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Group
 from django.conf import settings
+import uuid
+
 # from django.contrib.auth.models import User
 import re
 from PIL import Image
@@ -26,15 +29,9 @@ class Category(models.Model):
         verbose_name=_("Category"),
         max_length=250, blank=True,
         unique=True, null=True)
-    sub_categories = models.ManyToManyField("SubCategory")
-    courses = models.ManyToManyField("Course",related_name="courses")
+    # sub_categories = models.ManyToManyField("SubCategory",null = True,blank= True)
+    courses = models.ForeignKey("Course",related_name="courses",null= True,blank= True,on_delete = models.CASCADE)
     slug = models.SlugField()
-
-    # objects = CategoryManager()
-
-    class Meta:
-        verbose_name = _("Category")
-        verbose_name_plural = _("Categories")
 
     def __str__(self):
         return f"{self.category}"
@@ -42,31 +39,32 @@ class Category(models.Model):
 
 
 
+# class SubCategory(models.Model):
 
-
-class SubCategory(models.Model):
-
-    name = models.CharField(
-        verbose_name=_("Sub-Category"),
-        max_length=250, blank=True, null=True)
+#     name = models.CharField(
+#         verbose_name=_("Sub-Category"),
+#         max_length=250, blank=True, null=True)
    
-    # objects = CategoryManager()
+#     # objects = CategoryManager()
 
-    class Meta:
-        verbose_name = _("Sub-Category")
-        verbose_name_plural = _("Sub-Categories")
+#     class Meta:
+#         verbose_name = _("Sub-Category")
+#         verbose_name_plural = _("Sub-Categories")
 
-    def __str__(self):
-        return f"{self.name}" # + " (" + self.category.category + ")"
+#     def __str__(self):
+#         return f"{self.name}" # + " (" + self.category.category + ")"
 
 
 
 class CourseName(models.Model):
-    name = models.CharField("Course Name ",max_length=200)
+    
+    name = models.CharField(max_length=200)
     category = models.ForeignKey(Category,
                                 verbose_name='Category',
                                 related_name='categories',
                                 on_delete=models.CASCADE,
+                                blank = True,
+                                null = True,
                                 default=None)
 
 
@@ -121,25 +119,27 @@ class Reference(models.Model):
 
 class Course(models.Model):
 
-    # need user can delete course but course can't delete
+    # need user can delete course but course can't delete'
+    # id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     teacher = models.ForeignKey(User,
                                 null=True,
                               related_name='courses_created',
                               on_delete=models.SET_NULL)
     # name = models.CharField("Course Name ",max_length=200)
-    name    = models.ForeignKey(SubCategory,on_delete = models.CASCADE)
+    name    = models.ForeignKey(CourseName,on_delete = models.CASCADE)
     category = models.ForeignKey(Category,
                                 verbose_name='Category',
                                 related_name='names',
                                 on_delete=models.CASCADE,
-                                null = True)
+                                null = True,
+                                blank = True)
     # skill_level = models.CharField(choices)
 
-    sub_category = models.ForeignKey(SubCategory,
-                                verbose_name='Sub Category',
-                                related_name='categories',
-                                on_delete=models.CASCADE,
-                                null = True,blank = True)
+    # sub_category = models.ForeignKey(SubCategory,
+    #                             verbose_name='Sub Category',
+    #                             related_name='categories',
+    #                             on_delete=models.CASCADE,
+    #                             null = True,blank = True)
 
 
     
@@ -160,7 +160,7 @@ class Course(models.Model):
 
     class Meta:
         ordering = ['-created']
-        verbose_name = "Course Content"
+        verbose_name = "Course"
 
     def __str__(self):
         return f"{self.name}"
@@ -173,25 +173,10 @@ class Course(models.Model):
     
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        self.slug = slugify(self.overview)
+        self.slug = slugify(self.id)
 
 
-    # def save(self, *args, **kwargs):
-    #     # Open the original image using PIL
-    #     original_image = Image.open(self.image.path)
-
-    #     # Set the desired size for the resized image
-    #     resized_size = (800, 600)
-    #     self.slug = slugify(self.-name)
-    #     # Resize the image
-    #     original_image.thumbnail(resized_size)
-
-    #     # Save the resized image back to the same field
-    #     # Note: This will overwrite the original image file
-    #     original_image.save(self.image.path)
-
-    #     # Call the superclass's save() method to save the model
-    #     super().save(*args, **kwargs)
+   
 
 
 
@@ -301,3 +286,11 @@ class Task(GenericItem):
 
 
 
+
+
+class CourseAccess(Group):
+    course = models.ForeignKey(Course,related_name = "course",null = True,blank = True,on_delete = models.CASCADE)
+    
+    
+    def __str__(self):
+        return f"{self.course.name} students access group"

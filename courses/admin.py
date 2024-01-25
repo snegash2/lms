@@ -1,16 +1,7 @@
 from django.contrib import admin
-from .models import  Course, Module,SubCategory,Content,File,Task
+from .models import  Course, Module,Content,File,Task
 from django.contrib import admin
-from .models import Category,CourseName,Reference,File
-
-
-
-
-
-# custom actions
-
-
-
+from .models import Category,CourseName,Reference,File,CourseAccess
 
 
 
@@ -20,9 +11,9 @@ class CategoryAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('category',)}
 
 
-@admin.register(SubCategory)
-class SubCategory(admin.ModelAdmin):
-    list_display = "name",
+# @admin.register(SubCategory)
+# class SubCategory(admin.ModelAdmin):
+#     list_display = "name",
 
     
     
@@ -57,11 +48,11 @@ class CourseAdmin(admin.ModelAdmin):
 
 
 
-admin.site.register(Module)
-admin.site.register(Content)
+
 admin.site.register(File)
 admin.site.register(Task)
 admin.site.register(Reference)
+admin.site.register(CourseAccess)
 
 
 

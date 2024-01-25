@@ -1,5 +1,5 @@
 from django.core.mail import send_mail
-from .models import Course
+from .models import Course,CourseAccess
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 from allauth.account.signals import user_logged_in,user_logged_out
@@ -46,13 +46,18 @@ def user_logged_in_handler(sender, user, request, **kwargs):
 def create_group_for_student_to_take_exam(sender, instance, created,**kwargs):
     group = None
     if instance.published == False:
-        group = Group.objects.get( name = f"{instance.name} students access group")
+        try:
+            group = CourseAccess.objects.get( name = f"{instance.name} students access group")
+        except CourseAccess.DoesNotExist:
+            pass
         
         if group:
              group.user_set.add(instance.teacher)
+             group.course = instance
              group.save()
              
         else:
             group.name = f"{instance.name} students access group"
+            group.course = instance
             group.save()
         

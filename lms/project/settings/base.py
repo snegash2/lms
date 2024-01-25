@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
-
+ROLEPERMISSIONS_MODULE = 'courses.roles'
 SECRET_KEY = NotImplemented
 DEBUG = False
 
@@ -16,7 +16,8 @@ ALLOWED_HOSTS = ["lmsbeta.pythonanywhere.com","127.0.0.1","mysite.com"]
 # Application definition
 
 INSTALLED_APPS = [
-
+    'rolepermissions',
+    'django_roles_access',
     "admin_interface",
     "colorfield",
 
@@ -374,3 +375,5 @@ CACHES.update({
         'TIMEOUT': None
     }
 })
+
+

@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from courses.models import Course,SubCategory,Category,CourseName
+from courses.models import Course,Category,CourseName
 from django.contrib.auth.models import Group,User
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
@@ -10,6 +10,7 @@ from students.models import GlobalSetting
 from django.contrib import messages
 import json
 from django.contrib.auth.models import Group,Permission
+from django.core import serializers
 
 
 @require_POST
@@ -181,8 +182,10 @@ def verify_egiliable_student_ajax(request):
     if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
         body = json.loads(request.body)
         studentId = int(body.get("studentId"))
+       
         course = None
         student = None
+        allowed = False
         courseId = int(body.get("courseId"))
     
         try:
@@ -193,16 +196,35 @@ def verify_egiliable_student_ajax(request):
      
      
         try:
-            student = User.objects.get(id = courseId)
+            student = User.objects.get(id = studentId)
+          
            
         except User.DoesNotExist:
             pass
         try:
             group = Group.objects.all().filter(name = f"{course.name} students access group").first()
             group.user_set.add(student)
-            print("group we have ",group.user_set.all())
+            group.save()
+          
         except Group.DoesNotExist:
             print("group ",group)
     
-     
-        return JsonResponse(body)
+        if student in group.user_set.all():
+            print(f"{student} in group")
+            allowed = False
+            group.user_set.remove(student)
+            group.save()
+            
+        elif student not in  group.user_set.all():
+            print(f"{student} not in group")
+            allowed = True
+            group.user_set.add(student)
+            group.save()
+        else:
+            pass
+            
+            
+        json_course = {
+            'allowed':allowed
+        }        
+        return JsonResponse(json_course)

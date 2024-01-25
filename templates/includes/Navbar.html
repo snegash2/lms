@@ -25,6 +25,7 @@
            
               <ul class="dropdown dropdown-2">
                     {% for cat in categories %}
+                
                       <li class="parent" >
                         <a href="#"
                         id="parent-category"
@@ -33,6 +34,7 @@
 
                         <ul class="childs" class="subcategory">
                           {% for course in cat.courses.all %}
+                       
                           
                           <li><a id="Sub-lniks" href="{% url 'courses:course_detail' course.slug %}">{{course}}</a></li>
                           

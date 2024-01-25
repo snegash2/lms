@@ -12,7 +12,7 @@ from django.urls import reverse_lazy
 from django.core.cache import cache
 from students.forms import CourseEnrollForm
 from .forms import ModuleFormSet,CourseCreateForm
-from .models import Course, Module, Content,Category,SubCategory
+from .models import Course, Module, Content,Category
 from django.db.models import Count
 from .models import Category
 from django.views.generic.detail import DetailView

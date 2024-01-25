@@ -129,7 +129,7 @@
 
           }
 
-          const allowed = true;
+          let allowed = true;
 
           $.ajax({
            
@@ -143,8 +143,8 @@
             data: JSON.stringify(data),
       
             success: function (response) {
-              console.log(response," response");
-              $(`#span_${studentId}`).text(allowed ? '&plus;' : '&times;');
+              allowed = response.allowed
+              $(`#span_${studentId}`).text(allowed ? '+' : 'X');
              
             },
           
