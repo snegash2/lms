@@ -21,7 +21,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(CourseName)
 class CourseNameAdmin(admin.ModelAdmin):
-    list_display = ['name', 'category']
+    list_display = ['name']
     
 
 

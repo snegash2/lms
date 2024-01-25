@@ -1,5 +1,5 @@
 from django.core.mail import send_mail
-from .models import Course,CourseAccess
+from .models import Course,CourseAccess,Category
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 from allauth.account.signals import user_logged_in,user_logged_out
@@ -42,22 +42,38 @@ def user_logged_in_handler(sender, user, request, **kwargs):
 
 
 
+# @receiver(post_save, sender=Course)
+# def create_group_for_student_to_take_exam(sender, instance, created,**kwargs):
+#     group = None
+#     if instance.published == False:
+#         try:
+#             group = CourseAccess.objects.get( name = f"{instance.name} students access group")
+#         except CourseAccess.DoesNotExist:
+#             pass
+        
+#         if group:
+#              group.user_set.add(instance.teacher)
+#              group.course = instance
+#              group.save()
+             
+#         else:
+#             group.name = f"{instance.name} students access group"
+#             group.course = instance
+#             group.save()
+        
+        
+        
+
 @receiver(post_save, sender=Course)
-def create_group_for_student_to_take_exam(sender, instance, created,**kwargs):
-    group = None
-    if instance.published == False:
+def insert_course_to_specific_category(sender, instance, created,**kwargs):
+    category = None
+    if created:
         try:
-            group = CourseAccess.objects.get( name = f"{instance.name} students access group")
-        except CourseAccess.DoesNotExist:
+            category = Category.objects.get( category = instance.category)
+            category.courses.add(instance)
+        except Category.DoesNotExist:
             pass
         
-        if group:
-             group.user_set.add(instance.teacher)
-             group.course = instance
-             group.save()
-             
-        else:
-            group.name = f"{instance.name} students access group"
-            group.course = instance
-            group.save()
         
+        print("category ",category)
+   

@@ -30,7 +30,7 @@ class Category(models.Model):
         max_length=250, blank=True,
         unique=True, null=True)
     # sub_categories = models.ManyToManyField("SubCategory",null = True,blank= True)
-    courses = models.ForeignKey("Course",related_name="courses",null= True,blank= True,on_delete = models.CASCADE)
+    courses = models.ManyToManyField("Course",related_name="courses",null= True,blank= True)
     slug = models.SlugField()
 
     def __str__(self):
@@ -39,30 +39,13 @@ class Category(models.Model):
 
 
 
-# class SubCategory(models.Model):
-
-#     name = models.CharField(
-#         verbose_name=_("Sub-Category"),
-#         max_length=250, blank=True, null=True)
-   
-#     # objects = CategoryManager()
-
-#     class Meta:
-#         verbose_name = _("Sub-Category")
-#         verbose_name_plural = _("Sub-Categories")
-
-#     def __str__(self):
-#         return f"{self.name}" # + " (" + self.category.category + ")"
-
-
-
 class CourseName(models.Model):
     
     name = models.CharField(max_length=200)
-    category = models.ForeignKey(Category,
+    category = models.ManyToManyField(Category,
                                 verbose_name='Category',
                                 related_name='categories',
-                                on_delete=models.CASCADE,
+                                # on_delete=models.CASCADE,
                                 blank = True,
                                 null = True,
                                 default=None)
@@ -118,6 +101,16 @@ class Reference(models.Model):
 
 
 class Course(models.Model):
+    
+    LEVEL_CHOICES = (
+        ('BASIC', 'Basic'),
+        ('INTERMEDIATE', 'Intermediate'),
+        ('ADVANCED', 'Advanced'),
+        ('EXPERT', 'Expert'),
+        # Add more choices as needed...
+    )
+    
+    # category','teacher','published','students','reason_not_published','slug'
 
     # need user can delete course but course can't delete'
     # id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -133,19 +126,11 @@ class Course(models.Model):
                                 on_delete=models.CASCADE,
                                 null = True,
                                 blank = True)
-    # skill_level = models.CharField(choices)
-
-    # sub_category = models.ForeignKey(SubCategory,
-    #                             verbose_name='Sub Category',
-    #                             related_name='categories',
-    #                             on_delete=models.CASCADE,
-    #                             null = True,blank = True)
+    skill_level = models.CharField(max_length=255, choices=LEVEL_CHOICES, default='BASIC')
 
 
-    
+    slug = models.SlugField(max_length=200, unique=False)
 
-    
-    slug = models.SlugField(max_length=200, unique=True)
 
     overview = RichTextUploadingField()
     created = models.DateTimeField(auto_now_add=True)
@@ -163,7 +148,7 @@ class Course(models.Model):
         verbose_name = "Course"
 
     def __str__(self):
-        return f"{self.name}"
+        return f"{self.slug}"
     
     @property
     def detail(self):
@@ -171,9 +156,9 @@ class Course(models.Model):
 
 
     
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-        self.slug = slugify(self.id)
+    # def save(self, *args, **kwargs):
+    #     super().save(*args, **kwargs)
+    #     self.slug = slugify(self.id)
 
 
    

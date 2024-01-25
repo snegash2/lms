@@ -14,7 +14,7 @@ from students.forms import CourseEnrollForm
 from .forms import ModuleFormSet,CourseCreateForm
 from .models import Course, Module, Content,Category
 from django.db.models import Count
-from .models import Category
+from .models import Category,CourseName
 from django.views.generic.detail import DetailView
 from django.shortcuts import render,get_object_or_404,HttpResponse
 from django.contrib.auth.models import Group,User
@@ -26,6 +26,7 @@ from django.contrib import messages
 from students.models import GlobalSetting
 from django.views.decorators.http import require_POST
 import json
+import random
 # common behavior for all classes this class return courses which create only by currently logedin user
 class OwnerMixin:
     def get_queryset(self):
@@ -77,11 +78,12 @@ class CourseCreateView(OwnerCourseEditMixin, CreateView):
         
     def post(self, request, *args, **kwargs):
         form = CourseCreateForm(request.POST,files=request.FILES)
-      
+        
+   
         try:
             category = Category.objects.get(category =request.session.get('category')['category'] )
             setting  = GlobalSetting.objects.get(user = request.user)
-            name = SubCategory.objects.filter(name = setting.data_stored['value']).first()
+            name = CourseName.objects.filter(name = setting.data_stored['value']).first()
         except Category.DoesNotExist:
             raise ValueError("No category is choice")
         
@@ -89,17 +91,14 @@ class CourseCreateView(OwnerCourseEditMixin, CreateView):
         if form.is_valid():
             subcategory = self.request.POST.get("courseName")
             
-            print(subcategory,"  subcateory ")
+          
             form = form.save(commit=False)
-            form.slug = slugify(form.overview)
+            form.slug = slugify(f"{form.overview[1::20] + str(random.randint(1,10000000))}")
             form.teacher = self.request.user
             form.category  = category
             form.name = name
-            if request.POST.get('image'):
-                form.image = request.POST.get('image')
-    
             form.save()
-            # messages.success(self.request, 'you added course success fully.')
+            messages.success(self.request, 'you added course success fully.')
             return redirect('courses:course_create')
         messages.success(self.request, 'Course creation Failed please check the input data')
         return redirect('courses:course_create')

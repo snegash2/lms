@@ -78,7 +78,7 @@ def get_course_name(request):
 
         try:
             category = Category.objects.get(category=category.get('category'))
-            subcategories = SubCategory.objects.filter(category = category)
+            subcategories = CourseName.objects.filter(category = category)
          
                 
 

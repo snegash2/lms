@@ -30,6 +30,7 @@ class EgiabilityForm(forms.Form):
 class CourseCreateForm(forms.ModelForm):
     class Meta:
         model = Course
-        exclude = 'category','teacher','published','sub_category','students','reason_not_published','name','slug'
-        
+        exclude = 'category','teacher','published','students','reason_not_published','slug','name'
+        # fields = "skill_level","overview","image","intro_video"
+
         
