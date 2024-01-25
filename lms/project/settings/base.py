@@ -11,7 +11,7 @@ DEBUG = False
 
 
 ALLOWED_HOSTS = ["*","lmsbeta.pythonanywhere.com","127.0.0.1","mysite.com"]
-
+CSRF_TRUSTED_ORIGINS = ["http://178.62.6.147"]
 
 # Application definition
 
