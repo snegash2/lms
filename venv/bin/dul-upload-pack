@@ -1,4 +1,4 @@
-#!/home/tinsae/Desktop/projects/lms/venv/bin/python
+#!/root/lms/venv/bin/python
 # dul-upload-pack - git-upload-pack in python
 # Copyright (C) 2008 John Carr <john.carr@unrouted.co.uk>
 #

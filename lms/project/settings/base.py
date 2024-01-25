@@ -10,7 +10,7 @@ SECRET_KEY = NotImplemented
 DEBUG = False
 
 
-ALLOWED_HOSTS = ["lmsbeta.pythonanywhere.com","127.0.0.1","mysite.com"]
+ALLOWED_HOSTS = ["*","lmsbeta.pythonanywhere.com","127.0.0.1","mysite.com"]
 
 
 # Application definition

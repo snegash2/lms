@@ -1,0 +1,308 @@
+.Avtar__img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+.menu-logo {
+  width: 40%;
+}
+.navbar {
+  background-color: #fff;
+  color: black;
+  padding: 0px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-brand {
+  font-size: 1.5rem;
+}
+
+.navbar-menu {
+  display: flex;
+  margin-inline: 6rem;
+}
+
+.navbar-menu.active {
+  margin-left: -12rem;
+  width: 6.5rem;
+  display: block;
+  padding: 6rem;
+  margin-top: -22px;
+}
+
+.navbar-menu ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 14px;
+  display: flex;
+}
+
+.navbar-menu ul li {
+  margin-left: 13px;
+}
+
+.navbar-menu ul li a {
+  color: black;
+  text-decoration: none;
+}
+.sign {
+  position: relative;
+  width: 114px;
+  height: 47px;
+  border: none;
+  background: #079a85;
+  border-radius: 17px;
+  margin-top: 1rem;
+  margin-left: 0rem;
+}
+.sign a h6 {
+  font-family: "Nunito";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 5px;
+  text-align: center;
+  color: #fff;
+  margin-top: -4px;
+}
+.All__Btn {
+  margin-right: -4rem;
+}
+li .Links {
+  color: #000;
+  font-size: 19px;
+  line-height: 24px;
+  font-family: Kanit;
+  font-style: normal;
+  font-weight: 400;
+  text-align: center;
+}
+/* Hamburger styles */
+@media screen and (max-width: 700px) {
+  .navbar {
+    padding: 17px;
+  }
+  .Sub__dropdown .navbar-menu ul li {
+    margin-left: 0px;
+  }
+  .All__Btn {
+    margin-right: 0rem;
+  }
+  .navbar-menu {
+    display: none;
+    position: absolute;
+    height: auto;
+    bottom: -38vh;
+    top: 12vh;
+    background-color: white;
+    flex-direction: column;
+    align-items: center;
+    width: 50%;
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in;
+    margin-left: 0rem;
+    z-index: 3;
+  }
+  .navbar-menu ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: block;
+  }
+  .navbar-hamburger {
+    display: block;
+    width: 30px;
+    height: 20px;
+    position: relative;
+    cursor: pointer;
+  }
+
+  .navbar-hamburger span {
+    display: block;
+    background-color: #161616;
+    height: 2px;
+    width: 100%;
+    position: absolute;
+    transition: transform 0.3s ease;
+  }
+
+  .navbar-hamburger span:nth-child(1) {
+    top: 0;
+  }
+
+  .navbar-hamburger span:nth-child(2),
+  .navbar-hamburger span:nth-child(3) {
+    top: 9px;
+  }
+
+  .navbar-hamburger span:nth-child(4) {
+    bottom: 0;
+  }
+
+  .navbar-hamburger.active span:nth-child(1) {
+    transform: translateY(9px) rotate(45deg);
+  }
+
+  .navbar-hamburger.active span:nth-child(2) {
+    transform: rotate(-45deg);
+  }
+
+  .navbar-hamburger.active span:nth-child(3) {
+    transform: translateY(-9px) rotate(-45deg);
+  }
+}
+.avater {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+/* Dropdown styles */
+.navbar-dropdown {
+  display: none;
+  background-color: #cecaca;
+}
+.navbar-menu.navbar-dropdown {
+  display: block;
+  position: relative;
+}
+.navbar-dropdown.active {
+  display: block;
+}
+
+.navbar-dropdown ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: block;
+}
+
+.navbar-dropdown ul li {
+  margin-left: 10px;
+}
+
+.na.navbar-menu ul li a {
+  color: #f1eaea;
+  text-decoration: none;
+  display: block;
+}
+/* new style */
+
+header .navbar ul {
+  list-style: none;
+}
+header .navbar ul li {
+  position: relative;
+  float: left;
+}
+header .navbar ul li a {
+  /* font-size: 20px;
+  padding: 20px; */
+  display: block;
+  padding-inline: 0rem;
+  text-decoration: none;
+  padding: 17px 28px;
+  transition: 0.3s;
+  color: #000;
+  font-size: 19px;
+  line-height: 24px;
+  font-family: "Kanit";
+  font-style: normal;
+  font-weight: 400;
+  /* text-align: center; */
+}
+.Menu-container img {
+  margin-top: -1rem;
+}
+/* header .navbar ul li .Links {
+  font-size: 20px;
+    padding: 20px;
+  display: block;
+  padding-inline: 0rem;
+  text-decoration: none;
+  padding: 26px 20px;
+} */
+#Links {
+  /* font-size: 24px; */
+  font-family: "Kanit", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+header .navbar ul li .Links:hover {
+  /* padding: 15px 20px 15px 20px; */
+  /* padding: 35px 15px 35px 25px; */
+
+  padding-top: 10px;
+  /* padding-right: 15px; */
+  padding-bottom: 15px;
+  /* padding-left: 15px; */
+}
+header .navbar ul li a:hover {
+  /* background-color: rgb(240, 240, 232); */
+  /* margin-left: -1.1rem; */
+  color: #079a85;
+
+  /* padding: 25px 35px 25px 35px; */
+}
+header .navbar ul li ul {
+  position: absolute;
+  left: 0;
+  width: 165px;
+  background-color: rgb(243, 243, 243);
+  display: block;
+  z-index: 15;
+  display: none;
+}
+.fa-caret-right:before {
+  content: "\f0da";
+  padding-left: 9px;
+}
+header .navbar ul li ul li {
+  width: 100%;
+}
+header .navbar ul li ul li ul {
+  left: 150px;
+  top: 0;
+}
+header .navbar ul li:focus-within > ul,
+header .navbar ul li:hover > ul {
+  display: initial;
+}
+@media screen and (max-width: 992px) {
+  ul.Menu-container {
+    margin-left: -4rem;
+    margin-top: -6rem;
+  }
+  #Sub-lniks {
+    margin-left: -0.6rem;
+  }
+  .Sub__dropdown {
+    width: 70%;
+  }
+  .navbar-menu ul li {
+    margin-left: 16px;
+    padding-left: 1rem;
+  }
+  /* header .navbar {
+          position: absolute;
+          top: 100%;
+          left: 0;
+          right: 0;
+          background: green;
+        } */
+  header .navbar ul li ul {
+    position: relative;
+    width: 90%;
+  }
+  header .navbar ul li ul li {
+    /* background-color: green; */
+    background-color: rgb(236, 232, 232);
+  }
+  header .navbar ul li ul li ul {
+    /* width: 100%;
+    left: 0; */
+    width: 72%;
+    left: -32;
+  }
+}

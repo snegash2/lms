@@ -1,0 +1,523 @@
+/* Styles for the accordion */
+
+.headerone {
+  background-color: #079a85;
+  color: #fff;
+  padding: 20px 0;
+  text-align: center;
+}
+
+/* .dashboard-container {
+    display: grid;
+    grid-template-columns: 29% 40% 19%;
+    margin-left: 2rem;
+    gap: 5%;
+  } */
+.dashboard-container.discription {
+  margin-top: 33rem;
+}
+.dashboard-container {
+  display: grid;
+  grid-template-columns: 30% 62%;
+  grid-template-rows: minmax(150px auto);
+  margin-left: 2rem;
+  gap: 5%;
+}
+.main__section {
+  display: grid;
+  grid-template-columns: 30% 62%;
+  grid-template-rows: minmax(150px auto);
+  margin-left: 2rem;
+  gap: 5%;
+}
+.course h2 {
+  color: #00215b;
+  font-family: "Kanit", sans-serif;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 147.5%;
+}
+/* =========================discription stayle====================== */
+
+.attach {
+  /* margin-top: -11rem; */
+}
+.discription {
+  margin-top: -9rem;
+}
+/* =======================================video css===================================== */
+.course-overview {
+  width: 100%;
+  /* max-width: 600px; */
+  margin: 20px 0;
+}
+
+.course-list {
+  margin: 10px 0;
+}
+
+/* .bx{
+    padding: 1rem ;
+  } */
+
+.course {
+  border: 0px solid #ccc;
+  margin-bottom: 10px;
+  padding: 22px;
+  margin-top: 3rem;
+}
+
+.video {
+  max-width: 100%;
+}
+@media only screen and (max-width: 700px) {
+  .dashboard-container {
+    grid-template-columns: 1fr;
+    margin-left: 1rem;
+  }
+  .header {
+    padding: 10px;
+  }
+  .attach {
+    /* position: absolute; */
+    /* margin-top: 30rem; */
+  }
+  .discription {
+    margin-top: -9rem;
+  }
+  .accordion-item {
+    border: 0px solid #a19f9f;
+    margin-bottom: 10px;
+  }
+  .accordion {
+    margin-left: 1rem;
+  }
+  .accordion-header {
+    text-align: center;
+    margin-left: -2rem;
+    padding: 10px;
+    width: 20rem;
+  }
+  .sub-accordion-header {
+    color: #00215b;
+    background-color: #f9f9f9;
+    /* color: #555; */
+    cursor: pointer;
+    padding: 10px;
+    margin-left: 2rem;
+    width: 15rem;
+  }
+  h2 {
+    text-align: center;
+    margin-left: -3rem;
+    padding: 2rem;
+  }
+  video {
+    width: 100px;
+
+    height: 250px;
+  }
+  .qna-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  .course-overview {
+    margin-top: -7rem;
+  }
+  .course-list {
+    margin: 3px 0;
+  }
+  .headerone {
+  }
+  .course {
+    border: none;
+
+    padding: 10px;
+  }
+  .video {
+    width: 100%;
+  }
+  .course h2 {
+    margin-top: -3rem;
+    text-align: left;
+    font-size: 29px;
+  }
+  /* .course {
+      border: 1px solid #ccc;
+      margin-bottom: 10px;
+      margin-left: 4rem;
+      padding: 22px;
+      margin-top: 3rem;
+    } */
+}
+/* ==============================================choosefile============================== */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+}
+
+.container {
+  /* max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
+  max-width: 600px;
+
+  margin: auto auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-top: 7rem;
+}
+
+h1 {
+  text-align: center;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-bottom: 10px;
+}
+
+input[type="file"] {
+  margin-bottom: 20px;
+}
+
+.upload-btn {
+  /* padding: 10px 20px; */
+  background-color: #079a85;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.Upload__btns {
+  background-color: #079a85;
+  color: white;
+}
+.upload-btn p {
+  font-size: 17px;
+}
+button:hover {
+  /* background-color: #079a85; */
+}
+/* ==========================================================description new============= */
+.filter-buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 103px;
+}
+
+.filter-button {
+  padding: 10px 20px;
+  background-color: #f0f0f0;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.filter-button.active {
+  /* background-color: #007bff; */
+  color: black;
+}
+.p {
+  font-family: Arial, sans-serif;
+}
+.items {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.item {
+  display: none;
+  padding: 20px;
+  /* border: 1px solid #ccc; */
+}
+
+.item.active {
+  display: block;
+}
+/* ================================================================description=============== */
+
+.description {
+  position: fixed;
+  margin-left: 25rem;
+  margin-top: -4rem;
+}
+#filterInput {
+  display: none;
+}
+
+/* #filterButtons {
+    display: flex;
+    gap: 10px;
+  } */
+
+button {
+  color: #00215b;
+  font-family: "Kanit", sans-serif;
+  padding: 8px 12px;
+
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+button.active {
+  color: #141414;
+  border-bottom: 1px solid black;
+}
+
+/* ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  li {
+    padding: 5px;
+    border-bottom: 1px solid #f3e4e4;
+  } */
+
+li:last-child {
+  border-bottom: none;
+}
+#filterlist ul {
+  color: none;
+}
+#span {
+  font-size: 18px;
+  color: #00215b;
+}
+@media only screen and (max-width: 700px) {
+  #filterInput {
+    width: 34%;
+    padding: 10px;
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+  .container {
+    margin-top: -4rem;
+    margin-left: 0rem;
+    overflow: hidden;
+    width: 19rem;
+  }
+  .main__section {
+    grid-template-columns: 100%;
+  }
+
+  .dropdown-menu {
+    margin-left: -1rem;
+  }
+}
+@media only screen and (max-width: 700px) {
+  #left {
+    order: 2;
+  }
+
+  #right {
+    order: 1;
+  }
+  .filter-buttons {
+    display: block;
+    justify-content: center;
+    margin-top: 15rem;
+  }
+}
+/* ================================================================================================= */
+body {
+  /* font-family: Arial, sans-serif;
+    margin: 20px; */
+}
+
+h1 {
+  text-align: center;
+}
+
+form {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+label,
+input,
+select,
+textarea {
+  display: block;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+input[type="submit"] {
+  margin-top: 20px;
+}
+/* ==============================link line none======================================== */
+textarea {
+  resize: vertical;
+}
+li {
+  padding: 5px;
+  border-bottom: none;
+}
+
+/* =======================================new accordion===========================================
+   /* Add styles to format the accordion container */
+.accordion-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Style the accordion headers */
+.accordion-header {
+  color: #00215b;
+  background-color: #f1f1f1;
+  font-size: 20px;
+  text-align: left;
+  /* color: #333; */
+  cursor: pointer;
+  padding: 18px;
+  border: 1px solid #ccc;
+  font-family: "Kanit", sans-serif;
+}
+.accordion-header:hover {
+  background-color: #079a85;
+  color: #f1f1f1;
+}
+.sub-accordion-header:hover {
+  background-color: #079a85;
+  color: #f1f1f1;
+}
+
+/* Style the sub-accordion headers */
+.sub-accordion-header {
+  /* color: #00215b; */
+  background-color: #f9f9f9;
+  /* color: #555; */
+  cursor: pointer;
+  padding: 1px;
+  border: 1px solid #ccc;
+  margin-left: -139px;
+  margin-bottom: -2rem;
+  margin-top: 2rem;
+  margin-left: -9rem;
+  display: flex;
+}
+.sub-accordion-content a {
+  list-style: none;
+  display: block;
+  color: #079a85;
+  padding: 0.6rem;
+  font-weight: bold;
+}
+/* Add styles for toggle icons */
+.toggle-icon {
+  float: right;
+}
+
+/* Rotate the toggle icon when the accordion is open */
+.accordion.active .toggle-icon,
+.sub-accordion.active .toggle-icon {
+  transform: rotate(45deg);
+}
+.accordion-content,
+.sub-accordion-content {
+  display: none;
+  margin-left: 1.5rem;
+  padding: 0px;
+  border: 0px solid #ccc;
+}
+/* =============================================drop down icons======================== */
+/* styles.css */
+/* Basic CSS for the menu */
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+  margin: 10px;
+}
+
+.dropdown-toggle {
+  /* background-color: #f0f0f0; */
+  color: #5c5a5a;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  background-color: transparent;
+  font-size: 35px;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  margin-left: -4rem;
+  margin-top: 1.5rem;
+  width: 10rem;
+}
+
+.dropdown-menu li {
+  padding: 10px;
+}
+
+/* Show the dropdown when the toggle button is clicked */
+.dropdown.show .dropdown-menu {
+  display: block;
+}
+#Attach h1 {
+  text-align: left;
+}
+/* @media screen and (min-width: 1200px) {
+    .main__section {
+      display: none;
+    }
+  } */
+/* ===================================================disscution=======================
+   */
+
+.qna-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+#ask-button {
+  border: 1px solid;
+}
+.qna-form {
+  /* border: 1px solid #ccc; */
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.qna-form input,
+.qna-form textarea,
+.qna-form button {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.qna-list {
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+/* div.sub-accordion-header {
+  width: 8rem;
+  padding: 5px;
+  border-radius: 8px;
+  border: 1px border red;
+  margin-top: -11px;
+  margin-left: 7rem;
+  height: 24px;
+} */
