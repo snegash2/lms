@@ -316,8 +316,8 @@
                   {{course.intro_video.url}}
   
                 
-                  {% video my_video "large" %}
-              {% endvideo %}
+                  {% video my_video "medium" %}
+                 {% endvideo %}
                
                 
 
@@ -362,11 +362,11 @@
                 {{ object.overview|safe|linebreaks }}
               </p>
               <ul>
-                <li>Skill level: Beginner Level</li>
+                <li>Skill level: {{course.skill_level}}</li>
                 <li>Students: {{course.students.count }}</li>
                 <li>Languages: English</li>
                 <li>Lectures: {{course.modules.all.count }}</li>
-                <li>Video: 1 total hour</li>
+             
               </ul>
             </div>
             <div class="item button2">
@@ -380,13 +380,21 @@
                     {% for module in course.modules.all %}
                       
                       {% for content in module.contents.all %}
+                              <p>{{content.item.title}}</p>
+
+                            {% if content.content_type.model == 'video'%}
+                                        {% video content.item.video  as my_video %}
+                                        {% video my_video "small" %}
+                                        {% endvideo %}
+
+                            {% endif %}
 
                     
                           <li>
                           
-                            <a href="{{content.file.url}}">
+                            <a href="{{content.item.file}}">
                             {{content.title}}
-                            <img class="pdf-icon" src="{% static 'pfds.jpg' %}" alt="">
+                            <img class="pdf-icon" src="{% static '{{content.content_type.model}}.jpg' %}" alt="">
                           </a>
                           </li>
                       
