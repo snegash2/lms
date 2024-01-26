@@ -1,6 +1,6 @@
 {% extends "_base.html" %}
 {% load static %}
-
+{% load embed_video_tags %}
 {% block style %} 
     
 
@@ -310,17 +310,16 @@
                 <div class="video">
 
                 {% if course.intro_video %}
-                  <video
-                    src="{{course.intro_video.url}}"
-                    controls
-                    muted
-                    style="
-                    position: relative;
-                    width: 30%;
-                    height: 30%;
-                    "
-                    
-                  ></video>
+
+
+                  {% video course.intro_video  as my_video %}
+                  {{course.intro_video.url}}
+  
+                
+                  {% video my_video "large" %}
+              {% endvideo %}
+               
+                
 
                   {% else %}
                     <video
@@ -376,15 +375,17 @@
                 <ul id="dynamic-list">
                   {% if request.user in course.students.all and request.user.is_authenticated  %}
 
+
+                  
                     {% for module in course.modules.all %}
-                    
-                      {% for pdf in module.pdfs.all %}
+                      
+                      {% for content in module.contents.all %}
 
                     
                           <li>
                           
-                            <a href="{{pdf.file.url}}">
-                            {{pdf.title}}
+                            <a href="{{content.file.url}}">
+                            {{content.title}}
                             <img class="pdf-icon" src="{% static 'pfds.jpg' %}" alt="">
                           </a>
                           </li>
@@ -397,32 +398,7 @@
                 </ul>
               </div>
 
-              <!-- <script>
-                const pdfs = [
-                  { name: "Modeule 1", url: "pdf/certficate.pdf" },
-                  { name: "Modeule 2", url: "pdf/certficate.pdf" },
-                  { name: "Modeule 3", url: "pdf/certficate.pdf" },
-                ];
-
-                const dynamicList = document.getElementById("dynamic-list");
-
-                pdfs.forEach((pdf) => {
-                  const li = document.createElement("li");
-                  const icon = document.createElement("img");
-                  icon.src = "assets/pfds.jpg"; // Replace with the path to your PDF icon image
-                  icon.className = "pdf-icon";
-                  const link = document.createElement("a");
-                  link.href = pdf.url;
-                  link.textContent = pdf.name;
-                  link.target = "_blank"; // Open the PDF in a new tab
-
-                  li.appendChild(icon);
-                  li.appendChild(link);
-                  dynamicList.appendChild(li);
-                });
-              </script> -->
-
-
+      
 
 
             </div>

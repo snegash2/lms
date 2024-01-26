@@ -99,7 +99,7 @@ class CourseCreateView(OwnerCourseEditMixin, CreateView):
             form.name = name
             form.save()
             messages.success(self.request, 'you added course success fully.')
-            return redirect('courses:course_create')
+            return redirect('courses:manage_course_list')
         messages.success(self.request, 'Course creation Failed please check the input data')
         return redirect('courses:course_create')
 

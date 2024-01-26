@@ -48,9 +48,10 @@ INSTALLED_APPS = [
     # 'debug_toolbar',
     # 'social_django',
     'django_extensions',
-     'widget_tweaks',
-      'tempus_dominus',
-       "bootstrap_datepicker_plus",
+    'widget_tweaks',
+    'tempus_dominus',
+    "bootstrap_datepicker_plus",
+  
 
    
 
@@ -139,6 +140,8 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'courses.context_processors.my_context_processor',
+                'django.template.context_processors.request',
+
                  # `allauth` needs this from django
                 
             ],

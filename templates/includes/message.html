@@ -3,7 +3,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="notificationModalLabel">Notification</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <button id="btn-close" type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -26,7 +26,11 @@
   <script>
     $(document).ready(function() {
         // Set timeout for fading out messages after 5 seconds
-        $('#notificationModal').fadeTo(5000, 0, function() { $(this).remove(); });
+        $('#notificationModal').fadeTo(5000, 0, function() { $(this).remove()});
+        $("#btn-close").click(function() {
+          $("#notificationModal").remove();
+      });
+        
         
     });
 

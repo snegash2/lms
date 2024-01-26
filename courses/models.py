@@ -12,6 +12,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.conf import settings
 import uuid
+from embed_video.fields import EmbedVideoField
 
 # from django.contrib.auth.models import User
 import re
@@ -140,7 +141,7 @@ class Course(models.Model):
     ceu          = models.IntegerField(default= 0)
     published   = models.BooleanField(default=False)
     reason_not_published = models.TextField(default="")
-    intro_video = models.URLField(default ="https://youtu.be/S-rOWaiKPgk")
+    intro_video = EmbedVideoField()
 
 
     class Meta:
@@ -171,7 +172,7 @@ class Module(models.Model):
     title = models.CharField(max_length=200)
     description = RichTextUploadingField(blank=True)
     order = OrderingField(blank=True, for_fields=['course'])
-    pdfs =  models.ManyToManyField("File",blank= True)
+    # pdfs =  models.ManyToManyField("File",blank= True)
     def __str__(self):
         return f'{self.order}. {self.title}'
 
@@ -253,8 +254,7 @@ class VideoManager(models.Manager):
 
 # actually class to store url of video
 class Video(GenericItem):
-    url = models.URLField(blank=True,null=True)
-    video = models.FileField(upload_to="couses/videos", blank=True, null=True, validators=[])
+    video =  EmbedVideoField()
     # objects = VideoManager()
 
 

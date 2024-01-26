@@ -1,0 +1,117 @@
+{% extends "_base.html" %}
+
+{% block title %}My courses{% endblock %}
+
+{% block content %}
+<div class="w-full mt-12 sm:px-6  grid lg:grid-cols-3 md:grid-cols-1 sm:grid-cols-1">
+  {% for course in object_list %}
+
+  <div
+  class="m-2 block rounded-lg bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
+  <div class="badge badge-primary" style="position: relative;">
+        {% if course.published == True %}
+        <span class="badge bg-blue-600 text-white" style="position: absolute;left:78%;">Published</span>
+        {%else%}
+
+        <div class="modal z-10 flex justify-center items-center fixed top-0 left-0 w-full h-full hidden">
+          <div class="bg-white rounded-lg shadow-lg p-4">
+            <h2 class="text-lg font-semibold">Edit your course</h2>
+            <p></p>
+            <button class="mt-4 btn btn-primary">Close</button>
+          </div>
+        </div>
+        
+
+        <span class="badge bg-red-600 text-white tooltip" title="{{course.reason_not_published}}" id="published" style="position: absolute;left:78%;">Unpublished</span>
+        {%endif%}
+  
+  </div>
+
+  {%if course.image%}
+  <img class="rounded-t-lg contain" src="{{course.image.url}}" alt="{{course.name}}" />
+  {%else%}
+
+      <p>Image</p> 
+  {%endif%}
+ 
+  <div class="p-6">
+    <h5
+      class="mb-2 text-xl font-medium leading-tight text-neutral-800 dark:text-neutral-50">
+      Card title
+    </h5>
+    <p class="mb-4 text-base text-neutral-600 dark:text-neutral-200">
+      {{course.overview|safe|truncatechars:50 }}
+    </p>
+    <div class="card-footer flex justify-content: space-around rounded-md shadow-sm"
+      style="display: flex;justify-content: space-around;">
+
+
+      <a href="{% url "courses:course_edit" course.id %}"
+        class="px-4 py-2 text-sm font-medium text-blue-700 bg-white border border-gray-200  hover:bg-gray-100 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">Edit</a>
+      <a href="{% url "courses:course_delete" course.id %}"
+        class="px-4 py-2 bg-gray-700 text-sm font-medium text-blue-700 text-red-700 bg-white border border-gray-200  hover:bg-gray-100 focus:z-10 focus:ring-2 focus:ring-red-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">Delete</a>
+      <a href="{% url "courses:course_module_update" course.id %}"
+        class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200  hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">Edit
+        modules</a>
+      {% if course.modules.count > 0 %}
+      <a href="{% url "courses:module_content_list" course.modules.first.id %}"
+        class="px-4 py-2 bg-gray-700 text-sm font-medium text-blue-700 bg-white border border-gray-200  hover:bg-gray-100 focus:z-10 focus:ring-2 focus:ring-red-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">
+        Manage contents
+      </a>
+
+
+      <a href="{% url 'courses:egiliablity' course.id %}"
+      class="px-4 py-2 bg-gray-700 text-sm font-medium text-blue-700 bg-white border border-gray-200  hover:bg-gray-100 focus:z-10 focus:ring-2 focus:ring-red-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white"
+
+      >
+        <p>show all students</p>
+      </a>
+    
+      {% endif %}
+
+    </div
+  </div>
+</div>
+
+  </div>
+ 
+  {% empty %}
+  <p>You haven't created any courses yet.</p>
+  {% endfor %}
+
+
+
+</div>
+
+
+  <a href="{% url "courses:course_create" %}">
+  New Course
+  </a>
+
+
+  
+
+
+
+</div>
+
+
+{% endblock %}
+
+
+{% block include_js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html5sortable/0.13.3/
+html5sortable.min.js"></script>
+{% endblock %}
+
+{% block domready %}
+var options = {
+method: 'POST',
+mode: 'same-origin'
+}
+const moduleOrderUrl = '{% url "courses:module_order" %}';
+sortable('#modules', {
+forcePlaceholderSize: true,
+placeholderClass: 'placeholder'
+});
+{% endblock %}

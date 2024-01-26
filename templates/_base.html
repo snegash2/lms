@@ -97,13 +97,7 @@
        
         {% endblock content %}
 
-
-          <!-- =========================================Js code==================== -->
-  
-          <br />
-          <br />
-          <br />
-          {% include "includes/footer.html"%}
+         
     <script>
         // JavaScript to toggle the active class on hamburger click
         document.addEventListener("DOMContentLoaded", function () {
@@ -189,13 +183,13 @@
         })
      </script> -->
 
-<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
 <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
 <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
-
+{% include "includes/footer.html"%}
 </body>
 </html>
