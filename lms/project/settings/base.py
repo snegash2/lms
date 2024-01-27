@@ -331,7 +331,7 @@ SOCIALACCOUNT_PROVIDERS = {
 }
 
 LOGIN_URL = '/'
-
+LOGIN_REDIRECT_URL = "/course/create/"
 
 #admin custimization
 X_FRAME_OPTIONS = "SAMEORIGIN"

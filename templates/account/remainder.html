@@ -9,7 +9,11 @@ name of course should be table with course relation ship
 
 
 
-
+if(response.response.length === null) {
+  const mainContent = document.getElementById("mainContainer")
+  mainContent.innerHTML = `<img src="{% static 'loader.svg' %}" alt="Loading..." class="spinner-border text-primary">`
+    
+}
 
 
 

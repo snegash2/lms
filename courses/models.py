@@ -127,7 +127,7 @@ class Course(models.Model):
                                 on_delete=models.CASCADE,
                                 null = True,
                                 blank = True)
-    skill_level = models.CharField(max_length=255, choices=LEVEL_CHOICES, default='BASIC')
+    # skill_level = models.CharField(max_length=255, choices=LEVEL_CHOICES, default='BASIC')
 
 
     slug = models.SlugField(max_length=200, unique=False)
@@ -136,7 +136,7 @@ class Course(models.Model):
     overview = RichTextUploadingField()
     created = models.DateTimeField(auto_now_add=True)
     students = models.ManyToManyField(User,related_name='courses_joined',blank=True)
-    image = models.ImageField(null = False,blank = False,upload_to='media/images',default="images/avatar.png")
+    image = models.ImageField(null = False,blank = False,upload_to='media/images',default="media/images/avatar.png")
     has_practice = models.BooleanField(default=False)
     ceu          = models.IntegerField(default= 0)
     published   = models.BooleanField(default=False)

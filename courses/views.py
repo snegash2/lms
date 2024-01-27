@@ -27,6 +27,8 @@ from students.models import GlobalSetting
 from django.views.decorators.http import require_POST
 import json
 import random
+from django.core import serializers
+
 # common behavior for all classes this class return courses which create only by currently logedin user
 class OwnerMixin:
     def get_queryset(self):
@@ -44,7 +46,7 @@ class OwnerEditMixin:
 class OwnerCourseMixin(OwnerMixin,LoginRequiredMixin,PermissionRequiredMixin):
     model = Course
     # fields = ['category', 'slug', 'overview','image']
-    success_url = reverse_lazy('courses:manage_course_list')
+    success_url = reverse_lazy('courses:course_create')
 
 class OwnerCourseEditMixin(OwnerCourseMixin, OwnerEditMixin):
     # template_name = 'courses/manage/course/form.html'
@@ -61,8 +63,17 @@ class CourseCreateView(OwnerCourseEditMixin, CreateView):
     permission_required = 'courses.add_course'
     form_class = CourseCreateForm
     
+
+    
+    
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context =  super().get_context_data(**kwargs)
+        try:
+            mycourses = Course.objects.filter(teacher =self.request.user)
+        
+        except Course.DoesNotExist:
+            raise ValueError("Course Does not Exist")
+        
         try:
             categories = Category.objects.all()
             
@@ -70,6 +81,7 @@ class CourseCreateView(OwnerCourseEditMixin, CreateView):
             raise context.clear()
         
         context['categories'] = categories
+        context['mycourses'] = mycourses
         
         return context
     
@@ -77,31 +89,39 @@ class CourseCreateView(OwnerCourseEditMixin, CreateView):
     
         
     def post(self, request, *args, **kwargs):
-        form = CourseCreateForm(request.POST,files=request.FILES)
-        
-   
-        try:
-            category = Category.objects.get(category =request.session.get('category')['category'] )
-            setting  = GlobalSetting.objects.get(user = request.user)
-            name = CourseName.objects.filter(name = setting.data_stored['value']).first()
-        except Category.DoesNotExist:
-            raise ValueError("No category is choice")
-        
-        
-        if form.is_valid():
-            subcategory = self.request.POST.get("courseName")
+        if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
+            body = json.loads(request.body)
+            form = CourseCreateForm(body)
+
+            try:
+                category = Category.objects.get(category =request.session.get('category')['category'] )
+                setting  = GlobalSetting.objects.get(user = request.user)
+                name = CourseName.objects.filter(name = setting.data_stored['value']).first()
+            except Category.DoesNotExist:
+                raise ValueError("No category is choice")
             
-          
-            form = form.save(commit=False)
-            form.slug = slugify(f"{form.overview[1::20] + str(random.randint(1,10000000))}")
-            form.teacher = self.request.user
-            form.category  = category
-            form.name = name
-            form.save()
-            messages.success(self.request, 'you added course success fully.')
-            return redirect('courses:manage_course_list')
-        messages.success(self.request, 'Course creation Failed please check the input data')
-        return redirect('courses:course_create')
+            
+            if form.is_valid():
+                subcategory = self.request.POST.get("courseName")
+                form = form.save(commit=False)
+                form.slug = slugify(f"{form.overview[1::20] + str(random.randint(1,10000000))}")
+                form.teacher = self.request.user
+                form.category  = category
+                form.name = name
+                form.save()
+                # messages.success(self.request, 'you added course success fully.')
+                data = []
+                forms = vars(form)
+                json_data = serializers.serialize('json', [form])
+                print("form data valid ",json_data)
+                return JsonResponse({"response":json_data})
+               
+            # messages.success(self.request, 'Course creation Failed please check the input data')
+            # return redirect('courses:course_create')
+            if not form.is_valid():
+                json_data = json.dumps(form.errors)
+                # messages.error(self.request, f'json_data')
+                return JsonResponse({'errors': json_data})
 
 
 
@@ -150,7 +170,7 @@ class CourseModuleUpdateView(TemplateResponseMixin, View):
         formset = self.get_formset(data=request.POST)
         if formset.is_valid():
             formset.save()
-            return redirect('courses:manage_course_list')
+            return redirect('courses:course_create')
         
         messages.success(request,"You added module successfully")
         return self.render_to_response({

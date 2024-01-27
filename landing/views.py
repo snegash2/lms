@@ -168,7 +168,7 @@ def user_global_settings_update(request):
             setting.data_stored = data
             setting.save()
             
-        messages.success(request,"Global setting updated successfully")
+        # messages.success(request,"Global setting updated successfully")
          
         return JsonResponse(data)
       

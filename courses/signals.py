@@ -6,6 +6,9 @@ from allauth.account.signals import user_logged_in,user_logged_out
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group,Permission
 
+from students.models import GlobalSetting
+
+
 User = get_user_model()
 
 @receiver(post_save, sender=Course)
@@ -73,7 +76,18 @@ def insert_course_to_specific_category(sender, instance, created,**kwargs):
             category.courses.add(instance)
         except Category.DoesNotExist:
             pass
-        
-        
-        print("category ",category)
+
    
+
+@receiver(post_save, sender=User)
+def create_global_setting_when_user_is_create(sender, instance, created,**kwargs):
+    global_setting = None
+    if created:
+        try:
+            global_setting = GlobalSetting.objects.create(user = instance,data_stored = {"key": "", "value": ""})
+        
+        except GlobalSetting.DoesNotExist:
+            pass
+        
+        
+        print("global_setting  ",global_setting)
