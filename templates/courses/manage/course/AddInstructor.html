@@ -92,7 +92,7 @@
             <span>Add Course</span>
           </div>
 
-          <div class="guide-note">
+          <div class="guide-note" onclick="scrollToDown()">
             <i class="far fa-save"></i>
             <span>Save Course</span>
           </div>
@@ -181,17 +181,20 @@
         {%for course in mycourses %}
           <div class="courseCard">
             <img src="{{course.image.url}}" alt="{{course.name}}" class="courseImage" style="width: 300px;height:180px;" />
-            <p class="courseDescription"> {{course.overview|safe|truncatechars:50}}</p>
+            <p class="courseDescription"> {{course.overview|safe|truncatechars:100}}</p>
+            <br />
+            <br />
+            <br />
             <div class="editDeleteButtons">
               <a href="{% url 'courses:course_edit' course.id %}">
                 <button>Edit Course</button>
               </a>
 
-              <!-- <a href="{% url "courses:course_delete" course.id %}"> -->
-                <button id="delete-btn" onclick="deleteAction({{course.id}})"> Delete Course</button>
-              <!-- </a> -->
+              
+                 <button id="delete-btn" onclick="deleteAction({{course.id}})"> Delete Course</button>
+              
               <a href="{% url "courses:course_module_update" course.id %}">
-                <button>Add module</button>
+                <button class="addModuleButton">Add module</button>
               </a>
               
               {% if course.modules.count > 0 %}
@@ -272,7 +275,6 @@ mainContainer.append(div)
 
         
         $("#modalContainer").remove()
-        alert('your course is deleted');
         window.location.reload()
       },
       error: function (xhr, status, error) {
@@ -437,7 +439,7 @@ mainContainer.append(div)
               error.innerHTML = element
               setTimeout(function(){
                 error.innerText = ""
-              },1000)
+              },3000)
             }
           
           }
@@ -471,9 +473,15 @@ mainContainer.append(div)
             // Add Edit and Delete buttons
             var editDeleteButtons = document.createElement("div");
             editDeleteButtons.className = "editDeleteButtons";
-
+            var editLink = document.createElement("a");
+            editLink.href = `course/edit/${course.id}/`
             var editButton = document.createElement("button");
             editButton.textContent = "Edit Course";
+            editLink.appendChild(editButton)
+    
+
+           
+            
 
 
             editButton.onclick = function () {
@@ -531,6 +539,9 @@ mainContainer.append(div)
       console.log("my modal",mymodal.remove());
    
   }
+
+
+
 
   function closeModal() {
     var modal = document.getElementById("myModal");

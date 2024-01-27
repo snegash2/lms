@@ -170,7 +170,8 @@ class CourseModuleUpdateView(TemplateResponseMixin, View):
         formset = self.get_formset(data=request.POST)
         if formset.is_valid():
             formset.save()
-            return redirect('courses:course_create')
+            # return redirect('courses:course_create')
+            redirect('courses:manage_course_list')
         
         messages.success(request,"You added module successfully")
         return self.render_to_response({

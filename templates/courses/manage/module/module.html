@@ -94,10 +94,12 @@
     <button id="save-btns" class="btn" onclick="openModulePopup()">
       <span>Add Module/span>
     </button>
+   
     <div id="modulePopupBackdrop" onclick="closeModulePopup()"></div>
-
+    <br />
+  
     <div id="modulePopup">
-      
+ 
       <form class="form" method="post" action=".">
         {% csrf_token %}
               {%for form in formset %}
