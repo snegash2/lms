@@ -77,11 +77,15 @@
     <h1 class="Header-Title">Welcome {{ request.user.username }}</h1>
     <div id="dashboard-container">
       <div id="profile-picture-container" onclick="openFileInput()">
+
+        {% if profile.avatar %}
         <img
           id="profile-picture"
-          src="./assets/download.jpg"
+          src="{{profile.avatar.url}}"
           alt="Profile Picture"
         />
+
+        {% endif %}
       </div>
       <label for="file-input" id="profile-upload-btn"
         >Upload Profile Picture</label
@@ -132,7 +136,7 @@
           <a href="#" id="grades"><span class="icons fa fa-cog" aria-hidden="true""></span>Setting</a>
         </li>
         <li>
-          <a href="#" id="schedule"
+          <a href="{%url 'account_logout'%}" id="schedule"
             ><span class="icons fa fa-sign-out"></span>Logout
           </a>
         </li>

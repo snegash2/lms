@@ -32,7 +32,7 @@ class Profile(models.Model):
     bio = models.TextField(blank=True)
     location = models.CharField(max_length=100, blank=True)
     birth_date = models.DateField(null=True, blank=True)
-    avatar = models.ImageField(upload_to='avatars/', blank=True)
+    avatar = models.ImageField(upload_to='media/avatars/', blank=True,default= "media/avatar/avatar.png")
     # Add any other fields you want to include in the profile model
 
     def __str__(self):

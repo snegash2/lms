@@ -136,11 +136,11 @@ class Course(models.Model):
     overview = RichTextUploadingField()
     created = models.DateTimeField(auto_now_add=True)
     students = models.ManyToManyField(User,related_name='courses_joined',blank=True)
-    image = models.ImageField(null = False,blank = False,upload_to='images',default="images/avatar.png")
+    image = models.ImageField(null = False,blank = False,upload_to='media/images',default="images/avatar.png")
     has_practice = models.BooleanField(default=False)
     ceu          = models.IntegerField(default= 0)
     published   = models.BooleanField(default=False)
-    reason_not_published = models.TextField(default="")
+    reason_not_published = models.TextField(default="",blank = True,null= True,help_text = "Reason not published.")
     intro_video = EmbedVideoField()
 
 
@@ -237,14 +237,14 @@ class Text(GenericItem):
 
 # actually class to store file
 class File(GenericItem):
-    file = models.FileField(upload_to='files')
+    file = models.FileField(upload_to='media/files')
 
 
 
 
 # actually class to sotre image
 class Image(GenericItem):
-       file = models.FileField(upload_to='images')
+       file = models.FileField(upload_to='media/images')
 
 class VideoManager(models.Manager):
     def get_queryset(self,model):
