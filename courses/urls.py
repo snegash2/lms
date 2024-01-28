@@ -20,5 +20,6 @@ urlpatterns = [
         path('eligibility_view/<id>/',views.view_egiliable_detail,name='egiliablity_view'),
         path('<category>/<subcategory>/',views.course_filter,name='course_filter'),
       
+      
      
 ]

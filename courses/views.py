@@ -386,3 +386,20 @@ def verify_egiliable_student_ajax(request):
         return JsonResponse({
             "studentId": studentId
         })
+        
+        
+        
+
+@require_POST
+def delete_module(request):
+    if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
+        body =  json.loads(request.body)
+        module_id = int(body['module_id'])
+        course_id = int(body['course_id'])
+        course = Course.objects.get(id = course_id)
+        module = Module.objects.get(id = module_id,course = course)
+        beforeDelete = module
+        module.delete()
+        return JsonResponse({
+            "module": "success"
+        })

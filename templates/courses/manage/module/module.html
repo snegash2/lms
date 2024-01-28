@@ -122,14 +122,25 @@
       <tr>
         <th>Module Name</th>
         <th>Module Overview</th>
+        <th>Actions</th>
         
       </tr>
 
 
         {%for module in course.modules.all%}
         <tr>
-          <a href="http://" target="_blank" rel="noopener noreferrer"><td>{{module.title|title}}</td></a> 
+          <td>
+              <a href="{% url 'courses:module_content_list' module.pk %}" target="_blank" rel="noopener noreferrer">
+            
+              {{module.title|title}} 
+              </a> 
+        </td>
           <td>{{module.description|safe}}</td>
+          <td>
+            
+            <button class="btn"  onclick="openModulePopup()">Edit</button>'
+            <button class="btn" onclick="deleteModule(this,{{module.id}},{{course.id}})">Delete</button>
+          </td>
         
         </tr>
         {% endfor %}
@@ -142,6 +153,9 @@
       <br />
 
     <script>
+
+  
+
       var editingRow = null; // To keep track of the row being edited
 
       function openModulePopup() {
@@ -220,7 +234,8 @@
             cell1.innerHTML = moduleName;
             cell2.innerHTML = moduleOverview;
             cell3.innerHTML =
-              '<button class="btn" onclick="editModule(this)">Edit</button>' +
+            
+              '<button class="btn" onclick="openModulePopup()">Edit</button>' +
               '<button class="btn" onclick="deleteModule(this)">Delete</button>';
           }
 
@@ -244,10 +259,36 @@
         openModulePopup();
       }
 
-      function deleteModule(btn) {
-        var row = btn.parentNode.parentNode;
-        row.parentNode.removeChild(row);
+      function deleteModule(btn,module_id,course_id) {
+
+       const  data = {
+          "module_id":module_id,
+          "course_id":course_id
+        }
+
+
+      $.ajax({
+          url: "{% url 'delete_module' %}",  // URL for the AJAX view
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+          },
+          contentType: 'application/json',
+          data: JSON.stringify(data),
+    
+          success: function (response) {
+    
+            var row = btn.parentNode.parentNode;
+            row.parentNode.removeChild(row);
+          },
+          error: function (xhr, status, error) {
+            // Handle any error that occurred during the AJAX request
+            console.log("Error from backednd");
+          }
+        }); 
       }
+
     </script>
     <!--  -->
 

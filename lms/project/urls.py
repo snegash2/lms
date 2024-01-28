@@ -29,7 +29,8 @@ urlpatterns = [
     path('chat/', include('chat.urls', namespace='chat')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path('',include('landing.urls')),
-    path('forum/', include("spirit.urls",namespace="forum") )
+    path('forum/', include("spirit.urls",namespace="forum")),
+  
     # path('__debug__/', include('debug_toolbar.urls')),
     # path('social-auth/',include('social_django.urls', namespace='social')),
 ]
