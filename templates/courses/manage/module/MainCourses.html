@@ -1,0 +1,349 @@
+{% extends '_base.html'%}
+{% load course %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+{% block style %}
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Course</title>
+    <link rel="stylesheet" href="{% static 'content.css'%}" />
+    <link rel="stylesheet" href="./studentindex.css" />
+
+    <link rel="stylesheet" href="{% static 'contentStudent.css' %}" />
+    <link rel="stylesheet" href="./note.css" />
+    <link rel="stylesheet" href="./newplaylist.css" />
+    <link rel="stylesheet" href="./video.css" />
+    <!-- new -->
+  </head>
+  <style>
+    #accordion-headers {
+      display: grid;
+      grid-template-columns: 9% 83%;
+      gap: 9%;
+      width: 9rem;
+      padding: 9px;
+      /* gap: 1%; */
+      margin-left: 7.5rem;
+      border-radius: 4px;
+      border: 1px solid #e0d9d9;
+    }
+   
+    /* Styles for the popup */
+    a {
+      text-decoration: none;
+    }
+
+    .popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      width: 29rem;
+      transform: translate(-50%, -50%);
+      background-color: white;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+      overflow-y: auto; /* Add scroll */
+      max-height: 80%;
+    }
+    .popup-content {
+    }
+    /* Styles for the overlay */
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    /* Styles for the options */
+    .option {
+      margin-bottom: 10px;
+    }
+    .close-icon {
+      position: absolute;
+      top: 5px;
+      right: 37px;
+      cursor: pointer;
+      /* font-weight: 600; */
+    }
+    @media screen and (max-width: 700px) {
+      .popup {
+        display: none;
+        position: fixed;
+        top: 42%;
+        left: 50%;
+        width: 21rem;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+        overflow-y: auto;
+        max-height: 50%;
+      }
+    }
+  
+  </style>
+
+  {% endblock %}
+
+{% block title %}
+  Module {{ module.order|add:1 }}: {{ module.title }}
+{% endblock %}
+{% block content %}
+
+{% with course=module.course %}
+
+    <!--==================================Video ==============================-->
+
+    
+    <button class="Main-btns"> <a href="{% url "courses:module_content_create" module.id "video" %}"><span>Add Video</span></button></a>
+    <button class="pdf-btns">
+      <a href="{% url "courses:module_content_create" module.id "file" %}"><span>Add Pdf</span></a>
+    </button>
+    <div class="overlay"></div>
+
+    <div class="popup">
+    
+    </div>
+    {%endwith%}
+    <script>
+      // Get the necessary elements
+      const addButton = document.getElementById("addButton");
+      const overlay = document.querySelector(".overlay");
+      const popup = document.querySelector(".popup");
+      const closeIcon = document.querySelector(".close-icon");
+
+      // Show the popup when the Add button is clicked
+      addButton.addEventListener("click", function () {
+        overlay.style.display = "block";
+        popup.style.display = "block";
+      });
+
+      // Hide the popup when the close icon is clicked
+      closeIcon.addEventListener("click", function () {
+        overlay.style.display = "none";
+        popup.style.display = "none";
+      });
+      //   const addButton = document.getElementById("addButton");
+      //   const overlay = document.querySelector(".overlay");
+      //   const popup = document.querySelector(".popup");
+      const submitBtn = document.getElementById("submitBtn");
+
+      // Show the popup when the Add button is clicked
+      addButton.addEventListener("click", function () {
+        overlay.style.display = "block";
+        popup.style.display = "block";
+      });
+
+      // Handle the submit button click event
+      submitBtn.addEventListener("click", function () {
+        // Get the selected option
+        const options = document.getElementsByName("option");
+        let selectedOption;
+        for (const option of options) {
+          if (option.checked) {
+            selectedOption = option.value;
+            break;
+          }
+        }
+
+        // Redirect based on the selected option
+        if (selectedOption === "about") {
+          window.location.href = "about.html";
+        } else if (selectedOption === "contact") {
+          window.location.href = "contact.html";
+        }
+      });
+    </script>
+    <!-- ===============================================Pdf======================================================= -->
+
+    <div id="videoList">
+      <h2>Content List </h2>
+      <table id="videoTable">
+        <thead>
+          <tr>
+            <th>Main File</th>
+            <th>Sub File</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+        
+           
+            {% for content in module.contents.all %}
+            <tr>
+              <div data-id="{{ content.id }}">
+              {% with item=content.item %}
+                <td>
+                  <p>{{ item }} ({{ item|model_name }})</p>
+                </td>
+
+                <td>
+                  {{item.title}}
+                </td>
+                <td>
+                <div style="display: flex; justify-content:center;align-items:center">
+                  <a href="{% url "courses:module_content_update" module.id item|model_name item.id %}">
+                    <button type="button">Edit</button>
+                  </a>
+                  <form action="{% url "courses:module_content_delete" content.id %}" method="post">
+                    <button type="submit">Delete </button>
+                    {% csrf_token %}
+                  </form>
+                </div>
+                </td>
+                {% endwith %}
+              </div>
+              {% empty %}
+              <p>This module has no contents yet.</p>
+            </tr>
+            {% endfor %}
+          
+          </tbody>
+     
+      </table>
+    </div>
+    <script>
+      // JavaScript to toggle the active class on hamburger click
+      document.addEventListener("DOMContentLoaded", function () {
+        var navbarHamburger = document.querySelector(".navbar-hamburger");
+        var navbarMenu = document.querySelector(".navbar-menu");
+
+        navbarHamburger.addEventListener("click", function () {
+          navbarHamburger.classList.toggle("active");
+          navbarMenu.classList.toggle("active");
+        });
+
+        document.addEventListener("click", function (event) {
+          var targetElement = event.target;
+          if (
+            !targetElement.closest(".navbar") &&
+            navbarHamburger.classList.contains("active")
+          ) {
+            navbarHamburger.classList.remove("active");
+            navbarMenu.classList.remove("active");
+          }
+        });
+      });
+
+
+   
+    </script>
+
+    
+
+    <!--  -->
+    <script>
+      // JavaScript to toggle the active class on hamburger click
+      document.addEventListener("DOMContentLoaded", function () {
+        var navbarHamburger = document.querySelector(".navbar-hamburger");
+        var navbarMenu = document.querySelector(".navbar-menu");
+
+        navbarHamburger.addEventListener("click", function () {
+          navbarHamburger.classList.toggle("active");
+          navbarMenu.classList.toggle("active");
+        });
+
+        document.addEventListener("click", function (event) {
+          var targetElement = event.target;
+          if (
+            !targetElement.closest(".navbar") &&
+            navbarHamburger.classList.contains("active")
+          ) {
+            navbarHamburger.classList.remove("active");
+            navbarMenu.classList.remove("active");
+          }
+        });
+      });
+    </script>
+<!-- Catgory dropdown -->
+<script>
+  const newdropdowns = document.querySelectorAll(".newdropdown");
+  newdropdowns.forEach((newdropdown) => {
+    const select = newdropdown.querySelector(".select");
+    const caret = newdropdown.querySelector(".caret");
+    const menu = newdropdown.querySelector(".menu");
+    const options = newdropdown.querySelector(".menu li");
+    const selected = newdropdown.querySelector(".selected");
+
+    select.addEventListener("click", () => {
+      select.classList.toggle("select-clicked");
+      caret.classList.toggle("caret-rotate");
+      menu.classList.toggle("menu-open");
+    });
+    options.forEach((option) => {
+      option.addEventListener("click", () => {
+        selected.innerText = option.innerText;
+        select.classList.remove("select-clicked");
+        caret.classList.remove("caret-rotate");
+        menu.classList.remove("menu-open");
+        options.forEach((option) => {
+          option.classList.remove("active");
+        });
+        option.classList.add("active");
+      });
+    });
+  });
+</script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+{% endblock %}
+
+
+
+{% block domready %}
+var options = {
+method: 'POST',
+mode: 'same-origin'
+}
+
+const moduleOrderUrl = '{% url "courses:module_order" %}';
+
+sortable('#modules', {
+forcePlaceholderSize: true,
+placeholderClass: 'placeholder'
+})[0].addEventListener('sortupdate', function(e) {
+
+modulesOrder = {};
+var modules = document.querySelectorAll('#modules li');
+modules.forEach(function (module, index) {
+// update module index
+modulesOrder[module.dataset.id] = index;
+// update index in HTML element
+module.querySelector('.order').innerHTML = index + 1;
+// add new order to the HTTP request options
+options['body'] = JSON.stringify(modulesOrder);
+
+// send HTTP request
+fetch(moduleOrderUrl, options)
+});
+});
+
+const contentOrderUrl = '{% url "courses:content_order" %}';
+
+sortable('#module-contents', {
+forcePlaceholderSize: true,
+placeholderClass: 'placeholder'
+})[0].addEventListener('sortupdate', function(e) {
+
+contentOrder = {};
+var contents = document.querySelectorAll('#module-contents div');
+contents.forEach(function (content, index) {
+// update content index
+contentOrder[content.dataset.id] = index;
+// add new order to the HTTP request options
+options['body'] = JSON.stringify(contentOrder);
+
+// send HTTP request
+fetch(contentOrderUrl, options)
+});
+});
+
+{% endblock %}

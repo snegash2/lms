@@ -4,7 +4,7 @@ Module {{ module.order|add:1 }}: {{ module.title }}
 {% endblock %}
 {% block content %}
         <div class="container">
-            
+        
             {% with course=module.course %}
         <h1>Course "{{ course.name.name }}"</h1>
         <div class="contents">

@@ -1,0 +1,466 @@
+{% extends '_base.html' %}
+{% load static %}
+{% block style %}
+{% load crispy_forms_tags %}
+    <link rel="stylesheet" href="./newmenu.css" />
+
+    <link rel="stylesheet" href="./dropdown.css" />
+    <link rel="stylesheet" href="{% static 'content.css'%}" />
+    <link rel="stylesheet" href="{% static 'contentStudent.css' %}" />
+    <script
+      src="https://kit.fontawesome.com/84ceadd20f.js"
+      crossorigin="anonymous"
+    ></script>
+  
+  </head>
+
+  {% endblock %}
+
+  {% block content %}
+    <!--==================================Video ==============================-->
+    <button class="Main-btns" id="addButton"><span>Choose Content</span></button>
+   
+    <!-- <button class="Ref-btns">
+      <a href="./reference .html"> <span>Add Reference</span></a>
+    </button> -->
+
+    <div class="overlay"></div>
+
+    <div class="popup">
+      <div class="popup-content">
+        <div class="All__Module">
+          <div id="left">
+
+            <form action="" method="post" enctype="multipart/form-data">
+                <h3>Select Your Main Videos</h3>
+                <label for="mainVideo">Main Video:</label>
+                {{ form|crispy }}
+                {% csrf_token %}
+                <button id="ASave-Btns" type="submit">Save All</button>
+            </form>
+            </div>
+
+            <div class="Sub__Btn">
+                <button id="showFormButton">Select Pdf</button>
+                <div id="contactFormContainer" class="hidden">
+                  <form id="contactForm">
+                    <div id="subVideosContainer">
+                      <h3>Select Pdf Files</h3>
+                      <div class="subVideo">
+                        <label for="subVideoTitle"> Pdf Title:</label>
+                        <input
+                          id="Title-Input"
+                          type="text"
+                          class="subVideoTitle"
+                        /><br /><br />
+                        <label for="subVideoDescription"
+                          ><p id="Pdf-desc">PDF Description:</p></label
+                        >
+              
+                        <textarea class="subVideoDescription"></textarea
+                        ><br /><br />
+              
+                        <label for="subVideoFile">File:</label>
+                        <input
+                          type="file"
+                          class="subVideoFile"
+                          accept="application/pdf"
+                        /><br /><br />
+                        <!--  -->
+                        <label for="subVideoRef"
+                          ><p id="Pdf-desc">Reference</p></label
+                        >
+              
+                        <textarea class="subVideoRef"></textarea><br /><br />
+                        <!--  -->
+                        <button type="button" class="removeSubVideo">
+                          Remove
+                        </button>
+                      </div>
+                    </div>
+              
+                    <button class="" type="submit" id="addSubVideo" >Add Other Pdf</button>
+              
+                    <p>module info  {{ request.path.split }}</p>  
+              </div>
+
+              <!-- <button class="" type="button" id="addSubVideo">
+                Add Other Pdf</button
+              ><br /><br /> -->
+            </form>
+          </div>
+        </div>
+        <!-- Hideen and show button -->
+        <script>
+          var showFormButton = document.getElementById("showFormButton");
+          var contactFormContainer = document.getElementById(
+            "contactFormContainer"
+          );
+
+          showFormButton.addEventListener("click", function () {
+            if (contactFormContainer.classList.contains("hidden")) {
+              contactFormContainer.classList.remove("hidden");
+              showFormButton.textContent = "Hide pdf";
+            } else {
+              contactFormContainer.classList.add("hidden");
+              showFormButton.textContent = "Select Pdf";
+            }
+          });
+
+          document
+            .getElementById("contactForm")
+            .addEventListener("submit", function (event) {
+              event.preventDefault();
+
+              // You can perform further actions here, such as sending the form data to a server or displaying a success message.
+
+              // Reset the form
+              this.reset();
+              contactFormContainer.classList.add("hidden");
+              showFormButton.textContent = "Show Contact Form";
+            });
+        </script>
+        <!-- Edite buttom -->
+        <script>
+          // new add
+
+          // endadd
+          document
+            .getElementById("addSubVideo")
+            .addEventListener("click", function () {
+              const subVideoContainer = document.createElement("div");
+              subVideoContainer.classList.add("subVideo");
+              //title
+              const titleLabel = document.createElement("label");
+              titleLabel.textContent = "Title:";
+              subVideoContainer.appendChild(titleLabel);
+
+              const titleInput = document.createElement("input");
+              titleInput.type = "text";
+              titleInput.classList.add("subVideoTitle");
+              titleInput.required = true;
+              subVideoContainer.appendChild(titleInput);
+
+              subVideoContainer.appendChild(document.createElement("br"));
+              // desc
+              const descriptionLabel = document.createElement("label");
+              descriptionLabel.textContent = "pdf Description:";
+              subVideoContainer.appendChild(descriptionLabel);
+
+              const descriptionTextarea = document.createElement("textarea");
+              descriptionTextarea.classList.add("subVideoDescription");
+              descriptionTextarea.required = true;
+              subVideoContainer.appendChild(descriptionTextarea);
+
+              subVideoContainer.appendChild(document.createElement("br"));
+              // file
+              const fileLabel = document.createElement("label");
+              fileLabel.textContent = "File:";
+              subVideoContainer.appendChild(fileLabel);
+
+              const fileInput = document.createElement("input");
+              fileInput.type = "file";
+              fileInput.classList.add("subVideoFile");
+              fileInput.accept = "application/pdf";
+              subVideoContainer.appendChild(fileInput);
+
+              subVideoContainer.appendChild(document.createElement("br"));
+              // ===================================
+              const refLabel = document.createElement("label");
+              refLabel.textContent = "Refernce:";
+              subVideoContainer.appendChild(refLabel);
+
+              const reftextarea = document.createElement("textarea");
+              reftextarea.classList.add("subVideoRef");
+              reftextarea.required = true;
+              subVideoContainer.appendChild(reftextarea);
+
+              subVideoContainer.appendChild(document.createElement("br"));
+              // ======================================
+              //   new add
+              const addButton = document.getElementById("addPdfButton");
+              const videoTable = document.getElementById("videoTable");
+              const videoForm = document.getElementById("videoForm");
+
+              addButton.addEventListener("click", function () {
+                // Check if a form already exists
+                if (videoTable.querySelector(".subVideoForm")) {
+                  return; // Skip adding another form
+                }
+
+                // Create a new form
+                const subVideoForm = document.createElement("form");
+                subVideoForm.classList.add("subVideoForm");
+
+                // Add form elements
+                const subVideoTitleInput = document.createElement("input");
+                subVideoTitleInput.type = "text";
+                subVideoTitleInput.classList.add("subVideoTitle");
+                subVideoForm.appendChild(subVideoTitleInput);
+
+                const subVideoDescriptionInput =
+                  document.createElement("input");
+                subVideoDescriptionInput.type = "text";
+                subVideoDescriptionInput.classList.add("subVideoDescription");
+                subVideoForm.appendChild(subVideoDescriptionInput);
+
+                const subVideoFileInput = document.createElement("input");
+                subVideoFileInput.type = "file";
+                subVideoFileInput.classList.add("subVideoFile");
+                subVideoForm.appendChild(subVideoFileInput);
+
+                const subVideoRefInput = document.createElement("input");
+                subVideoRefInput.type = "text";
+                subVideoRefInput.classList.add("subVideoRef");
+                subVideoForm.appendChild(subVideoRefInput);
+
+                // Add the new form to the table
+                videoTable.appendChild(subVideoForm);
+
+                // Reset the main form
+                videoForm.reset();
+              });
+              // end add
+              const removeButton = document.createElement("button");
+              removeButton.type = "button";
+              removeButton.classList.add("removeSubVideo");
+              removeButton.textContent = "Remove";
+              removeButton.addEventListener("click", function () {
+                subVideoContainer.remove();
+              });
+              subVideoContainer.appendChild(removeButton);
+
+              document
+                .getElementById("subVideosContainer")
+                .appendChild(subVideoContainer);
+            });
+
+          document
+            .getElementById("videoForm")
+            .addEventListener("submit", function (event) {
+              event.preventDefault();
+
+              const mainVideo = document.getElementById("mainVideo").files[0];
+              const subVideos = Array.from(
+                document.getElementsByClassName("subVideo")
+              );
+
+              const videoRow = document.createElement("tr");
+
+              const mainVideoCell = document.createElement("td");
+              mainVideoCell.textContent = mainVideo.name;
+              videoRow.appendChild(mainVideoCell);
+
+              const subVideosCell = document.createElement("td");
+              subVideos.forEach(function (subVideo) {
+                const subVideoTitle =
+                  subVideo.querySelector(".subVideoTitle").value;
+                const subVideoDescription = subVideo.querySelector(
+                  ".subVideoDescription"
+                ).value;
+                const subVideoFile =
+                  subVideo.querySelector(".subVideoFile").files[0];
+                const subVideoRef =
+                  subVideo.querySelector(".subVideoRef").value;
+                const subVideoEntry = document.createElement("div");
+                subVideoEntry.innerHTML =
+                  "<strong>Title:</strong> " +
+                  subVideoTitle +
+                  "<br><strong>Description:</strong> " +
+                  subVideoDescription +
+                  "<br>" +
+                  "<br><strong>Refernce:</strong> " +
+                  subVideoRef +
+                  "<br>";
+                if (subVideoFile) {
+                  subVideoEntry.innerHTML +=
+                    "<strong>File:</strong> " + subVideoFile.name + "<br>";
+                }
+
+                subVideosCell.appendChild(subVideoEntry);
+              });
+              //
+              //
+              videoRow.appendChild(subVideosCell);
+
+              const actionsCell = document.createElement("td");
+              const editButton = document.createElement("button");
+              editButton.textContent = "Edit";
+              editButton.addEventListener("click", function () {
+                // Implement the edit functionality here
+                console.log("Edit button clicked");
+              });
+              actionsCell.appendChild(editButton);
+              const deleteButton = document.createElement("button");
+              deleteButton.textContent = "Delete";
+              deleteButton.addEventListener("click", function () {
+                videoRow.remove();
+              });
+              actionsCell.appendChild(deleteButton);
+
+              videoRow.appendChild(actionsCell);
+
+              document
+                .getElementById("videoTable")
+                .getElementsByTagName("tbody")[0]
+                .appendChild(videoRow);
+
+              document.getElementById("videoForm").reset();
+            });
+          // Add a default text element to the table body
+          const tableBody = document.querySelector("#videoTable tbody");
+          const defaultText = document.createElement("tr");
+          const defaultTextCell = document.createElement("td");
+          defaultTextCell.colSpan = 3;
+          defaultTextCell.textContent = "There is no content in this table";
+          defaultText.appendChild(defaultTextCell);
+          tableBody.appendChild(defaultText);
+
+          document
+            .getElementById("videoForm")
+            .addEventListener("submit", function (event) {
+              event.preventDefault();
+
+              // Remove the default text element
+              defaultText.remove();
+
+              // Rest of the code...
+              // (existing code continues from here)
+            });
+        </script>
+        <span class="close-icon">X</span>
+      </div>
+    </div>
+
+    <script>
+      // Get the necessary elements
+      const addButton = document.getElementById("addButton");
+      const overlay = document.querySelector(".overlay");
+      const popup = document.querySelector(".popup");
+      const closeIcon = document.querySelector(".close-icon");
+
+      // Show the popup when the Add button is clicked
+      addButton.addEventListener("click", function () {
+        overlay.style.display = "block";
+        popup.style.display = "block";
+      });
+
+      // Hide the popup when the close icon is clicked
+      closeIcon.addEventListener("click", function () {
+        closePopup();
+      });
+
+      // Close the popup when clicking outside of it
+      overlay.addEventListener("click", function () {
+        closePopup();
+      });
+
+      // Prevent the overlay from closing the popup when clicked inside the popup
+      popup.addEventListener("click", function (event) {
+        event.stopPropagation();
+      });
+
+      // Function to close the popup
+      function closePopup() {
+        overlay.style.display = "none";
+        popup.style.display = "none";
+      }
+
+      // Handle the form submission
+      document
+        .getElementById("videoForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+
+          // Save the file here
+
+          // Close the popup
+          closePopup();
+        });
+
+      // Handle the "Add Other Pdf" button click
+      document
+        .getElementById("addSubVideo")
+        .addEventListener("click", function () {
+          // Code for adding another PDF input field
+        });
+    </script>
+
+    <!-- ===============================================Pdf======================================================= -->
+
+    <div id="videoList">
+      <h2>Content List</h2>
+      <table id="videoTable">
+        <thead>
+          <tr>
+            <th>Main File</th>
+            <th>Title </th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <!--  -->
+    <script src="./script.js"></script>
+    <script type="text/javascript" src="dropdown.js"></script>
+    <section>
+
+    </section>
+    <!-- =========================================Js code==================== -->
+    <!-- New coursers -->
+
+    <script>
+      // JavaScript to toggle the active class on hamburger click
+      document.addEventListener("DOMContentLoaded", function () {
+        var navbarHamburger = document.querySelector(".navbar-hamburger");
+        var navbarMenu = document.querySelector(".navbar-menu");
+
+        navbarHamburger.addEventListener("click", function () {
+          navbarHamburger.classList.toggle("active");
+          navbarMenu.classList.toggle("active");
+        });
+
+        document.addEventListener("click", function (event) {
+          var targetElement = event.target;
+          if (
+            !targetElement.closest(".navbar") &&
+            navbarHamburger.classList.contains("active")
+          ) {
+            navbarHamburger.classList.remove("active");
+            navbarMenu.classList.remove("active");
+          }
+        });
+      });
+    </script>
+
+    <!-- Catgory dropdown -->
+    <script>
+      const newdropdowns = document.querySelectorAll(".newdropdown");
+      newdropdowns.forEach((newdropdown) => {
+        const select = newdropdown.querySelector(".select");
+        const caret = newdropdown.querySelector(".caret");
+        const menu = newdropdown.querySelector(".menu");
+        const options = newdropdown.querySelector(".menu li");
+        const selected = newdropdown.querySelector(".selected");
+
+        select.addEventListener("click", () => {
+          select.classList.toggle("select-clicked");
+          caret.classList.toggle("caret-rotate");
+          menu.classList.toggle("menu-open");
+        });
+        options.forEach((option) => {
+          option.addEventListener("click", () => {
+            selected.innerText = option.innerText;
+            select.classList.remove("select-clicked");
+            caret.classList.remove("caret-rotate");
+            menu.classList.remove("menu-open");
+            options.forEach((option) => {
+              option.classList.remove("active");
+            });
+            option.classList.add("active");
+          });
+        });
+      });
+    </script>
+{% endblock %}
