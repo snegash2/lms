@@ -167,6 +167,7 @@
 
     <div id="videoList">
       <h2>Content List </h2>
+      {% if module.contents.count > 0 %}
       <table id="videoTable">
         <thead>
           <tr>
@@ -177,7 +178,7 @@
         </thead>
         <tbody>
         
-           
+          
             {% for content in module.contents.all %}
             <tr>
               <div data-id="{{ content.id }}">
@@ -202,11 +203,11 @@
                 </td>
                 {% endwith %}
               </div>
-              {% empty %}
-              <p>This module has no contents yet.</p>
+             
             </tr>
             {% endfor %}
           
+            {% endif %}
           </tbody>
      
       </table>

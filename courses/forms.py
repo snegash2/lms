@@ -2,6 +2,18 @@ from typing import Any
 from django import forms
 from django.forms.models import inlineformset_factory
 from .models import Course, Module
+from django.forms import BaseInlineFormSet
+from django.forms import TextInput
+
+
+
+
+
+class CustomModuleFormSet(BaseInlineFormSet):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['title'].widget = TextInput(attrs={'class': 'my-custom-title-class'})
+
 
 
 ModuleFormSet = inlineformset_factory(Course,
@@ -10,8 +22,6 @@ fields=['title',
 'description',],
 extra=1,
 can_delete=True)
-
-
 
 
 class EgiabilityForm(forms.Form):
