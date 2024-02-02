@@ -20,10 +20,6 @@ from PIL import Image
 
 
 User = get_user_model()
-
-
-    
-
 class Category(models.Model):
 
     category = models.CharField(
@@ -111,10 +107,12 @@ class Course(models.Model):
         # Add more choices as needed...
     )
     
-    # category','teacher','published','students','reason_not_published','slug'
-
-    # need user can delete course but course can't delete'
-    # id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    Course_CHOICES = (
+     
+        ('PDF', 'PDF'),
+        ('VIDEO', 'VIDEO'),
+     
+    )
     teacher = models.ForeignKey(User,
                                 null=True,
                               related_name='courses_created',
@@ -127,13 +125,14 @@ class Course(models.Model):
                                 on_delete=models.CASCADE,
                                 null = True,
                                 blank = True)
-    # skill_level = models.CharField(max_length=255, choices=LEVEL_CHOICES, default='BASIC')
+    course_type = models.CharField(max_length=255, choices=Course_CHOICES, default='PDF')
 
 
     slug = models.SlugField(max_length=200, unique=False)
 
 
-    overview = RichTextUploadingField()
+    # overview = RichTextUploadingField()
+    overview = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
     students = models.ManyToManyField(User,related_name='courses_joined',blank=True)
     image = models.ImageField(null = False,blank = False,upload_to='media/images',default="media/images/avatar.png")
@@ -169,8 +168,8 @@ class Course(models.Model):
 class Module(models.Model):
     course = models.ForeignKey(Course,
                                related_name='modules',on_delete=models.CASCADE)
-    title = models.CharField(max_length=200)
-    description = RichTextUploadingField(blank=True)
+    title = models.CharField("Module Name:",max_length=200)
+    description = models.TextField("Module Overview:",blank=True)
     order = OrderingField(blank=True, for_fields=['course'])
     # pdfs =  models.ManyToManyField("File",blank= True)
     def __str__(self):

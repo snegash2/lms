@@ -3,32 +3,7 @@
 {% load crispy_forms_tags %}
 
     {% block style %}
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Cabin:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Cormorant+Upright:wght@300;400;600;700&family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,700&family=Great+Vibes&family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Lexend:wght@100;200;300;400;500;600;700;800;900&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;0,1000;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900;1,1000&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Syne:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
-    <script
-      src="https://kit.fontawesome.com/84ceadd20f.js"
-      crossorigin="anonymous"
-    ></script>
-    <link
-      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-    />
-    <link
-      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://unicons.iconscout.com/release/v4.0.0/css/line.css"
-    />
+
     <link rel="icon" href="{% static 'logo.png' %}" type="image/x-icon" />
 
     <meta charset="UTF-8" />
@@ -37,31 +12,31 @@
 
     <link rel="stylesheet" href="{% static 'instructor_module_add.css' %}" />
     <link rel="stylesheet" href="{% static 'instructor_module_add_main.css' %}" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-    />
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"> -->
 
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-    />
 
+    <style>
+      .hide {
+        display: none;
+      }
+
+      .show {
+        display: block;
+      }
+
+      .module-formset .field-label {
+        display: none;
+    }
+
+    label {
+       display: none;
+    }
+    </style>
 
     {% endblock %}
     <!-- new -->
-  </head>
+ 
 
-  <body class="main-body">
+  <body class="main-body" id="mainContainer">
 
     {% block content %}
  
@@ -94,27 +69,40 @@
     <button id="save-btns" class="btn" onclick="openModulePopup()">
       <span>Add Module/span>
     </button>
+
+    <a href="{% url 'courses:course_create' %}">
+      <button id="save-btns">
+        <span>Back to couse </span>
+      </button>
+     
+    </a>
+  
    
     <div id="modulePopupBackdrop" onclick="closeModulePopup()"></div>
     <br />
   
     <div id="modulePopup">
- 
-      <form class="form" method="post" action=".">
+      <span class="close-icon" onclick="closeModulePopup()">X</span>
+     
+      <form class="form" method="post" id="moduleAddForm" >
+        {%for form in formset %}
+        {{ formset.management_form }}
+            <div class="w-full  m-8">
+                {{form|crispy}}
+            </div>
+
+
+        
+            {% for hidden in form.hidden_fields %}
+                {{ hidden }}
+            {% endfor %}
+        
+        {%endfor%}
+
         {% csrf_token %}
-              {%for form in formset %}
-              <div>
-                  {{form|crispy}}
-              </div>
-          {%endfor%}
-
-          {{ formset.management_form }}
-      
-          <button class="btn" onclick="saveModule()" type="submit">Save</button>
-          <button class="btn" onclick="closeModulePopup()">Cancel</button>
-          
-         
-
+        <button class="btn" type="submit" onclick="saveModule({{course.id}})">Save</button>
+        <button class="btn" type="button" onclick="closeModulePopup()">Cancel</button>
+        <button class="btn" type="button" onclick="addChapter()">Add chapter</button>
     </form>
     </div>
 
@@ -126,20 +114,28 @@
         
       </tr>
 
-
         {%for module in course.modules.all%}
+       
         <tr>
           <td>
-              <a href="{% url 'courses:module_content_list' module.pk %}" target="_blank" rel="noopener noreferrer">
+              
             
               {{module.title|title}} 
-              </a> 
+             
         </td>
           <td>{{module.description|safe}}</td>
           <td>
             
             <button class="btn"  onclick="openModulePopup()">Edit</button>'
+
             <button class="btn" onclick="deleteModule(this,{{module.id}},{{course.id}})">Delete</button>
+      
+              {% if course.modules.count > 0 %}
+              <a href="{% url "courses:module_content_list" course.modules.first.id %}">
+                   <button class="btn">Manage content</button>
+              </a>
+              {% endif %}
+           
           </td>
         
         </tr>
@@ -158,6 +154,11 @@
 
       var editingRow = null; // To keep track of the row being edited
 
+
+      function navigateCouse() {
+        window.history.back()
+      }
+
       function openModulePopup() {
         var modulePopupBackdrop = document.getElementById(
           "modulePopupBackdrop"
@@ -168,20 +169,36 @@
         modulePopup.classList.add("show");
       }
 
-      function closeModulePopup() {
-        document.getElementById("moduleName").value = ""; // Reset module name
-        document.getElementById("moduleOverview").value = ""; // Reset module overview
-        editingRow = null;
+      function formsManagement() {
+        const forms = document.getElementById("forms-container")
+        const emptyForm = document.getElementById("empty-form-container")
+        forms.appendChild(emptyForm)
+      
+      }
 
+      function closeModulePopup() {
         var modulePopupBackdrop = document.getElementById(
           "modulePopupBackdrop"
         );
-        var modulePopup = document.getElementById("modulePopup");
+   
+        modulePopupBackdrop.classList.remove("hide");
+        modulePopupBackdrop.classList.remove("show")
+        modulePopup.classList.remove("show")
 
-        modulePopupBackdrop.classList.remove("show");
-        modulePopup.classList.remove("show");
       }
 
+
+      function addChapter() {
+        var modulePopupBackdrop = document.getElementById(
+          "modulePopupBackdrop"
+        );
+   
+        modulePopupBackdrop.classList.remove("hide");
+        modulePopupBackdrop.classList.remove("show")
+        modulePopup.classList.remove("show")
+
+      }
+    
 
       function addForm() {
         $.ajax({
@@ -213,7 +230,41 @@
         }
       };
 
-      function saveModule() {
+      function saveModule(id) {
+    
+    
+       // const mainForm = document.getElementById("moduleAddForm");
+     
+         /** 
+        mainForm.addEventListener("submit",function(event){
+          event.preventDefault()
+          //var formData = $(this).serialize();
+          const formData = new FormData(mainForm);
+      axios.put(`/course/${id}/module/`, formData, {
+            
+            headers: {
+              'Content-Type': 'application/octet-stream',
+              'X-CSRFToken': '{{ csrf_token }}'
+            },
+         
+       
+          })
+          .then((response) => {
+           // let data = response.data.response
+            const mainContainer = document.getElementById("updateCourseModal");
+            mainContainer.style.display = "none";
+            
+          })
+          .catch((error) => {
+            console.log("Error ",error);
+          }) 
+          
+        })
+
+        **/
+    }
+
+
         var moduleName = document.getElementById("moduleName").value;
         var moduleOverview = document.getElementById("moduleOverview").value;
 
@@ -240,10 +291,14 @@
           }
 
           closeModulePopup();
+
+
+
+
         } else {
           alert("Please enter both Module Name and Module Overview.");
         }
-      }
+      
 
       function editModule(btn) {
         var row = btn.parentNode.parentNode;

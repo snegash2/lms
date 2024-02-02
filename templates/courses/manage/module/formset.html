@@ -11,12 +11,18 @@ Edit "{{ course.title }}"
         <form method="post">
             <div class="w-full sm:px-6  grid lg:grid-cols-1 md:grid-cols-1 sm:grid-cols-1">
                 {%for form in formset %}
+                {{ formset.management_form }}
                     <div class="w-full  m-8">
                         {{form|crispy}}
                     </div>
+
+                    {% for hidden in form.hidden_fields %}
+                        {{ hidden }}
+                    {% endfor %}
+                
                 {%endfor%}
 
-                {{ formset.management_form }}
+               
                 {% csrf_token %}
                 <input type="submit" value="Save modules">
             </div>

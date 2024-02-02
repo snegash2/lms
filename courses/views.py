@@ -11,12 +11,12 @@ from django.contrib.auth.mixins import LoginRequiredMixin,PermissionRequiredMixi
 from django.urls import reverse_lazy
 from django.core.cache import cache
 from students.forms import CourseEnrollForm
-from .forms import ModuleFormSet,CourseCreateForm
+from .forms import ModuleFormSet,CourseCreateForm,CourseUpdateForm,ModuleCreateForm
 from .models import Course, Module, Content,Category
 from django.db.models import Count
 from .models import Category,CourseName
 from django.views.generic.detail import DetailView
-from django.shortcuts import render,get_object_or_404,HttpResponse
+from django.shortcuts import HttpResponse as HttpResponse, render,get_object_or_404,HttpResponse
 from django.contrib.auth.models import Group,User
 from crendential.models import Crendential
 from django.utils.text import slugify
@@ -28,6 +28,18 @@ from django.views.decorators.http import require_POST
 import json
 import random
 from django.core import serializers
+
+
+from bootstrap_modal_forms.generic import (
+    BSModalLoginView,
+    BSModalFormView,
+    BSModalCreateView,
+    BSModalUpdateView,
+    BSModalReadView,
+    BSModalDeleteView
+)
+
+
 
 # common behavior for all classes this class return courses which create only by currently logedin user
 class OwnerMixin:
@@ -89,21 +101,18 @@ class CourseCreateView(OwnerCourseEditMixin, CreateView):
     
         
     def post(self, request, *args, **kwargs):
-        if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
-            body = json.loads(request.body)
-            form = CourseCreateForm(body)
-
-            try:
-                category = Category.objects.get(category =request.session.get('category')['category'] )
-                setting  = GlobalSetting.objects.get(user = request.user)
-                name = CourseName.objects.filter(name = setting.data_stored['value']).first()
-            except Category.DoesNotExist:
-                raise ValueError("No category is choice")
-            
-            
-            if form.is_valid():
+        body = request.POST
+        file = request.FILES
+        form = CourseCreateForm(body,file)
+        try:
+            category = Category.objects.get(category =request.session.get('category')['category'] )
+            setting  = GlobalSetting.objects.get(user = request.user)
+            name = CourseName.objects.filter(name = setting.data_stored['value']).first()
+        except Category.DoesNotExist:
+            raise ValueError("No category is choice")
+        if form.is_valid():
                 subcategory = self.request.POST.get("courseName")
-                form = form.save(commit=False)
+                form = form.save(commit=False) 
                 form.slug = slugify(f"{form.overview[1::20] + str(random.randint(1,10000000))}")
                 form.teacher = self.request.user
                 form.category  = category
@@ -113,22 +122,29 @@ class CourseCreateView(OwnerCourseEditMixin, CreateView):
                 data = []
                 forms = vars(form)
                 json_data = serializers.serialize('json', [form])
-                print("form data valid ",json_data)
                 return JsonResponse({"response":json_data})
-               
-            # messages.success(self.request, 'Course creation Failed please check the input data')
-            # return redirect('courses:course_create')
-            if not form.is_valid():
-                json_data = json.dumps(form.errors)
-                # messages.error(self.request, f'json_data')
-                return JsonResponse({'errors': json_data})
 
-
-
+        return HttpResponse("not created")
+    
+    
+  
     
 class CourseUpdateView(OwnerCourseEditMixin, UpdateView):
     form_class = CourseCreateForm
     permission_required = 'courses.change_course'
+    template_name = 'courses/manage/course/update_course.html'
+    
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        print("self obj ",self.get_object())
+        context['course'] = self.get_object()
+        return context
+    
+    
+    
+    
+    
+
 
 class ModuleContentListView(TemplateResponseMixin, View):
     
@@ -144,13 +160,20 @@ class ModuleContentListView(TemplateResponseMixin, View):
 class CourseDeleteView(OwnerCourseMixin, DeleteView):
     template_name = 'courses/manage/course/delete.html'
     permission_required = 'courses.delete_course'
+    
+    
+
 
 class CourseModuleUpdateView(TemplateResponseMixin, View):
     # template_name = 'courses/manage/module/formset.html'
     template_name = 'courses/manage/module/module.html'
     course = None
+    
     def get_formset(self, data=None):
-        return ModuleFormSet(instance=self.course,data=data)
+        formset = ModuleFormSet(instance=self.course,data=data)
+        return formset
+        
+ 
 
 
     def dispatch(self, request, pk):
@@ -163,24 +186,69 @@ class CourseModuleUpdateView(TemplateResponseMixin, View):
 
     def get(self, request, *args, **kwargs): 
         formset = self.get_formset()
+        
+        
         return self.render_to_response({
         'course': self.course,'formset': formset})
 
 
     def post(self, request, *args, **kwargs):
+        if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
+            formset = self.get_formset(data=request.POST)
+            if formset.is_valid():
+                return JsonResponse({"course": self.course})
+        
+        
         formset = self.get_formset(data=request.POST)
         if formset.is_valid():
             formset.save()
-            # return redirect('courses:course_create')
             redirect('courses:manage_course_list')
-        
-        messages.success(request,"You added module successfully")
+     
         return self.render_to_response({
         'course': self.course,
         'formset': formset})
 
 
 
+
+
+class ModuleAddView(CreateView):
+    template_name = 'courses/manage/module/module.html' 
+    
+    permission_required = 'courses.add_course'
+    form_class = ModuleCreateForm
+    
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        
+        try:
+            course = Course.objects.get(pk = kwargs.get("pk"))
+            self.course = course            
+        except Course.DoesNotExist as e:
+            raise e
+        
+        return context
+
+        
+    def post(self, request, *args, **kwargs):
+        body = request.POST
+        form = ModuleCreateForm(body)
+        
+
+        if form.is_valid():
+                form = form.save(commit= False)
+                form.course = self.course
+                form.save()
+                json_data = serializers.serialize('json', [form])
+                return JsonResponse({"response":json_data})
+     
+        json_error = serializers.serialize('json', [form.errors])
+        return JsonResponse({"response":json_error})
+     
+    
+    
+    
+    
 class ContentCreateUpdateView(TemplateResponseMixin, View):
     module = None
     model = None

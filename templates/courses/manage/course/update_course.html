@@ -1,0 +1,97 @@
+{% extends '_base.html'%}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block style %}
+
+<link rel="stylesheet" href="{% static 'instructor_course_add.css' %}" />
+<link rel="stylesheet" href="{% static 'instructor_course_add_footer.css'%} " />
+<link rel="stylesheet" href="{% static 'instructor_course_add_css.css' %}" />
+<link rel="stylesheet" href="{% static 'instructor_course_add_main.css'%}" />
+{% endblock %}
+
+{% block content %}
+<div class="container" id="mainContainer">
+  <div class="row" style="display: flex;justify-content:space-around;align-items:center;">
+    <div class="jumbotron text-center">
+      <h1>{{course.name}}</h1>
+      <p>Course Description</p>
+    </div>
+
+    <div class="col-md-6">
+      <button type="button" class="btn btn-secondary glow-button" onclick="updateCourseModal(1)">Update </button>
+    </div>
+
+  </div>
+
+
+  <div class="row">
+    <div class="col-md-8">
+      <h2>Course Content</h2>
+      <p>{{course.overview}}</p>
+      <p></p>
+      <p>Nulla sagittis, ligula eu aliquam vulputate, lacus neque molestie ex, ut aliquet quam arcu non ligula. Quisque et dui id velit interdum luctus non nec dolor.</p>
+    </div>
+
+    <div class="col-md-4">
+      <h2>Instructor Information</h2>
+      <h4>Instructor Name</h4>
+      <p>{{course.teacher}}</p>
+      <h4>Contact Information</h4>
+      <p>Email:  <p>{{course.teacher.email}}</p></p>
+      <p>Phone: 123-456-7890</p>
+    </div>
+  </div>
+</div>
+
+<script>
+
+  function updateCourseModal() {
+
+    const mainContainer = document.getElementById("mainContainer")
+ const element = `
+
+    <div class="w-100"  id="updateCourseModal" style="position:absolute;top:0;left:0; width:1000px;z-index:999;">
+      <div class="">
+        <div class="modal-content" style="overflow:scroll;height:500px;width:450px;position:absolute;left:500px;top:100px;z-index:999;">
+       
+          
+            <form method="post" action = "/course/{{course.id}}/edit/" id = "updateCouseForm">
+               {% csrf_token %}
+                {{form}}
+                  <button type="button" class="btn btn-secondary" onclick = "updateCloseBtn()">Cancel</button>
+                  <button type="submit"  class="btn btn-danger">Update Course</button>
+             
+            
+            </form>
+          </div>
+        </div>
+      </div>
+   
+      
+      `
+
+
+      const div = document.createElement('div');
+      div.style.height ="auto"
+      div.innerHTML = element
+
+      mainContainer.prepend(div)
+      window.scrollTo(0, 0);
+     
+  
+  }
+
+
+
+  function updateCloseBtn() {
+    const mainContainer = document.getElementById("updateCourseModal");
+    mainContainer.style.display = "none";
+  
+
+  }
+
+</script>
+{% endblock %}
+
+

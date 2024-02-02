@@ -9,32 +9,7 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Cabin:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Cormorant+Upright:wght@300;400;600;700&family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,700&family=Great+Vibes&family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Lexend:wght@100;200;300;400;500;600;700;800;900&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;0,1000;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900;1,1000&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Syne:wght@400;500;600;700;800&display=swap"
-          rel="stylesheet"
-        />
-        <script
-          src="https://kit.fontawesome.com/84ceadd20f.js"
-          crossorigin="anonymous"
-        ></script>
-        <link
-          href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
-          rel="stylesheet"
-        />
-        <link
-          rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-        />
-        <link
-          href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
-          rel="stylesheet"
-        />
-        <link
-          rel="stylesheet"
-          href="https://unicons.iconscout.com/release/v4.0.0/css/line.css"
-        />
+        
         <link rel="icon" href="{% static 'logo.png' %}" type="image/x-icon" />
 
 
@@ -42,28 +17,7 @@
         <link rel="stylesheet" href="{% static 'instructor_course_add_footer.css'%} " />
         <link rel="stylesheet" href="{% static 'instructor_course_add_css.css' %}" />
         <link rel="stylesheet" href="{% static 'instructor_course_add_main.css'%}" />
-        <link
-          rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-        />
-        <link
-          rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"
-        />
-        <link
-          rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-        />
-        <link
-          rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
-        />
-
-        <link
-          rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-        />
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+     
 
     {% endblock %}
   
@@ -145,15 +99,12 @@
               </div>
               <form method="post" action="." id="course-form" enctype="multipart/form-data">   
                 {% csrf_token %}
-                <div id="myerror"></div>
+                <div id="myerror"></div>class="form"
                 {{form|crispy}}
-        
-                  
+
                   <input type="hidden" name="subCategory" value="{{courseName}}" />
                   <input type="hidden" name="category" value="{{category}}" />
-                 
-                
-                    
+
               
                     <div class="popup-field">
                       <label for="courseDescription"></label>
@@ -187,7 +138,7 @@
             <br />
             <div class="editDeleteButtons">
               <a href="{% url 'courses:course_edit' course.id %}">
-                <button>Edit Course</button>
+                <button type="button">View Course</button>
               </a>
 
               
@@ -208,7 +159,6 @@
         {% endfor %}
     </div>
  <script>
-   
 
 
   function deleteAction(courseId) {
@@ -276,6 +226,7 @@ mainContainer.append(div)
         
         $("#modalContainer").remove()
         window.location.reload()
+    
       },
       error: function (xhr, status, error) {
         // Handle any error that occurred during the AJAX request
@@ -287,7 +238,82 @@ mainContainer.append(div)
   }
 
  
+  function updateCourseModal(id) {
 
+    const mainContainer = document.getElementById("mainContainer")
+    const element = `
+
+    <div class="modal fade"  id="updateCourseModal" style="height:auto;position:absolute;z-index: 999;">
+      <div class="modal-dialog">
+        <div class="modal-content">
+       
+          
+            <form action = "/course/${id}/edit/" action = "post" id = "updateCouseForm">
+               {% csrf_token %}
+          
+                {{form|crispy}}
+         
+          
+                  <button type="button" class="btn btn-secondary" onclick = "updateCloseBtn()">Cancel</button>
+                  <button type="submit"  class="btn btn-danger" onclick = "updateBtn(${id})" >Update Course</button>
+             
+            
+            </form>
+          </div>
+        </div>
+      </div>
+   
+      
+      `
+
+      const div = document.createElement('div');
+      div.style.overflow ="scroll"
+      div.innerHTML = element
+      mainContainer.append(div)
+      window.scrollTo(0, 0);
+     
+  
+  }
+
+
+
+  function updateCloseBtn() {
+    const mainContainer = document.getElementById("updateCourseModal");
+    mainContainer.style.display = "none";
+    window.location.reload()
+
+  }
+
+
+  
+  function updateBtn(id) {
+
+    const mainForm = document.getElementById("updateCouseForm");
+    mainForm.addEventListener("submit",function(event){
+      event.preventDefault()
+      //var formData = $(this).serialize();
+      const formData = new FormData(mainForm);
+      axios.put(`/course/${id}/edit/`, formData, {
+        
+        headers: {
+          'Content-Type': 'application/octet-stream',
+          'X-CSRFToken': '{{ csrf_token }}'
+        },
+     
+   
+      })
+      .then((response) => {
+       // let data = response.data.response
+        const mainContainer = document.getElementById("updateCourseModal");
+        mainContainer.style.display = "none";
+        
+      })
+      .catch((error) => {
+        console.log("Error ",error);
+      })
+    })
+
+    }
  
   function populateCourses() {
     var categorySelect = document.getElementById("categorySelect");
@@ -401,7 +427,132 @@ mainContainer.append(div)
         if(formDataObj){
             data = JSON.stringify(formDataObj);
         }
-        // console.log("json data ",jsonData);
+        axios.post("{% url 'courses:course_create'%}", formData, {
+          
+          headers: {
+            'Content-Type': 'application/octet-stream',
+            'X-CSRFToken': '{{ csrf_token }}'
+          },
+       
+     
+        })
+        .then((response) => {
+      
+          let data = JSON.parse(response.data.response)
+          const course = data[0].fields
+         
+          
+       
+          var coursesContainer = document.getElementById("coursesContainer");
+          courseCard = document.createElement("div");
+          courseCard.className = "courseCard";
+          var courseImage = document.createElement("img");
+          courseImage.className = "courseImage";
+          courseImage.style.width = "300px"; // Set the desired width
+          courseImage.style.height = "180px"; // Set the desired height
+          courseImage.src = `${course.image.url}`;
+          courseCard.appendChild(courseImage);
+            // ... (rest of the code)
+          
+          courseCard.appendChild(courseImage);
+          var courseNameElement = document.createElement("h3");
+          courseNameElement.className = "courseName";
+          courseNameElement.textContent = course.name;
+          courseCard.appendChild(courseNameElement);
+
+          // Display course description
+          var courseDescriptionElement = document.createElement("p");
+          courseDescriptionElement.className = "courseDescription";
+          courseDescriptionElement.innerHTML =
+            formatDescription(course.overview);
+          courseCard.appendChild(courseDescriptionElement);
+          // Add Edit and Delete buttons
+          var editDeleteButtons = document.createElement("div");
+          editDeleteButtons.className = "editDeleteButtons";
+          var editLink = document.createElement("a");
+          editLink.href = `course/edit/${course.id}/`
+          var editButton = document.createElement("button");
+          editButton.textContent = "Edit Course";
+          editLink.appendChild(editButton)
+          window.location.reload()
+
+         
+          
+
+
+          editButton.onclick = function () {
+            // Set the selected course in the dropdown
+            document.getElementById("courseSelect").value = course.name;
+
+            // Populate the modal with course details
+            showCourseModal();
+          };
+          editDeleteButtons.appendChild(editButton);
+
+          var deleteButton = document.createElement("button");
+        
+          deleteButton.textContent = "Delete Course";
+          deleteButton.onclick = function () {
+            // Remove the course card from the display
+            coursesContainer.removeChild(courseCard);
+          };
+          editDeleteButtons.appendChild(deleteButton);
+          /////////// Add "Add Module" button
+          var addModuleButton = document.createElement("button");
+          addModuleButton.className = "addModuleButton";
+          addModuleButton.textContent = "Add Module";
+         
+          /////////// Add "students" button
+          var addstudents = document.createElement("button");
+          addstudents.className = "addstudents";
+          addstudents.textContent = "Students";
+        
+          editDeleteButtons.appendChild(addModuleButton);
+          editDeleteButtons.appendChild(addstudents);
+
+          courseCard.appendChild(editDeleteButtons);
+
+          // Append the course card to the container
+          coursesContainer.appendChild(courseCard);
+          $("#myModal").remove()
+          $("notificationModal").fadeOut(2000)
+        })
+        .catch((error) => {
+          if(response.errors) {
+            const error = document.getElementById("error-container")
+            let errorData = JSON.parse(response.errors)
+
+            
+
+            for (const key in errorData ) {
+              const value = errorData[key];
+              const element = ` 
+              <div class="modal fade" id="errorModal" tabindex="-1" id="my-error-modal" role="dialog" style="position: relative;z-index: 999;">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                        
+                            <div class="modal-body">
+                                <p id="error-message"> <h1>${key} </h1> ${value}</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick = "closeErrorModal()">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `
+
+            error.innerHTML = element
+            setTimeout(function(){
+              error.innerText = ""
+            },3000)
+          }
+        
+        }
+
+     
+        });
+        
         $.ajax({
           url: "{% url 'courses:course_create'%}",  // URL for the AJAX view
           method: 'POST',
@@ -411,77 +562,11 @@ mainContainer.append(div)
           },
           data:data,
           //processData: false,
-          contentType: "application/json",
+          contentType: false,
+   
     
           success: function (response) {
-            if(response.errors) {
-              const error = document.getElementById("error-container")
-              let errorData = JSON.parse(response.errors)
-
-              for (const key in errorData ) {
-                const value = errorData[key];
-                const element = ` 
-                <div class="modal fade" id="errorModal" tabindex="-1" id="my-error-modal" role="dialog" style="position: relative;z-index: 999;">
-                      <div class="modal-dialog" role="document">
-                          <div class="modal-content">
-                          
-                              <div class="modal-body">
-                                  <p id="error-message"> <h1>${key} </h1> ${value}</p>
-                              </div>
-                              <div class="modal-footer">
-                                  <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick = "closeErrorModal()">Close</button>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              `
-
-              error.innerHTML = element
-              setTimeout(function(){
-                error.innerText = ""
-              },3000)
-            }
-          
-          }
-
-            let responseData = JSON.parse(response.response)
-            const course = responseData[0].fields
-         
-            var coursesContainer = document.getElementById("coursesContainer");
-            courseCard = document.createElement("div");
-            courseCard.className = "courseCard";
-            var courseImage = document.createElement("img");
-            courseImage.className = "courseImage";
-            courseImage.style.width = "300px"; // Set the desired width
-            courseImage.style.height = "180px"; // Set the desired height
-            courseImage.src = `${course.image.url}`;
-            courseCard.appendChild(courseImage);
-              // ... (rest of the code)
-            
-            courseCard.appendChild(courseImage);
-            var courseNameElement = document.createElement("h3");
-            courseNameElement.className = "courseName";
-            courseNameElement.textContent = course.name;
-            courseCard.appendChild(courseNameElement);
-
-            // Display course description
-            var courseDescriptionElement = document.createElement("p");
-            courseDescriptionElement.className = "courseDescription";
-            courseDescriptionElement.innerHTML =
-              formatDescription(course.overview);
-            courseCard.appendChild(courseDescriptionElement);
-            // Add Edit and Delete buttons
-            var editDeleteButtons = document.createElement("div");
-            editDeleteButtons.className = "editDeleteButtons";
-            var editLink = document.createElement("a");
-            editLink.href = `course/edit/${course.id}/`
-            var editButton = document.createElement("button");
-            editButton.textContent = "Edit Course";
-            editLink.appendChild(editButton)
-    
-
            
-            
 
 
             editButton.onclick = function () {
@@ -522,17 +607,18 @@ mainContainer.append(div)
             $("notificationModal").fadeOut(2000)
 
 
-          },
-          error: function (error) {
-            let responseData = JSON.stringify(error);
-            console.log("Error ",responseData);
           }
+       
         });
 
     })
 
   }
   
+
+
+
+
 
   function closeErrorModal(){
     const mymodal = $("#my-error-modal").remove()
@@ -769,34 +855,6 @@ mainContainer.append(div)
         });
       });
     </script>
-    <!-- Catgory dropdown -->
-    <script>
-      const newdropdowns = document.querySelectorAll(".newdropdown");
-      newdropdowns.forEach((newdropdown) => {
-        const select = newdropdown.querySelector(".select");
-        const caret = newdropdown.querySelector(".caret");
-        const menu = newdropdown.querySelector(".menu");
-        const options = newdropdown.querySelector(".menu li");
-        const selected = newdropdown.querySelector(".selected");
 
-        select.addEventListener("click", () => {
-          select.classList.toggle("select-clicked");
-          caret.classList.toggle("caret-rotate");
-          menu.classList.toggle("menu-open");
-        });
-        options.forEach((option) => {
-          option.addEventListener("click", () => {
-            selected.innerText = option.innerText;
-            select.classList.remove("select-clicked");
-            caret.classList.remove("caret-rotate");
-            menu.classList.remove("menu-open");
-            options.forEach((option) => {
-              option.classList.remove("active");
-            });
-            option.classList.add("active");
-          });
-        });
-      });
-    </script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
 {% endblock %}

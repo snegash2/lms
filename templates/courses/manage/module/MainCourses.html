@@ -7,7 +7,7 @@
 {% block style %}
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Student Course</title>
+    <title>{{course.content_type}} Course</title>
     <link rel="stylesheet" href="{% static 'content.css'%}" />
     <link rel="stylesheet" href="./studentindex.css" />
 
@@ -102,12 +102,22 @@
 {% with course=module.course %}
 
     <!--==================================Video ==============================-->
+    <div style="display: flex; justify-content:space-around;">
+    {% if course.course_type == 'VIDEO' %}
+      <button class="Main-btns"> <a href="{% url "courses:module_content_create" module.id "video" %}"><span>Add {{ course.course_type}}</span></button></a>
+    {% else %}
+      <button class="pdf-btns">
+        <a href="{% url "courses:module_content_create" module.id "file" %}"><span>Add {{ course.course_type}}</span></a>
+      </button>
 
-    
-    <button class="Main-btns"> <a href="{% url "courses:module_content_create" module.id "video" %}"><span>Add Video</span></button></a>
-    <button class="pdf-btns">
-      <a href="{% url "courses:module_content_create" module.id "file" %}"><span>Add Pdf</span></a>
-    </button>
+    {% endif %}
+
+        <button class="pdf-btns" onclick="backToModules()">
+          <span>Back to Modules</span>
+           </button>
+      </div>
+
+
     <div class="overlay"></div>
 
     <div class="popup">
@@ -115,6 +125,12 @@
     </div>
     {%endwith%}
     <script>
+
+
+      function backToModules(){
+       
+        window.history.back();
+      }
       // Get the necessary elements
       const addButton = document.getElementById("addButton");
       const overlay = document.querySelector(".overlay");
@@ -167,6 +183,8 @@
 
     <div id="videoList">
       <h2>Content List </h2>
+
+   
       {% if module.contents.count > 0 %}
       <table id="videoTable">
         <thead>

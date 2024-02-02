@@ -19,6 +19,8 @@
   border-radius: 6px;
   z-index: 1;
   transition: opacity 0.3s ease;
+  height: 400px !important;
+  width: auto !important;
 
 }
 .moduleName {
