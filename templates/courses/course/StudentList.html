@@ -2,32 +2,7 @@
 {% load static %}
 
 {% block style%}
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Cabin:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Cormorant+Upright:wght@300;400;600;700&family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,700&family=Great+Vibes&family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Lexend:wght@100;200;300;400;500;600;700;800;900&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;0,1000;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900;1,1000&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Syne:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
-    <script
-      src="https://kit.fontawesome.com/84ceadd20f.js"
-      crossorigin="anonymous"
-    ></script>
-    <link
-      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-    />
-    <link
-      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://unicons.iconscout.com/release/v4.0.0/css/line.css"
-    />
+  
     <link rel="icon" href="./assets/logo.png" type="image/x-icon" />
 
     <meta charset="UTF-8" />
@@ -37,24 +12,7 @@
  
     <link rel="stylesheet" href="{% static 'student_list_main.css' %}" />
     <link rel="stylesheet" href="{% static 'student_list.css' %}"/>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-    />
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"> -->
-
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-    />
+  
 
  {% endblock %}
 
@@ -84,9 +42,20 @@
       });
     </script>
     <!-- ===========================Main body================================= -->
-    <div class="reminder">
-      <p>These courses have 2 assignments</p>
+
+    <div style="display: flex; justify-content:space-around;align-items:center;">
+
+      <a href="{% url 'courses:course_create' %}">
+        <button class="form-control btn  btn-info" id="save-btns">
+          <span>Back to couse </span>
+        </button>
+      </a>
+      <div class="reminder">
+        <p>These courses have 2 assignments</p>
+      </div>
+
     </div>
+
 
     <h1>{{course.name|title}} Student List</h1>
     <div style="overflow-x: auto">
@@ -144,7 +113,7 @@
       
             success: function (response) {
               allowed = response.allowed
-              $(`#span_${studentId}`).text(allowed ? '+' : 'X');
+              $(`#span_${studentId}`).text(allowed ? 'can access ' : 'can not access');
              
             },
           

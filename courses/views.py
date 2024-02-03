@@ -12,7 +12,7 @@ from django.urls import reverse_lazy
 from django.core.cache import cache
 from students.forms import CourseEnrollForm
 from .forms import ModuleFormSet,CourseCreateForm,CourseUpdateForm,ModuleCreateForm
-from .models import Course, Module, Content,Category
+from .models import Course, Module, Content,Category,CourseAccess
 from django.db.models import Count
 from .models import Category,CourseName
 from django.views.generic.detail import DetailView
@@ -28,16 +28,6 @@ from django.views.decorators.http import require_POST
 import json
 import random
 from django.core import serializers
-
-
-from bootstrap_modal_forms.generic import (
-    BSModalLoginView,
-    BSModalFormView,
-    BSModalCreateView,
-    BSModalUpdateView,
-    BSModalReadView,
-    BSModalDeleteView
-)
 
 
 
@@ -381,10 +371,16 @@ class CourseDetailView(DetailView):
 
 
 def verify_egiliable_student(request,id):
-    # egiliable_students_group = Group.objects.get(name='can_take_exam')
-    # egiliable_students = egiliable_students_group.user_set.all()
-    # group = Group.objects.get(name='can_take_exam')
-    group = Group.objects.all().first()
+    group = None
+  
+    try:
+        course = Course.objects.get(id = id)
+        group = CourseAccess.objects.get(course = course)
+        
+    except:
+        pass
+    
+    
     user_email = request.POST.get('user')
     if request.method == "POST":
        if request.POST.get('user-to-deny') != None:
@@ -393,8 +389,6 @@ def verify_egiliable_student(request,id):
             user.save()
             
 
-
-     
        user = User.objects.get(email = user_email)
        user.groups.add(group)
        user.save()
@@ -408,7 +402,7 @@ def verify_egiliable_student(request,id):
     context = {
         'course':course,
         'course_id':id,
-        'group_users':group.user_set.all(),
+        'group_users':group.students.all(),
         'candidate_students':candidate_students
     }
     return render(request,'courses/course/StudentList.html',context)

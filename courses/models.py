@@ -272,9 +272,12 @@ class Task(GenericItem):
 
 
 
-class CourseAccess(Group):
+class CourseAccess(models.Model):
+    name = models.CharField(max_length=255, blank = True)
+    students = models.ManyToManyField(User)
     course = models.ForeignKey(Course,related_name = "course",null = True,blank = True,on_delete = models.CASCADE)
     
     
+    
     def __str__(self):
-        return f"{self.course.name} students access group"
+        return f"{self.course}"

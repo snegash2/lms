@@ -45,26 +45,13 @@ def user_logged_in_handler(sender, user, request, **kwargs):
 
 
 
-# @receiver(post_save, sender=Course)
-# def create_group_for_student_to_take_exam(sender, instance, created,**kwargs):
-#     group = None
-#     if instance.published == False:
-#         try:
-#             group = CourseAccess.objects.get( name = f"{instance.name} students access group")
-#         except CourseAccess.DoesNotExist:
-#             pass
-        
-#         if group:
-#              group.user_set.add(instance.teacher)
-#              group.course = instance
-#              group.save()
-             
-#         else:
-#             group.name = f"{instance.name} students access group"
-#             group.course = instance
-#             group.save()
-        
-        
+@receiver(post_save, sender=Course)
+def create_group_for_student_to_take_exam(sender, instance, created,**kwargs):
+    if CourseAccess.objects.filter(course = instance).exists():
+        pass
+    else:
+      CourseAccess.objects.create(name = f"{instance} groups",course = instance)
+  
         
 
 @receiver(post_save, sender=Course)

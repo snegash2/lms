@@ -11,7 +11,7 @@ from django.contrib import messages
 import json
 from django.contrib.auth.models import Group,Permission
 from django.core import serializers
-
+from courses.models import CourseAccess
 
 @require_POST
 def enroll_form(request):
@@ -193,35 +193,38 @@ def verify_egiliable_student_ajax(request):
             
         except Course.DoesNotExist:
             pass
-     
-     
+
         try:
             student = User.objects.get(id = studentId)
-          
-           
+
         except User.DoesNotExist:
             pass
         try:
-            group = Group.objects.all().filter(name = f"{course.name} students access group").first()
-            group.user_set.add(student)
+       
+            group = CourseAccess.objects.get(course = course)
+     
+            group.students.add(student)
             group.save()
           
-        except Group.DoesNotExist:
-            print("group ",group)
-    
-        if student in group.user_set.all():
-            print(f"{student} in group")
-            allowed = False
-            group.user_set.remove(student)
-            group.save()
+        except Course.DoesNotExist:
+            print("group ",group.students.all())
             
-        elif student not in  group.user_set.all():
-            print(f"{student} not in group")
-            allowed = True
-            group.user_set.add(student)
-            group.save()
-        else:
-            pass
+            
+        print("students ",)
+    
+        # if student in group.students.all():
+        #     print(f"{student} in group")
+        #     allowed = False
+        #     group.students.remove(student)
+        #     group.save()
+            
+        # elif student not in  group.students.all():
+        #     print(f"{student} not in group")
+        #     allowed = True
+        #     group.students.add(student)
+        #     group.save()
+        # else:
+        #     pass
             
             
         json_course = {

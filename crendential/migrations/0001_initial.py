@@ -12,7 +12,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('courses', '0002_alter_course_intro_video'),
+        # ('courses', '0002_alter_course_intro_video'),
     ]
 
     operations = [

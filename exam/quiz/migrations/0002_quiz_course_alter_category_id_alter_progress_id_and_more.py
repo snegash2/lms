@@ -9,7 +9,7 @@ import re
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('courses', '0002_alter_course_intro_video'),
+        # ('courses', '0002_alter_course_intro_video'),
         ('quiz', '0001_initial'),
     ]
 
