@@ -99,7 +99,7 @@
               </div>
               <form method="post" action="." id="course-form" enctype="multipart/form-data">   
                 {% csrf_token %}
-                <div id="myerror"></div>class="form"
+                <div id="myerror"></div>
                 {{form|crispy}}
 
                   <input type="hidden" name="subCategory" value="{{courseName}}" />

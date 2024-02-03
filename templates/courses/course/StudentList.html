@@ -78,9 +78,13 @@
             <td>{{student.username}}</td>
             <td>Assignments</td>
             <td>Activate Switch</td>
-            <td>
-              <span aria-label="Close modal" class="close"  id="span_{{student.id}}" style="font-size:4em;" onclick="updateStudentAccess('{{student.id}}','{{course.id}}')">&times;</span>
-  
+            <td class="accessRemittance">
+              {% if student in allowed_students %}
+              <span aria-label="Close modal" class="close"  id="span_{{student.id}}_remove" style="font-size:4em;" onclick="updateStudentAccess('{{student.id}}','{{course.id}}','remove')">x</span>
+              {% else %}
+              <span aria-label="Close modal" class="close"  id="span_{{student.id}}_add" style="font-size:4em;" onclick="updateStudentAccess('{{student.id}}','{{course.id}}','add')">+</span>
+
+              {% endif %}
             </td>
           </tr>
         {% endfor %}
@@ -91,10 +95,11 @@
     </div>
 
     <script>
-      function updateStudentAccess(studentId,course_id) {
+      function updateStudentAccess(studentId,course_id,action) {
           let data = {
             studentId:studentId,
-            courseId:course_id
+            courseId:course_id,
+            action:action
 
           }
 
@@ -112,8 +117,12 @@
             data: JSON.stringify(data),
       
             success: function (response) {
+
               allowed = response.allowed
-              $(`#span_${studentId}`).text(allowed ? 'can access ' : 'can not access');
+             
+              $(`#span_${studentId}_${action}`).load(`{% url 'courses:egiliablity' course.id %} #span_${studentId}_${action}`)
+            
+
              
             },
           

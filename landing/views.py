@@ -182,6 +182,7 @@ def verify_egiliable_student_ajax(request):
     if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
         body = json.loads(request.body)
         studentId = int(body.get("studentId"))
+        action  = body.get('action')
        
         course = None
         student = None
@@ -202,32 +203,26 @@ def verify_egiliable_student_ajax(request):
         try:
        
             group = CourseAccess.objects.get(course = course)
-     
-            group.students.add(student)
+            
+            if action == "remove":
+               
+                group.students.remove(student)
+                allowed = False
+                
+            else:
+                
+                group.students.add(student)
+                allowed = True
+                
             group.save()
           
         except Course.DoesNotExist:
             print("group ",group.students.all())
             
             
-        print("students ",)
-    
-        # if student in group.students.all():
-        #     print(f"{student} in group")
-        #     allowed = False
-        #     group.students.remove(student)
-        #     group.save()
-            
-        # elif student not in  group.students.all():
-        #     print(f"{student} not in group")
-        #     allowed = True
-        #     group.students.add(student)
-        #     group.save()
-        # else:
-        #     pass
-            
+     
             
         json_course = {
-            'allowed':allowed
+            'allowed':True if allowed else False
         }        
         return JsonResponse(json_course)
