@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="{% static 'instructor_course_add_footer.css'%} " />
 <link rel="stylesheet" href="{% static 'instructor_course_add_css.css' %}" />
 <link rel="stylesheet" href="{% static 'instructor_course_add_main.css'%}" />
+
 {% endblock %}
 
 {% block content %}
@@ -59,9 +60,13 @@
             <form method="post" action = "/course/{{course.id}}/edit/" id = "updateCouseForm">
                {% csrf_token %}
                 {{form}}
-                  <button type="button" class="btn btn-secondary" onclick = "updateCloseBtn()">Cancel</button>
-                  <button type="submit"  class="btn btn-danger">Update Course</button>
-             
+
+                <br />
+                <br />
+                <div class="form-group button-group ">
+                  <button type="button" class="form-control btn btn-secondary" onclick = "updateCloseBtn()">Cancel</button>
+                  <button type="submit"  class="form-contro btn ">Update Course</button>
+                </div>
             
             </form>
           </div>
@@ -78,8 +83,7 @@
 
       mainContainer.prepend(div)
       window.scrollTo(0, 0);
-     
-  
+    
   }
 
 

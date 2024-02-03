@@ -17,7 +17,9 @@
         <link rel="stylesheet" href="{% static 'instructor_course_add_footer.css'%} " />
         <link rel="stylesheet" href="{% static 'instructor_course_add_css.css' %}" />
         <link rel="stylesheet" href="{% static 'instructor_course_add_main.css'%}" />
-     
+
+        <style> 
+        </style>
 
     {% endblock %}
   
@@ -51,11 +53,9 @@
             <span>Save Course</span>
           </div>
 
-          <div class="guide-note">
+          <div class="guide-note" onclick="scrollToDown()"> 
             <i class="far fa-eye"></i>
-            <a href="{% url 'courses:manage_course_list'%}" target="_blank" rel="noopener noreferrer">
-             <span>See Saved Courses</span>
-            </a>
+             <span>See Saved Courses</span> 
           </div>
         </div>
         <h1>Add Course</h1>
@@ -148,11 +148,11 @@
                 <button class="addModuleButton">Add module</button>
               </a>
               
-              {% if course.modules.count > 0 %}
-              <a href="{% url "courses:module_content_list" course.modules.first.id %}">
-                   <button>Manage content</button>
-              </a>
-              {% endif %}
+              
+              
+                   <button>Manage Student</button>
+              
+         
 
             </div>
           </div>
@@ -160,7 +160,20 @@
     </div>
  <script>
 
+  function scrollToDown() {
+  let scrollPosition = window.scrollY;
+  let height = document.body.scrollHeight;
+  let steps = Math.ceil(height / 50); // Adjust steps based on desired scroll speed
+  let interval = setInterval(() => {
+    if (scrollPosition < height) {
+      scrollPosition += Math.ceil(height / steps);
+      window.scrollBy(0, scrollPosition - window.scrollY);
+    } else {
+      clearInterval(interval);
+    }
+  }, 60); // Adjust interval for desired smoothness
 
+  }
   function deleteAction(courseId) {
   const mainContainer = document.getElementById("mainContainer")
   const element = `

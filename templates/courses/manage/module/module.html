@@ -66,18 +66,19 @@
     </script>
     <!-- ===========================Main body================================= -->
     <!-- <button class="btn" onclick="openModulePopup()">Add Module</button> -->
-    <button id="save-btns" class="btn" onclick="openModulePopup()">
-      <span>Add Module/span>
-    </button>
-
-    <a href="{% url 'courses:course_create' %}">
-      <button id="save-btns">
-        <span>Back to couse </span>
+  <div style="display:flex;">
+      <a href="{% url 'courses:course_create' %}">
+        <button id="save-btns">
+          <span>Back to couse </span>
+        </button>
+      
+      </a>
+      <button id="save-btns" class="btn" onclick="openModulePopup()">
+        <span>Add Module</span>
       </button>
-     
-    </a>
-  
-   
+      
+    </div>
+    
     <div id="modulePopupBackdrop" onclick="closeModulePopup()"></div>
     <br />
   
@@ -85,26 +86,31 @@
       <span class="close-icon" onclick="closeModulePopup()">X</span>
      
       <form class="form" method="post" id="moduleAddForm" >
-        {%for form in formset %}
-        {{ formset.management_form }}
-            <div class="w-full  m-8">
-                {{form|crispy}}
-            </div>
-
-
-        
-            {% for hidden in form.hidden_fields %}
-                {{ hidden }}
-            {% endfor %}
-        
-        {%endfor%}
-
         {% csrf_token %}
+        <div id="id_ingredient-TOTAL_FORMS">
+        <div id='ingredient-form-list'>
+            {%for form in formset %}
+            {{ formset.management_form|crispy }}
+                <div style="align-items: center;" class="ingredient-form"> 
+                  
+                    {{form|crispy}}
+                    <br />
+                
+                </div>
+              
+            {%endfor%}
+             
+        </div>
+          <div id='empty-form' class='hide'>{{formset.empty_form|crispy }}</div>
+        
+
         <button class="btn" type="submit" onclick="saveModule({{course.id}})">Save</button>
         <button class="btn" type="button" onclick="closeModulePopup()">Cancel</button>
-        <button class="btn" type="button" onclick="addChapter()">Add chapter</button>
-    </form>
+        <button class="btn" type="button" id="addMore" onclick="addChapter()">Add</button>
+      
+      </form>
     </div>
+  </div>
 
     <table id="moduleTable">
       <tr>
@@ -169,12 +175,7 @@
         modulePopup.classList.add("show");
       }
 
-      function formsManagement() {
-        const forms = document.getElementById("forms-container")
-        const emptyForm = document.getElementById("empty-form-container")
-        forms.appendChild(emptyForm)
-      
-      }
+     
 
       function closeModulePopup() {
         var modulePopupBackdrop = document.getElementById(
@@ -192,10 +193,25 @@
         var modulePopupBackdrop = document.getElementById(
           "modulePopupBackdrop"
         );
-   
-        modulePopupBackdrop.classList.remove("hide");
-        modulePopupBackdrop.classList.remove("show")
-        modulePopup.classList.remove("show")
+        const totalNewForms = document.getElementById('id_ingredient-TOTAL_FORMS')
+        addMoreBtn = document.getElementById("addMore")
+        addMoreBtn.addEventListener('click', add_new_form)
+        function add_new_form(event) {
+            if (event) {
+                event.preventDefault()
+            }
+            const currentIngredientForms = document.getElementsByClassName('ingredient-form')
+            const currentFormCount = currentIngredientForms.length // + 1
+            const formCopyTarget = document.getElementById('ingredient-form-list')
+            const copyEmptyFormEl = document.getElementById('empty-form').cloneNode(true)
+            copyEmptyFormEl.setAttribute('class', 'ingredient-form')
+            copyEmptyFormEl.setAttribute('id', `ingredient-${currentFormCount}`)
+            const regex = new RegExp('__prefix__', 'g')
+            copyEmptyFormEl.innerHTML = copyEmptyFormEl.innerHTML.replace(regex, currentFormCount)
+            totalNewForms.setAttribute('value', currentFormCount + 1)
+            // now add new empty form element to our html form
+            formCopyTarget.append(copyEmptyFormEl)
+        }
 
       }
     

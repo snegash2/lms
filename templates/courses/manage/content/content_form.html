@@ -32,7 +32,7 @@
           <div id="left">
 
             <form action="" method="post" enctype="multipart/form-data">
-                <h3>Select Your Main Videos</h3>
+                <h3>Select Your Main {{form.file.label}} {{form.video.label}}</h3>
                 <label for="mainVideo">Main Video:</label>
                 {{ form|crispy }}
                 {% csrf_token %}
