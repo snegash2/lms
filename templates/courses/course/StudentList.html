@@ -58,14 +58,14 @@
 
 
     <h1>{{course.name|title}} Student List</h1>
-    <div style="overflow-x: auto">
+    <div style="overflow-x: auto" id="table">
       <table>
         <thead>
           <tr>
             <th>Student ID</th>
             <th>Student Name</th>
             <th>Assignments</th>
-            <th>Activate Switch</th>
+            <th>Student Enrollement</th>
             <th>Take Exam</th>
           </tr>
         </thead>
@@ -77,13 +77,27 @@
             <td>{{student.id}}</td>
             <td>{{student.username}}</td>
             <td>Assignments</td>
-            <td>Activate Switch</td>
-            <td class="accessRemittance">
-              {% if student in allowed_students %}
-              <span aria-label="Close modal" class="close"  id="span_{{student.id}}_remove" style="font-size:4em;" onclick="updateStudentAccess('{{student.id}}','{{course.id}}','remove')">x</span>
-              {% else %}
-              <span aria-label="Close modal" class="close"  id="span_{{student.id}}_add" style="font-size:4em;" onclick="updateStudentAccess('{{student.id}}','{{course.id}}','add')">+</span>
+            <td>
 
+              
+                
+      
+         
+            </td>
+            <td class="accessRemittance">
+
+ 
+              {% if student in allowed_students %}
+              <label class="switch">
+                <input type="checkbox" name="" id="" checked="true">
+              <span aria-label="Close modal"  class="slider"  id="span_{{student.id}}_remove" style="font-size:4em;" onclick="updateStudentAccess('{{student.id}}','{{course.id}}','remove')"></span>
+              </label>
+              {% else %}
+
+              <label class="switch">
+                <input type="checkbox"  value="">
+                <span aria-label="Close modal" class="slider"  id="span_{{student.id}}_add" style="font-size:4em;" onclick="updateStudentAccess('{{student.id}}','{{course.id}}','add')"></span>
+              </label>
               {% endif %}
             </td>
           </tr>
@@ -120,8 +134,10 @@
 
               allowed = response.allowed
              
-              $(`#span_${studentId}_${action}`).load(`{% url 'courses:egiliablity' course.id %} #span_${studentId}_${action}`)
-            
+              //$(`#span_${studentId}_${action}`).load(`{% url 'courses:egiliablity' course.id %} #span_${studentId}_${action}`)
+             // $(`#span_${studentId}_${action}`).text(allowed ? 'X' : '+');
+              $(`#table`).load(`{% url 'courses:egiliablity' course.id %} #table`)
+              
 
              
             },

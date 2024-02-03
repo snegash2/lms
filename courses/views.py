@@ -382,15 +382,6 @@ def verify_egiliable_student(request,id):
     
     
     course_students = course.students.all()
-    if request.method == "POST":
-       if request.POST.get('user-to-deny') != None:
-            user = User.objects.get(email = user_email)
-            user.groups.remove(group)
-            user.save()
-
-
-    course = Course.objects.get(id = id)
-
     access_students = group.students.all()
 
     context = {
