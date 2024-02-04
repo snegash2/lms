@@ -368,6 +368,24 @@ class CourseDetailView(DetailView):
             context['crendentials'] = crendentials
 
         return context
+    
+    
+    def post(self,request,**kwargs):
+        user = request.user
+        course = self.get_object()
+        file = request.POST.get('fileInput')
+        crendential = Crendential.objects.create(user = user,course= course,file = file)
+        print("crendentail ",crendential)
+        if crendential:
+            return JsonResponse({
+                "success":True
+            })
+            
+        else:
+            return JsonResponse({
+                "success":False
+            })
+            
 
 
 def verify_egiliable_student(request,id):
