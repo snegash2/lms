@@ -5,14 +5,9 @@
     {% block title %} {{request.user.username }} add course{% endblock %}
 
     {% block style %}
-    
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-        
         <link rel="icon" href="{% static 'logo.png' %}" type="image/x-icon" />
-
-
         <link rel="stylesheet" href="{% static 'instructor_course_add.css' %}" />
         <link rel="stylesheet" href="{% static 'instructor_course_add_footer.css'%} " />
         <link rel="stylesheet" href="{% static 'instructor_course_add_css.css' %}" />
@@ -439,7 +434,7 @@ mainContainer.append(div)
         if(formDataObj){
             data = JSON.stringify(formDataObj);
         }
-        axios.post("{% url 'courses:course_create'%}", formData, {
+        axios.post("{% url 'courses:course_create' %}", formData, {
           
           headers: {
             'Content-Type': 'application/octet-stream',

@@ -1,19 +1,315 @@
-{% extends 'base.html' %}
+{% extends '_base.html' %}
 {% load i18n %}
 {% block title %}
 {{ quiz.title }}
 {% endblock %}
 
 {% block content %}
-<h2>{{ quiz.title }}</h2>
-<h3>{% trans "Category" %}: {{ quiz.category }}</h3>
-{% if quiz.single_attempt %}
-  <h4>{% trans "You will only get one attempt at this quiz" %}.</h4>
-{% endif %}
-<p>{{ quiz.description }}</p>
-<p>
-  <a href="{% url 'quiz_question' quiz_name=quiz.url %}">
-	{% trans "Start quiz" %}
-  </a>
-</p>
+
+    <script>
+      // JavaScript to toggle the active class on hamburger click
+      document.addEventListener("DOMContentLoaded", function () {
+        var navbarHamburger = document.querySelector(".navbar-hamburger");
+        var navbarMenu = document.querySelector(".navbar-menu");
+
+        navbarHamburger.addEventListener("click", function () {
+          navbarHamburger.classList.toggle("active");
+          navbarMenu.classList.toggle("active");
+        });
+
+        document.addEventListener("click", function (event) {
+          var targetElement = event.target;
+          if (
+            !targetElement.closest(".navbar") &&
+            navbarHamburger.classList.contains("active")
+          ) {
+            navbarHamburger.classList.remove("active");
+            navbarMenu.classList.remove("active");
+          }
+        });
+      });
+    </script>
+    <!-- ===========================Main body================================= -->
+  <!-- =================================mainfunction============================= -->
+  
+</head>
+<body>
+
+<div id="exam-container">
+  <h2>Student Examination</h2>
+  
+  <div id="exam-details">
+    <p>Exam Details:</p>
+    <p>1. Answer the following questions to the best of your ability.</p>
+    <p>2. The exam consists of 3 true/false questions and 5 multiple-choice questions.</p>
+    <button id="startBtn" onclick="openModal()">Start Exam Now</button>
+  </div>
+
+  <div id="question-container" class="question"></div>
+  <div id="choices-container" class="choices"></div>
+  <div id="progress-container">
+    Progress: <span id="current-question">0</span> / <span id="total-questions">0</span>
+    <div id="progress-bar">
+      <div id="progress-bar-inner"></div>
+    </div>
+  </div>
+  <button id="prevBtn" onclick="prevQuestion()" style="display:none;margin-top: 3rem;"><i class="fas fa-chevron-left"></i>Prev</button>
+  <button id="nextBtn" onclick="nextQuestion()" style="display:none;margin-top: 3rem;">Next<i class="fas fa-chevron-right"></i></button>
+  <button id="submitBtn" onclick="submitExam()" style="display:none;margin-top: 3rem;">Final Submit</button>
+</div>
+
+<!-- Modal dialog -->
+<div id="confirmModal" class="modal">
+  <div class="modal-content">
+    <p>Are you sure you want to take this exam?</p>
+    <button onclick="startExam()">Yes</button>
+    <button onclick="closeModal()">No</button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script>
+  // Sample Questions and Choices
+  const questions = [
+  {
+    question: "What is the capital of France?",
+    type: "multiple_choice",
+    choices: ["A. Berlin", "B. Madrid", "C. Paris", "D. Rome"],
+    correctAnswer: 'C'
+  },
+  {
+    question: "Mars is known as the Red Planet. (True/False)",
+    type: "true_false",
+    choices: ["A. True", "B. False"],
+    correctAnswer: 'A'
+  },
+  {
+    question: "What is the largest mammal?",
+    type: "multiple_choice",
+    choices: ["A. Elephant", "B. Blue Whale", "C. Giraffe", "D. Hippopotamus"],
+    correctAnswer: 'B'
+  },
+  {
+    question: "What is the currency of Japan?",
+    type: "multiple_choice",
+    choices: ["A. Yuan", "B. Won", "C. Yen", "D. Ringgit"],
+    correctAnswer: 'C'
+  },
+  {
+    question: "Who wrote 'Romeo and Juliet'?",
+    type: "multiple_choice",
+    choices: ["A. Charles Dickens", "B. William Shakespeare", "C. Jane Austen", "D. Mark Twain"],
+    correctAnswer: 'B'
+  },
+  {
+    question: "What is the largest ocean?",
+    type: "multiple_choice",
+    choices: ["A. Atlantic Ocean", "B. Indian Ocean", "C. Southern Ocean", "D. Pacific Ocean"],
+    correctAnswer: 'D'
+  },
+  {
+    question: "What is the capital of Australia?",
+    type: "multiple_choice",
+    choices: ["A. Sydney", "B. Melbourne", "C. Canberra", "D. Brisbane"],
+    correctAnswer: 'C'
+  },
+  {
+    question: "Who discovered penicillin?",
+    type: "multiple_choice",
+    choices: ["A. Marie Curie", "B. Alexander Fleming", "C. Louis Pasteur", "D. Antoine Lavoisier"],
+    correctAnswer: 'B'
+  },
+  {
+    question: "What is the boiling point of water?",
+    type: "multiple_choice",
+    choices: ["A. 100°C", "B. 150°C", "C. 200°C", "D. 50°C"],
+    correctAnswer: 'A'
+  },
+  {
+    question: "Plants absorb Carbon Dioxide from the atmosphere. (True/False)",
+    type: "true_false",
+    choices: ["A. True", "B. False"],
+    correctAnswer: 'B'
+  }
+  ];
+
+  let currentQuestion = 0;
+  let questionsPerPage = 5;
+  let examDetails = document.getElementById('exam-details');
+  let examContainer = document.getElementById('exam-container');
+  let submitBtn = document.getElementById('submitBtn');
+  let prevBtn = document.getElementById('prevBtn');
+  let nextBtn = document.getElementById('nextBtn');
+  let progressContainer = document.getElementById('progress-container');
+  let progressBar = document.getElementById('progress-bar-inner');
+  let currentQuestionSpan = document.getElementById('current-question');
+  let totalQuestionsSpan = document.getElementById('total-questions');
+  let confirmModal = document.getElementById('confirmModal');
+  let selectedChoices = new Array(questions.length).fill(null);
+
+  // Function to display the current question
+  function displayQuestion() {
+    const questionContainer = document.getElementById('question-container');
+    const choicesContainer = document.getElementById('choices-container');
+    const currentQues = questions[currentQuestion];
+
+    currentQuestionSpan.textContent = currentQuestion + 1;
+    totalQuestionsSpan.textContent = questions.length;
+
+    questionContainer.innerHTML = `Question ${currentQuestion + 1}: ${currentQues.question}`;
+
+    const choicesHTML = currentQues.choices.map((choice, index) => `
+      <div class="choice">
+        <input type="radio" name="choice" value="${index}" id="choice${index}">
+        <label for="choice${index}">${choice}</label>
+      </div>
+    `).join('');
+
+    choicesContainer.innerHTML = choicesHTML;
+
+    // Update the progress bar
+    const progress = ((currentQuestion + 1) / questions.length) * 100;
+    progressBar.style.width = `${progress}%`;
+
+    // Show or hide the Final Submit button based on the question number
+    if (currentQuestion + 1 === questions.length) {
+      submitBtn.style.display = 'inline-block';
+    } else {
+      submitBtn.style.display = 'none';
+    }
+
+    // Show or hide Prev and Next buttons based on the question number
+    prevBtn.style.display = currentQuestion > 0 ? 'inline-block' : 'none';
+    nextBtn.style.display = currentQuestion < questions.length - 1 ? 'inline-block' : 'none';
+
+    // Check if the user has selected a choice for the current question
+    const selectedChoiceIndex = selectedChoices[currentQuestion];
+    if (selectedChoiceIndex !== null && selectedChoiceIndex !== undefined) {
+      const selectedChoice = document.getElementById(`choice${selectedChoiceIndex}`);
+      selectedChoice.checked = true;
+    }
+  }
+
+  // Function to go to the previous question
+  function prevQuestion() {
+    if (currentQuestion > 0) {
+      // Store the selected choice before moving to the previous question
+      const selectedChoice = document.querySelector('input[name="choice"]:checked');
+      selectedChoices[currentQuestion] = selectedChoice ? parseInt(selectedChoice.value) : null;
+
+      currentQuestion--;
+      displayQuestion();
+    }
+  }
+
+  // Function to go to the next question
+  function nextQuestion() {
+    if (currentQuestion < questions.length - 1) {
+      // Store the selected choice before moving to the next question
+      const selectedChoice = document.querySelector('input[name="choice"]:checked');
+      selectedChoices[currentQuestion] = selectedChoice ? parseInt(selectedChoice.value) : null;
+
+      currentQuestion++;
+      displayQuestion();
+    }
+  }
+
+  // Function to open the modal
+  function openModal() {
+    confirmModal.style.display = 'block';
+  }
+
+  // Function to close the modal
+  function closeModal() {
+    confirmModal.style.display = 'none';
+  }
+
+  // Function to start the exam
+  function startExam() {
+    confirmModal.style.display = 'none';
+    currentQuestion = 0;
+    examDetails.style.display = 'none';
+    examContainer.style.display = 'block';
+    displayQuestion();
+  }
+
+  // Function to submit the exam with SweetAlert
+  function submitExam() {
+    Swal.fire({
+      icon: 'success',
+      title: 'Exam Submitted!',
+      showConfirmButton: false,
+      timer: 2500
+    });
+    // Add code to handle the final submission, e.g., sending data to the server
+  }
+
+  // Close the modal if the user clicks outside of it
+  window.onclick = function(event) {
+    if (event.target === confirmModal) {
+      confirmModal.style.display = 'none';
+    }
+  };
+
+</script>
+ 
+    <!--  -->
+    <!-- ===========================result========================= -->
+
+   
+    <!--  -->
+    <script>
+      // JavaScript to toggle the active class on hamburger click
+      document.addEventListener("DOMContentLoaded", function () {
+        var navbarHamburger = document.querySelector(".navbar-hamburger");
+        var navbarMenu = document.querySelector(".navbar-menu");
+
+        navbarHamburger.addEventListener("click", function () {
+          navbarHamburger.classList.toggle("active");
+          navbarMenu.classList.toggle("active");
+        });
+
+        document.addEventListener("click", function (event) {
+          var targetElement = event.target;
+          if (
+            !targetElement.closest(".navbar") &&
+            navbarHamburger.classList.contains("active")
+          ) {
+            navbarHamburger.classList.remove("active");
+            navbarMenu.classList.remove("active");
+          }
+        });
+      });
+    </script>
+    <!-- Catgory dropdown -->
+    <script>
+      const newdropdowns = document.querySelectorAll(".newdropdown");
+      newdropdowns.forEach((newdropdown) => {
+        const select = newdropdown.querySelector(".select");
+        const caret = newdropdown.querySelector(".caret");
+        const menu = newdropdown.querySelector(".menu");
+        const options = newdropdown.querySelector(".menu li");
+        const selected = newdropdown.querySelector(".selected");
+
+        select.addEventListener("click", () => {
+          select.classList.toggle("select-clicked");
+          caret.classList.toggle("caret-rotate");
+          menu.classList.toggle("menu-open");
+        });
+        options.forEach((option) => {
+          option.addEventListener("click", () => {
+            selected.innerText = option.innerText;
+            select.classList.remove("select-clicked");
+            caret.classList.remove("caret-rotate");
+            menu.classList.remove("menu-open");
+            options.forEach((option) => {
+              option.classList.remove("active");
+            });
+            option.classList.add("active");
+          });
+        });
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
 {% endblock %}

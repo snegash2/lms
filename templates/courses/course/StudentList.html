@@ -14,6 +14,13 @@
     <link rel="stylesheet" href="{% static 'student_list.css' %}"/>
   
 
+    <style>
+      li {
+        list-style-type: none;
+
+      }
+    </style>
+
  {% endblock %}
 
 {% block content %}
@@ -76,7 +83,17 @@
           <tr>
             <td>{{student.id}}</td>
             <td>{{student.username}}</td>
-            <td>Assignments</td>
+            <td>
+              <ul>
+              {% for document in student.student_documents.all%}
+              <li>
+              <a href="/{{document.file}}" target="_blank" rel="noopener noreferrer">
+                  {{document}}
+              </a>
+              </li>
+              {% endfor %}
+            </ul>
+            </td>
             <td>
 
               

@@ -20,7 +20,7 @@ from django.shortcuts import HttpResponse as HttpResponse, render,get_object_or_
 from django.contrib.auth.models import Group,User
 from crendential.models import Crendential
 from django.utils.text import slugify
-from django.shortcuts import render
+from django.shortcuts import render,HttpResponseRedirect
 from django.http import JsonResponse
 from django.contrib import messages
 from students.models import GlobalSetting
@@ -368,6 +368,22 @@ class CourseDetailView(DetailView):
             context['crendentials'] = crendentials
 
         return context
+    
+    
+    def post(self, request, *args, **kwargs):
+        crendetial = Crendential.objects.create(user = request.user,course = self.get_object(),file = request.FILES.get('fileInput'))
+        if crendetial:
+            # messages.success(request,"document uploaded successfully")
+            return JsonResponse({
+            "success":True
+            })
+        else:
+            # messages.error(request,"document uploaded successfully")
+            return JsonResponse({
+                
+            "success":False
+            })
+            
 
 
 def verify_egiliable_student(request,id):
