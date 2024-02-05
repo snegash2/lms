@@ -12,7 +12,9 @@ DEBUG = False
 
 ALLOWED_HOSTS = ["lmsbeta.pythonanywhere.com","127.0.0.1","mysite.com"]
 
-
+CSRF_TRUSTED_ORIGINS = [
+    'http://127.0.0.1:8083/course/delete_doc/',
+]
 # Application definition
 
 INSTALLED_APPS = [
@@ -215,7 +217,7 @@ STATICFILES_DIRS = [
   BASE_DIR /'static' / 'css' / 'exam',
   BASE_DIR /'static' / 'css' / 'chat',
   BASE_DIR /'static'  / 'css' / 'allauth',
-
+  BASE_DIR /'static'  / 'css' / 'quiz',
   BASE_DIR / 'static' / 'assets' ,
   BASE_DIR / 'static' / 'assets' / 'allauth',
   BASE_DIR / 'static' / 'js' ,

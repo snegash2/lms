@@ -23,7 +23,7 @@ header {
   border: 1px 2px 4px 4px solid;
   box-shadow: 0 -10px #079a85;
   color: #333;
-  height: 4rem;
+ 
   width: 11rem;
   padding: 10px;
   margin: 20px;
@@ -34,6 +34,7 @@ header {
 .reminder p {
   font-size: 17px;
   font-family: "Kanit", sans-serif;
+  
 }
 
 @keyframes fadeInUp {

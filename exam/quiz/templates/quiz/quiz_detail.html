@@ -1,19 +1,59 @@
-{% extends 'base.html' %}
+{% extends '_base.html' %}
+{%load static %}
 {% load i18n %}
 {% block title %}
 {{ quiz.title }}
 {% endblock %}
 
+{% block style%}
+<link rel="stylesheet" href="{% static 'quiz-detail.css' %}" />
+<link rel="stylesheet" href="{% static 'quiz-detial-main.css' %}" />
+<link
+
+{% endblock %}
 {% block content %}
-<h2>{{ quiz.title }}</h2>
-<h3>{% trans "Category" %}: {{ quiz.category }}</h3>
-{% if quiz.single_attempt %}
-  <h4>{% trans "You will only get one attempt at this quiz" %}.</h4>
-{% endif %}
-<p>{{ quiz.description }}</p>
-<p>
-  <a href="{% url 'quiz_question' quiz_name=quiz.url %}">
-	{% trans "Start quiz" %}
-  </a>
-</p>
+
+<div id="exam-container">
+    <h2>Student Examination</h2>
+    
+    <div id="exam-details">
+      <p>Exam Details:</p>
+      <p>1. Answer the following questions to the best of your ability.</p>
+      <p>2. The exam consists of 3 true/false questions and 5 multiple-choice questions.</p>
+
+
+   
+        <a href="{% url 'quiz_question' quiz_name=quiz.url %}">
+            <button id="startBtn" onclick="openModal()">
+            {% trans "Start Exam Now" %}
+            </button>
+          </a>
+    
+
+    </div>
+  
+    <div id="question-container" class="question"></div>
+    <div id="choices-container" class="choices"></div>
+    <div id="progress-container">
+      Progress: <span id="current-question">0</span> / <span id="total-questions">0</span>
+      <div id="progress-bar">
+        <div id="progress-bar-inner"></div>
+      </div>
+    </div>
+    <button id="prevBtn" onclick="prevQuestion()" style="display:none;margin-top: 3rem;"><i class="fas fa-chevron-left"></i>Prev</button>
+    <button id="nextBtn" onclick="nextQuestion()" style="display:none;margin-top: 3rem;">Next<i class="fas fa-chevron-right"></i></button>
+    <button id="submitBtn" onclick="submitExam()" style="display:none;margin-top: 3rem;">Final Submit</button>
+  </div>
+  
+  <!-- Modal dialog -->
+  <div id="confirmModal" class="modal">
+    <div class="modal-content">
+      <p>Are you sure you want to take this exam?</p>
+      <button onclick="startExam()">Yes</button>
+      <button onclick="closeModal()">No</button>
+    </div>
+  </div>
+
+<br>
+<br>
 {% endblock %}

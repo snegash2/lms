@@ -13,7 +13,100 @@
     <link rel="stylesheet" href="{% static 'student_list_main.css' %}" />
     <link rel="stylesheet" href="{% static 'student_list.css' %}"/>
   
+  
+    <style>
+      .modal {
+        display:    none;
+        position:   fixed;
+        z-index:    1000;
+        top:        0;
+        left:       0;
+        height:     100%;
+        width:      100%;
+        background: rgba( 255, 255, 255, .8 )
+        url('https://i.stack.imgur.com/FhHRx.gif')
+        50% 50%
+        no-repeat;
+    }
+    body.loading {
+        overflow: hidden;
+    }
+    body.loading .modal {
+        display: block;
+    }
+    
+    body {
+      background-color: #e1e1e1;
+    }
 
+
+
+    * {
+      font-family: "Kanit", sans-serif;
+    }
+
+    .popup-icons {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #079a85;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+
+    .popup-icons:hover {
+      background-color: #079a85;
+    }
+
+    /* SweetAlert styles */
+    .swal2-popup {
+      font-size: 16px;
+      position: absolute; /* Set position to absolute */
+    }
+
+    /* Custom Animation */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    /* Additional SweetAlert styles */
+    .swal2-icon-success {
+      animation: fadeIn 0.5s ease;
+    }
+
+    .swal2-title {
+      color: #079a85;
+    }
+
+    .swal2-confirm-popup-icons {
+      background-color: #079a85;
+      color: #fff;
+      transition: background-color 0.3s ease;
+    }
+
+    .swal2-confirm-popup-icons:hover {
+      background-color: #218838;
+    }
+
+    /* Custom close icon styles */
+    .swal2-close {
+      font-size: 20px;
+      color: #079a85;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .swal2-close:hover {
+      color: #079a85;
+    }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.14.0/dist/sweetalert2.all.min.js"></script>
  {% endblock %}
 
 {% block content %}
@@ -46,12 +139,18 @@
     <div style="display: flex; justify-content:space-around;align-items:center;">
 
       <a href="{% url 'courses:course_create' %}">
-        <button class="form-control btn  btn-info" id="save-btns">
+        <button class="form-control btn btn-info" id="save-btns"  >
           <span>Back to couse </span>
         </button>
       </a>
       <div class="reminder">
-        <p>These courses have 2 assignments</p>
+        <p>This course has {{num_docs}} assignment .</p>
+        <span>
+          <big onclick="addAssiagment()">
+            Add more
+          </big>
+        </span>
+     
       </div>
 
     </div>
@@ -76,12 +175,27 @@
           <tr>
             <td>{{student.id}}</td>
             <td>{{student.username}}</td>
-            <td>Assignments</td>
+            <ul>
+              <td>
+                {% for doc in student.student_document.all %}
+                  <li>
+                  <div style="display: flex; flex-direction:column;justify-content:space-between;"></div>
+                    <a href="{{doc.file.url}}" target="_blank" rel="noopener noreferrer">{{doc}}</a>
+                    <span onclick="deleteDoc({{doc.id}})" style="color:red;font-size:26px;">&times;</span>
+                    <div class="modal"><!-- Place at bottom of page --></div>
+                  </li>
+                
+                </div>
+                  {% endfor %}
+
+               
+           
+              </td>
+
+            </ul>
+
             <td>
 
-              
-                
-      
          
             </td>
             <td class="accessRemittance">
@@ -109,6 +223,56 @@
     </div>
 
     <script>
+
+      function addAssiagment() {
+        console.log("add more assig");
+      }
+
+
+      function deleteDoc(id) {
+
+        const data = {
+          id:id
+        }
+        //axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
+        //axios.defaults.xsrfCookieName = "csrftoken"; 
+        $('body').addClass('loading')
+        axios.post(`/delete_doc/${id}`,JSON.stringify(data),{
+           headers: {
+         // 'Content-Type': 'application/json',
+          'X-CSRFToken': '{{ csrf_token }}'
+        }})
+          .then(async (response) => {
+            if(response.data) {
+              $(`#table`).load(`{% url 'courses:egiliablity' course.id %} #table`)
+              $('body').removeClass('loading')
+              showSuccessMessage("success","delete completed","delete successfully",2000)
+              
+              
+            }
+
+          })
+          .catch((error) => {
+            setInterval("$('body').removeClass('loading')", 4000);
+            $(`#table`).load(`{% url 'courses:egiliablity' course.id %} #table`)
+            showSuccessMessage("can't delete")
+
+          })
+
+      }
+        
+
+      function showSuccessMessage(icon,title,message,timer) {
+        Swal.fire({
+          icon: icon,
+          title: title,
+          text: message,
+          confirmButtonColor: "#079a85", // Bootstrap success color
+          timer: timer, // Auto-close the popup after 3000 milliseconds (3 seconds)
+          showCloseButton: true, // Show close button
+        });
+      }
+
       function updateStudentAccess(studentId,course_id,action) {
           let data = {
             studentId:studentId,

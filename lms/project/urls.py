@@ -1,6 +1,6 @@
 from django.conf import  settings
 from django.conf.urls.static import static
-from courses.views import CourseListView
+from courses.views import CourseListView,delete_doc
 from django.contrib import admin
 from django.urls import path,re_path, include
 import spirit.urls
@@ -30,6 +30,7 @@ urlpatterns = [
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path('',include('landing.urls')),
     path('forum/', include("spirit.urls",namespace="forum")),
+    path('delete_doc/<id>',delete_doc,name = 'delete_doc')
   
     # path('__debug__/', include('debug_toolbar.urls')),
     # path('social-auth/',include('social_django.urls', namespace='social')),

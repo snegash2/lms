@@ -373,7 +373,7 @@ class CourseDetailView(DetailView):
     def post(self,request,**kwargs):
         user = request.user
         course = self.get_object()
-        file = request.POST.get('fileInput')
+        file = request.FILES.get('fileInput')
         crendential = Crendential.objects.create(user = user,course= course,file = file)
         print("crendentail ",crendential)
         if crendential:
@@ -390,9 +390,11 @@ class CourseDetailView(DetailView):
 
 def verify_egiliable_student(request,id):
     group = None
+
   
     try:
         course = Course.objects.get(id = id)
+        docs =  Crendential.objects.filter(course = course)
         group = CourseAccess.objects.get(course = course)
         
     except:
@@ -407,7 +409,9 @@ def verify_egiliable_student(request,id):
         'course_id':id,
         'group_users':group.students.all(),
         'candidate_students':course_students,
-        'allowed_students' : access_students
+        'allowed_students' : access_students,
+        'docs':docs,
+        'num_docs':docs.count()
     }
     return render(request,'courses/course/StudentList.html',context)
 
@@ -470,3 +474,56 @@ def delete_module(request):
         return JsonResponse({
             "module": "success"
         })
+        
+        
+@require_POST
+def delete_delete(request):
+    if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
+        body =  json.loads(request.body)
+        module_id = int(body['module_id'])
+        course_id = int(body['course_id'])
+        course = Course.objects.get(id = course_id)
+        module = Module.objects.get(id = module_id,course = course)
+        beforeDelete = module
+        module.delete()
+        return JsonResponse({
+            "module": "success"
+        })
+        
+        
+def delete_doc(request,id):
+    doc = get_object_or_404(Crendential, pk=id)  
+    group = None
+    course = None
+
+  
+    try:
+        # course = Course.objects.get(id = id)
+        docs =  Crendential.objects.filter(course = course)
+        # group = CourseAccess.objects.get(course = course)
+        
+    except:
+        pass
+    
+    
+    # course_students = course.students.all()
+    # access_students = group.students.all()
+
+    context = {
+        'course':course,
+        'course_id':id,
+        # 'group_users':group.students.all(),
+        # 'candidate_students':course_students,
+        # 'allowed_students' : access_students,
+        'docs':docs,
+        'num_docs':docs.count()
+    }# Replace 'Document' with your model name
+    if request.method == 'GET':
+        
+        return render(request,'courses/course/StudentList.html',context)
+
+    if request.method == 'POST':
+        doc.delete()
+        return JsonResponse({
+            "delete":True})  # Redirect to a success page
+

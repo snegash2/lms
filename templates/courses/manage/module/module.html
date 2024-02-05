@@ -67,11 +67,12 @@
     <!-- ===========================Main body================================= -->
     <!-- <button class="btn" onclick="openModulePopup()">Add Module</button> -->
   <div style="display:flex;">
-      <a href="{% url 'courses:course_create' %}">
-        <button id="save-btns">
-          <span>Back to couse </span>
-        </button>
-      </a>
+    
+    <a href="{% url 'courses:course_create' %}">
+      <button class="form-control btn  btn-info" id="save-btns">
+        <span>Back to couse </span>
+      </button>
+    </a>
       <button id="save-btns" class="btn" onclick="openModulePopup()">
         <span>Add Module</span>
       </button>
