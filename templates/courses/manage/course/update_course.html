@@ -8,23 +8,162 @@
 <link rel="stylesheet" href="{% static 'instructor_course_add_footer.css'%} " />
 <link rel="stylesheet" href="{% static 'instructor_course_add_css.css' %}" />
 <link rel="stylesheet" href="{% static 'instructor_course_add_main.css'%}" />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<style>
 
+    
+  .modal {
+    display:    none;
+    position:   fixed;
+    z-index:    1000;
+    top:        0;
+    left:       0;
+    height:     100%;
+    width:      100%;
+    background: rgba( 255, 255, 255, .8 )
+    url('https://i.stack.imgur.com/FhHRx.gif')
+    50% 50%
+    no-repeat;
+}
+body.loading {
+    overflow: hidden;
+}
+body.loading .modal {
+    display: block;
+}
+
+body {
+  background-color: #e1e1e1;
+}
+
+
+
+* {
+  font-family: "Kanit", sans-serif;
+}
+
+.popup-icons {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #079a85;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.popup-icons:hover {
+  background-color: #079a85;
+}
+
+/* SweetAlert styles */
+.swal2-popup {
+  font-size: 16px;
+  position: absolute; /* Set position to absolute */
+}
+
+/* Custom Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Additional SweetAlert styles */
+.swal2-icon-success {
+  animation: fadeIn 0.5s ease;
+}
+
+.swal2-title {
+  color: #079a85;
+}
+
+.swal2-confirm-popup-icons {
+  background-color: #079a85;
+  color: #fff;
+  transition: background-color 0.3s ease;
+}
+
+.swal2-confirm-popup-icons:hover {
+  background-color: #218838;
+}
+
+/* Custom close icon styles */
+.swal2-close {
+  font-size: 20px;
+  color: #079a85;
+  animation: fadeIn 0.5s ease;
+}
+
+.swal2-close:hover {
+  color: #079a85;
+}
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.14.0/dist/sweetalert2.all.min.js"></script>
 {% endblock %}
 
 {% block content %}
+<a href="{%url 'courses:course_create'%}">
+  <button type="button" class="btn btn-secondary" data-bs-toggle="modal" style="float:inline-start;margin-top:5px;margin-left:60px;margin-right:60px;height:60px;border-radius:5px;" data-bs-target="#mymodal">Back to course</button>
+</a>
+
+<button type="button" class="btn btn-secondary" data-bs-toggle="modal" style="float:inline-end;margin-top:5px;margin-left:5px;margin-right:60px;height:60px;border-radius:5px;background-color: #079a85 !important;" data-bs-target="#mymodal">update {{course.name|title}}</button>
+
+<!-- Modal -->
+<div style="z-index: 1000000;" class="modal fade" id="mymodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" id="updateCourseModal" >
+
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Update <big>{{course.name}}</big> </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" >
+        <form method="post" action = "/course/{{course.id}}/edit/" id = "updateCouseForm">
+          {% csrf_token %}
+
+          {{form|crispy}}
+        
+  
+      </div>
+      <div class="modal-footer" >
+        <button type="button" style="background-color:rgb(211, 138, 138);" class="btn btn-danger" id="closebtn" data-bs-dismiss="modal">Close</button>
+   
+        <div class="modal"><!-- Place at bottom of page --></div>
+        <button type="submit"  class="btn btn-primary" onclick="updateCourseModal({{course.id}})">Update Course</button>
+      </div>
+
+    </form>
+    </div>
+  </div>
+</div>
+
+
+
+
 <div class="container" id="mainContainer">
+     
+
+    
+    
   <div class="row" style="display: flex;justify-content:space-around;align-items:center;">
+  
+      Update {{course.name}}
+    </button>
     <div class="jumbotron text-center">
-      <h1>{{course.name}}</h1>
+      <h1>{{course.name|title}}</h1>
       <p>Course Description</p>
     </div>
 
-    <div class="col-md-6">
-      <button type="button" class="btn btn-secondary glow-button" onclick="updateCourseModal(1)">Update </button>
-    </div>
+
 
   </div>
-
+ 
 
   <div class="row">
     <div class="col-md-8">
@@ -35,58 +174,67 @@
     </div>
 
     <div class="col-md-4">
-      <h2>Instructor Information</h2>
-      <h4>Instructor Name</h4>
-      <p>{{course.teacher}}</p>
-      <h4>Contact Information</h4>
-      <p>Email:  <p>{{course.teacher.email}}</p></p>
-      <p>Phone: 123-456-7890</p>
+  
+        <h2>Instructor Information</h2>
+        <h4>Instructor Name</h4>
+        <p>{{course.teacher}}</p>
+        <h4>Contact Information</h4>
+        <p>Email:  <p>{{course.teacher.email}}</p></p>
+        <p>Phone: +2519XXXXXXXXX</p>
+  
     </div>
+  
+    </div>
+
+ 
   </div>
 </div>
 
 <script>
 
-  function updateCourseModal() {
+  function updateCourseModal(id) {
 
-    const mainContainer = document.getElementById("mainContainer")
- const element = `
-
-    <div class="w-100"  id="updateCourseModal" style="position:absolute;top:0;left:0; width:1000px;z-index:999;">
-      <div class="">
-        <div class="modal-content" style="overflow:scroll;height:500px;width:450px;position:absolute;left:500px;top:100px;z-index:999;">
-       
-          
-            <form method="post" action = "/course/{{course.id}}/edit/" id = "updateCouseForm">
-               {% csrf_token %}
-                {{form}}
-
-                <br />
-                <br />
-                <div class="form-group button-group ">
-                  <button type="button" class="form-control btn btn-secondary" onclick = "updateCloseBtn()">Cancel</button>
-                  <button type="submit"  class="form-contro btn ">Update Course</button>
-                </div>
-            
-            </form>
-          </div>
-        </div>
-      </div>
+    const mainForm = document.getElementById("updateCouseForm");
+  
+    mainForm.addEventListener("submit",function(event){
+      event.preventDefault()
+      $('body').addClass('loading')
+      //var formData = $(this).serialize();
+      const formData = new FormData(mainForm);
+      axios.post(`/course/${id}/edit/`, formData, {
+        
+        headers: {
+          'Content-Type': 'application/octet-stream',
+          'X-CSRFToken': '{{ csrf_token }}'
+        },
+     
    
-      
-      `
+      })
+      .then((response) => {
+        $('body').removeClass('loading')
+         $("#closebtn").click()
+         showSuccessMessage("success","you updated successfully","delete successfully",2000)
+         form.reset()
+        
+      })
+      .catch((error) => {
+        console.log("Error ",error);
+      })
+    })
 
-
-      const div = document.createElement('div');
-      div.style.height ="auto"
-      div.innerHTML = element
-
-      mainContainer.prepend(div)
-      window.scrollTo(0, 0);
     
   }
 
-
+  function showSuccessMessage(icon,title,message,timer) {
+    Swal.fire({
+      icon: icon,
+      title: title,
+      text: message,
+      confirmButtonColor: "#079a85", // Bootstrap success color
+      timer: timer, // Auto-close the popup after 3000 milliseconds (3 seconds)
+      showCloseButton: true, // Show close button
+    });
+  }
 
   function updateCloseBtn() {
     const mainContainer = document.getElementById("updateCourseModal");

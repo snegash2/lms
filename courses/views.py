@@ -11,10 +11,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin,PermissionRequiredMixi
 from django.urls import reverse_lazy
 from django.core.cache import cache
 from students.forms import CourseEnrollForm
-from .forms import ModuleFormSet,CourseCreateForm,CourseUpdateForm,ModuleCreateForm
+from .forms import ModuleFormSet,CourseCreateForm,CourseUpdateForm,ModuleCreateForm,AssiagmentForm
 from .models import Course, Module, Content,Category,CourseAccess
 from django.db.models import Count
-from .models import Category,CourseName
+from .models import Category,CourseName,Assignment
 from django.views.generic.detail import DetailView
 from django.shortcuts import HttpResponse as HttpResponse, render,get_object_or_404,HttpResponse
 from django.contrib.auth.models import Group,User
@@ -126,10 +126,41 @@ class CourseUpdateView(OwnerCourseEditMixin, UpdateView):
     
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        print("self obj ",self.get_object())
         context['course'] = self.get_object()
         return context
     
+    
+
+    def update(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = self.get_form()
+
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def form_valid(self, form):
+        self.object = form.save()
+        data = {
+            'success': True,
+            'message': 'Object updated successfully.',
+            'data': {
+                'id': self.object.id,
+                'name': self.object.slug,
+                # Include other fields as needed
+            }
+        }
+        return JsonResponse(data)
+
+    def form_invalid(self, form):
+        data = {
+            'success': False,
+            'message': 'Form is invalid.',
+            'errors': form.errors
+        }
+        return JsonResponse(data, status=400)
+
     
     
     
@@ -391,7 +422,6 @@ class CourseDetailView(DetailView):
 def verify_egiliable_student(request,id):
     group = None
 
-  
     try:
         course = Course.objects.get(id = id)
         docs =  Crendential.objects.filter(course = course)
@@ -403,6 +433,7 @@ def verify_egiliable_student(request,id):
     
     course_students = course.students.all()
     access_students = group.students.all()
+    form = AssiagmentForm(course)
 
     context = {
         'course':course,
@@ -411,7 +442,8 @@ def verify_egiliable_student(request,id):
         'candidate_students':course_students,
         'allowed_students' : access_students,
         'docs':docs,
-        'num_docs':docs.count()
+        'num_docs':docs.count(),
+        'form':form
     }
     return render(request,'courses/course/StudentList.html',context)
 
@@ -476,19 +508,19 @@ def delete_module(request):
         })
         
         
-@require_POST
-def delete_delete(request):
-    if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
-        body =  json.loads(request.body)
-        module_id = int(body['module_id'])
-        course_id = int(body['course_id'])
-        course = Course.objects.get(id = course_id)
-        module = Module.objects.get(id = module_id,course = course)
-        beforeDelete = module
-        module.delete()
-        return JsonResponse({
-            "module": "success"
-        })
+# @require_POST
+# def delete_delete(request):
+#     if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
+#         body =  json.loads(request.body)
+#         module_id = int(body['module_id'])
+#         course_id = int(body['course_id'])
+#         course = Course.objects.get(id = course_id)
+#         module = Module.objects.get(id = module_id,course = course)
+#         beforeDelete = module
+#         module.delete()
+#         return JsonResponse({
+#             "module": "success"
+#         })
         
         
 def delete_doc(request,id):
@@ -527,3 +559,23 @@ def delete_doc(request,id):
         return JsonResponse({
             "delete":True})  # Redirect to a success page
 
+
+
+
+class AssCreateView(CreateView):
+    permission_required = 'courses.add_course'
+    form_class = AssiagmentForm
+
+    def post(self, request, *args, **kwargs):
+        body = request.POST
+        title = body.get('title')
+        description = body.get('description')
+        module_id = body.get('module')
+        file = request.FILES.get('file')
+        if file:
+           ass = Assignment.objects.create(title = title,description = description,module = Module.objects.get(id = module_id))
+           ass.file = file
+           ass.save()
+           
+           return JsonResponse({"response":"OK"})
+        return JsonResponse({"response":"no file "})

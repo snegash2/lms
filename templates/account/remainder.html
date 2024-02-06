@@ -1,3 +1,73 @@
+<div  class="modal fade" id="mymodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
+        <div id="myModal" class="modal-dialog modal-dialog-scrollable">
+          <div id="error-container"></div>
+          <div class="modal-content">
+            <span id="closeModal" onclick="closeModal()">&times;</span>
+            <h2>Course Information</h2>
+            <!-- Wrapping the course description section for horizontal scrolling -->
+            <div class="scrollable-section" style="overflow-x: auto">
+              
+              <div class="popup-field">
+                <label for="courseName">Course Name:</label>
+                <input type="text" id="courseName" readonly />
+                  <script>
+                   
+                  </script>
+                <i
+                  class="icon fas fa-pencil-alt"
+                  onclick="enableEdit('courseName')"
+                ></i>
+              </div>
+              <form method="post" action="." id="course-form" enctype="multipart/form-data">   
+                {% csrf_token %}
+                <div id="myerror"></div>
+                {{form|crispy}}
+
+                  <input type="hidden" name="subCategory" value="{{courseName}}" />
+                  <input type="hidden" name="category" value="{{category}}" />
+
+              
+                    <div class="popup-field">
+                      <label for="courseDescription"></label>
+                      <div
+                        id="courseDescription"
+                        rows="4"
+                        cols="50"
+                  
+                      ></div
+                      <i
+                        class="icon fas fa-pencil-alt"
+                        onclick="enableEdit('courseDescription')"
+                      ></i>
+                    </div>
+                  </div>
+          
+                  <br />
+                  <button type="submit" class="buttons" >Save</button>
+          </form>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 languageformset = modelformset_factory(
 models.CourseLanguage,fiels = ['name',])
 

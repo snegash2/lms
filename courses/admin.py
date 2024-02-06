@@ -1,11 +1,7 @@
 from django.contrib import admin
 from .models import  Course, Module,Content,File,Task
 from django.contrib import admin
-from .models import Category,CourseName,Reference,File,CourseAccess
-
-
-
-@admin.register(Category)
+from .models import Category,CourseName,Reference,File,Course,CourseAccess,Assignment
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ['category', 'slug']
     prepopulated_fields = {'slug': ('category',)}
@@ -54,5 +50,6 @@ admin.site.register(Task)
 admin.site.register(Reference)
 admin.site.register(CourseAccess)
 
+admin.site.register(Assignment)
 
 

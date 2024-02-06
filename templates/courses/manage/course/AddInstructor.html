@@ -8,24 +8,21 @@
     
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-        
         <link rel="icon" href="{% static 'logo.png' %}" type="image/x-icon" />
-
-
         <link rel="stylesheet" href="{% static 'instructor_course_add.css' %}" />
         <link rel="stylesheet" href="{% static 'instructor_course_add_footer.css'%} " />
         <link rel="stylesheet" href="{% static 'instructor_course_add_css.css' %}" />
         <link rel="stylesheet" href="{% static 'instructor_course_add_main.css'%}" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-        <style> 
-        </style>
+
 
     {% endblock %}
   
-
-    <!-- new -->
  {% block content %}
+
+
+
    
     <!-- start -->
     <div class="main__container" id="mainContainer">
@@ -60,19 +57,31 @@
         </div>
         <h1>Add Course</h1>
         <hr />
-        <label for="categorySelect">Select Category:</label>
-        <select id="categorySelect" onchange="populateCourses()">
-          <option value="">Select...</option>
-          {% for category in categories %}
-            <option value="{{category}}" id="{{category}}">{{category|title}}</option>
-          {% endfor %}
 
-        </select>
+        <div style="display: flex;flex-direction:column;">
 
-        <label for="courseSelect">Select Course:</label>
-        <select id="courseSelect" onchange="showCourseModal()">
-          <!-- Courses will be populated dynamically using JavaScript -->
-        </select>
+          <div>
+            <label for="categorySelect">Select Category:</label>
+            <select id="categorySelect" onchange="populateCourses()">
+              <option value="">Select...</option>
+              {% for category in categories %}
+                <option value="{{category}}" id="{{category}}">{{category|title}}</option>
+              {% endfor %}
+    
+            </select>
+          </div>
+
+          <div>
+            <label for="courseSelect">Select Course:</label>
+            <select id="courseSelect" onchange="showCourseModal()">
+              <!-- Courses will be populated dynamically using JavaScript -->
+            </select>
+          </div>
+       
+  
+      
+        </div>
+    
       </div>
     </div>
     <!-- Modal -->
@@ -80,7 +89,7 @@
     <!-- Modal -->
         <div id="myModal">
           <div id="error-container"></div>
-          <div class="modal-content" style="max-height: 80vh; overflow-y: auto">
+          <div class="modal-content" style="max-width:80vh; max-height: 80vh; overflow-y: auto;;">
             <span id="closeModal" onclick="closeModal()">&times;</span>
             <h2>Course Information</h2>
             <!-- Wrapping the course description section for horizontal scrolling -->
@@ -122,7 +131,9 @@
                   </div>
           
                   <br />
+
                   <button type="submit" class="buttons" >Save</button>
+                
           </form>
           </div>
         </div>
@@ -130,32 +141,59 @@
     <div id="coursesContainer">
 
         {%for course in mycourses %}
-          <div class="courseCard" id="course_{{course.id}}">
-            <img src="{{course.image.url}}" alt="{{course.name}}" class="courseImage" style="width: 300px;height:180px;" />
-            <p class="courseDescription"> {{course.overview|safe|truncatechars:100}}</p>
-            <br />
-            <br />
-            <br />
-            <div class="editDeleteButtons">
-              <a href="{% url 'courses:course_edit' course.id %}">
-                <button type="button">View Course</button>
-              </a>
 
-              
-                 <button id="delete-btn" onclick="deleteAction({{course.id}})"> Delete Course</button>
-              
-              <a href="{% url "courses:course_module_update" course.id %}">
-                <button class="addModuleButton">Add module</button>
-              </a>
-              
-                 
-              <a href="{% url "courses:egiliablity" course.id %}">
-                <button class="btn btn-danger">Students</button>
-              </a>
-                 
-
+        
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Delete {{course.name|title}}</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                Are you sure you want to delete this course?
+              </div>
+              <div class="modal-footer">
+                <button type="button" id="modal-delete-btn" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" onclick = "deleteId({{course.id}})">Delete</button>
+              </div>
             </div>
           </div>
+        </div>
+
+
+        <div class="courseCard" id="course_{{course.id}}">
+          <img src="{{course.image.url}}" alt="{{course.name}}" class="courseImage" style="width: 300px;height:180px;" />
+          <p class="courseDescription"> {{course.overview|safe|truncatechars:100}}</p>
+         
+          <div class="editDeleteButtons" style="width: 100%;">
+          
+              <a href="{% url 'courses:course_edit' course.id %}">
+                <button  class="addModuleButton" type="button">View</button>
+              </a>
+                 
+                 
+              <a href="{% url "courses:egiliablity" course.id %}">
+                <button  class="addModuleButton" >students</button>
+              </a>
+                 
+          
+              <a href="{% url "courses:course_module_update" course.id %}">
+                <button class="addModuleButton">Module</button>
+              </a>
+
+
+              <a>
+            
+                <button type="button" class="btn btn-secondary addModuleButton" style="background-color: brown;" id="delete-btn" onclick="deleteAction({{course.id}})" data-bs-toggle="modal" style="float:inline-end;margin-top:5px;margin-left:5px;margin-right:60px;height:60px;border-radius:5px;"data-bs-target="#exampleModal">Delete</button>
+
+                <!-- <button class="addModuleButton" style="background-color: brown;" id="delete-btn" onclick="deleteAction({{course.id}})"> </button> -->
+              </a>
+
+          </div>
+        </div>
+
         {% endfor %}
     </div>
  <script>
@@ -175,50 +213,9 @@
 
   }
   function deleteAction(courseId) {
-  const mainContainer = document.getElementById("mainContainer")
-  const element = `
-   <div id = "modalContainer" style=" position: relative;z-index: 999;">
-    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteCourseModal">Delete Course</button>
-
-      <div class="modal fade" id="deleteCourseModal" tabindex="-1" aria-labelledby="deleteCourseModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="deleteCourseModalLabel">Delete Course</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              Are you sure you want to delete this course? This action cannot be undone.
-              <ul>
-                <li>All course materials, including assignments, quizzes, and discussions, will be permanently deleted.</li>
-                <li>Any student grades or progress in the course will also be deleted.</li>
-              </ul>
-              <div class="form-check">
-                <input type="checkbox" class="form-check-input" id="confirmDelete">
-                <label class="form-check-label" for="confirmDelete">I have backed up any important course materials.</label>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick = "cancelModal()">Cancel</button>
-              <button type="button" class="btn btn-danger" id="deleteCourseButton" onclick = "deleteId(${courseId})">Delete Course</button>
-            </div>
-          </div>
-        </div>
-     </div>
-    </div>
-
-`
-const div = document.createElement('div');
-div.innerHTML = element
-
-mainContainer.append(div)
-  }
-
-
-  function cancelModal() {
-    $("#modalContainer").remove()
 
   }
+
 
   function deleteId(id) {
     const data = {
@@ -239,6 +236,8 @@ mainContainer.append(div)
       success: function (response) {
         $("#modalContainer").remove()
         course.remove()
+        $("#modal-delete-btn").click()
+        $(`#coursesContainer`).load(`{% url 'courses:course_create'%} #coursesContainer`)
       },
       error: function (xhr, status, error) {
        
@@ -250,83 +249,7 @@ mainContainer.append(div)
   }
 
  
-  function updateCourseModal(id) {
 
-    const mainContainer = document.getElementById("mainContainer")
-    const element = `
-
-    <div class="modal fade"  id="updateCourseModal" style="height:auto;position:absolute;z-index: 999;">
-      <div class="modal-dialog">
-        <div class="modal-content">
-       
-          
-            <form action = "/course/${id}/edit/" action = "post" id = "updateCouseForm">
-               {% csrf_token %}
-          
-                {{form|crispy}}
-         
-          
-                  <button type="button" class="btn btn-secondary" onclick = "updateCloseBtn()">Cancel</button>
-                  <button type="submit"  class="btn btn-danger" onclick = "updateBtn(${id})" >Update Course</button>
-             
-            
-            </form>
-          </div>
-        </div>
-      </div>
-   
-      
-      `
-
-      const div = document.createElement('div');
-      div.style.overflow ="scroll"
-      div.innerHTML = element
-      mainContainer.append(div)
-      window.scrollTo(0, 0);
-     
-  
-  }
-
-
-
-  function updateCloseBtn() {
-    const mainContainer = document.getElementById("updateCourseModal");
-    mainContainer.style.display = "none";
-    window.location.reload()
-
-  }
-
-
-  
-  function updateBtn(id) {
-
-    const mainForm = document.getElementById("updateCouseForm");
-    mainForm.addEventListener("submit",function(event){
-      event.preventDefault()
-      //var formData = $(this).serialize();
-      const formData = new FormData(mainForm);
-      axios.put(`/course/${id}/edit/`, formData, {
-        
-        headers: {
-          'Content-Type': 'application/octet-stream',
-          'X-CSRFToken': '{{ csrf_token }}'
-        },
-     
-   
-      })
-      .then((response) => {
-       // let data = response.data.response
-        const mainContainer = document.getElementById("updateCourseModal");
-        mainContainer.style.display = "none";
-        
-      })
-      .catch((error) => {
-        console.log("Error ",error);
-      })
-    })
-
-    }
- 
   function populateCourses() {
     var categorySelect = document.getElementById("categorySelect");
     var courseSelect = document.getElementById("courseSelect");
@@ -370,8 +293,6 @@ mainContainer.append(div)
             
              
             });
-          
-      
     
           },
           error: function (xhr, status, error) {
@@ -381,12 +302,8 @@ mainContainer.append(div)
         });
       }
 
-    
       // This is a simple example; you may want to fetch courses dynamically based on the selected category
       var courses;
-
-
-      // Show the course dropdown
       courseSelect.style.display = "block";
     } 
   
@@ -432,7 +349,7 @@ mainContainer.append(div)
     form.addEventListener("submit", function(event) {
       
         event.preventDefault();
-        //var formData = $(this).serialize();
+        $('body').addClass('loading')
         const formData = new FormData(form);
         const formDataObj = Object.fromEntries(formData.entries());
         let data = {}
@@ -452,78 +369,9 @@ mainContainer.append(div)
       
           let data = JSON.parse(response.data.response)
           const course = data[0].fields
-         
-          console.log("course ",course.image);
-       
-          var coursesContainer = document.getElementById("coursesContainer");
-          courseCard = document.createElement("div");
-          courseCard.className = "courseCard";
-          var courseImage = document.createElement("img");
-          courseImage.className = "courseImage";
-          courseImage.style.width = "300px"; // Set the desired width
-          courseImage.style.height = "180px"; // Set the desired height
-          courseImage.src = `/${course.image}`;
-          courseCard.appendChild(courseImage);
-            // ... (rest of the code)
-          
-          courseCard.appendChild(courseImage);
-          var courseNameElement = document.createElement("h3");
-          courseNameElement.className = "courseName";
-          courseNameElement.textContent = course.name;
-          courseCard.appendChild(courseNameElement);
-
-          // Display course description
-          var courseDescriptionElement = document.createElement("p");
-          courseDescriptionElement.className = "courseDescription";
-          courseDescriptionElement.innerHTML =
-            formatDescription(course.overview);
-          courseCard.appendChild(courseDescriptionElement);
-          // Add Edit and Delete buttons
-          var editDeleteButtons = document.createElement("div");
-          editDeleteButtons.className = "editDeleteButtons";
-          var editLink = document.createElement("a");
-          editLink.href = `course/edit/${course.id}/`
-          var editButton = document.createElement("button");
-          editButton.textContent = "Edit Course";
-          editLink.appendChild(editButton)
-        
-
-          editButton.onclick = function () {
-            // Set the selected course in the dropdown
-            document.getElementById("courseSelect").value = course.name;
-
-            // Populate the modal with course details
-            showCourseModal();
-          };
-          editDeleteButtons.appendChild(editButton);
-
-          var deleteButton = document.createElement("button");
-        
-          deleteButton.textContent = "Delete Course";
-          deleteButton.onclick = function () {
-            // Remove the course card from the display
-            coursesContainer.removeChild(courseCard);
-          };
-          editDeleteButtons.appendChild(deleteButton);
-          /////////// Add "Add Module" button
-          var addModuleButton = document.createElement("button");
-          addModuleButton.className = "addModuleButton";
-          addModuleButton.textContent = "Add Module";
-         
-          /////////// Add "students" button
-          var addstudents = document.createElement("button");
-          addstudents.className = "addstudents";
-          addstudents.textContent = "Students";
-        
-          editDeleteButtons.appendChild(addModuleButton);
-          editDeleteButtons.appendChild(addstudents);
-
-          courseCard.appendChild(editDeleteButtons);
-
-          // Append the course card to the container
-          coursesContainer.appendChild(courseCard);
-          $("#myModal").remove()
-          $("notificationModal").fadeOut(2000)
+          //$('body').removeClass('loading')
+  
+          $(`#coursesContainer`).load(`{% url 'courses:course_create'%} #coursesContainer`)
         })
         .catch((error) => {
           if(response.errors) {
@@ -574,45 +422,11 @@ mainContainer.append(div)
    
     
           success: function (response) {
-           
-
-
-            editButton.onclick = function () {
-              // Set the selected course in the dropdown
-              document.getElementById("courseSelect").value = course.name;
-
-              // Populate the modal with course details
-              showCourseModal();
-            };
-            editDeleteButtons.appendChild(editButton);
-
-            var deleteButton = document.createElement("button");
-          
-            deleteButton.textContent = "Delete Course";
-            deleteButton.onclick = function () {
-              // Remove the course card from the display
-              coursesContainer.removeChild(courseCard);
-            };
-            editDeleteButtons.appendChild(deleteButton);
-            /////////// Add "Add Module" button
-            var addModuleButton = document.createElement("button");
-            addModuleButton.className = "addModuleButton";
-            addModuleButton.textContent = "Add Module";
-           
-            /////////// Add "students" button
-            var addstudents = document.createElement("button");
-            addstudents.className = "addstudents";
-            addstudents.textContent = "Students";
-          
-            editDeleteButtons.appendChild(addModuleButton);
-            editDeleteButtons.appendChild(addstudents);
-
-            courseCard.appendChild(editDeleteButtons);
-
-            // Append the course card to the container
-            coursesContainer.appendChild(courseCard);
+  
             $("#myModal").remove()
             $("notificationModal").fadeOut(2000)
+            showSuccessMessage("success","Course Add","Added successfully",2000)
+            $(`#coursesContainer`).load(`{% url 'courses:course_create'%} #coursesContainer`)
 
 
           }
@@ -624,6 +438,17 @@ mainContainer.append(div)
   }
   
 
+
+  function showSuccessMessage(icon,title,message,timer) {
+    Swal.fire({
+      icon: icon,
+      title: title,
+      text: message,
+      confirmButtonColor: "#079a85", // Bootstrap success color
+      timer: timer, // Auto-close the popup after 3000 milliseconds (3 seconds)
+      showCloseButton: true, // Show close button
+    });
+  }
 
 
 
@@ -644,20 +469,7 @@ mainContainer.append(div)
   // Add an event listener to the document body to close the popup when clicked outside
 
   function findCourseCard(courseName) {
-    /** var coursesContainer = document.getElementById("coursesContainer");
-    var courseCards = coursesContainer.getElementsByClassName("courseCard");
-    for (var i = 0; i < courseCards.length; i++) {
-      var courseCard = courseCards[i];
-      var cardCourseName = courseCard
-        .querySelector(".courseName")
-        .textContent.trim();
-      if (cardCourseName === courseName) {
-        return courseCard;
-      }
-    }
-    return null;
 
-    **/
     return courseName
   }
 
@@ -691,97 +503,8 @@ mainContainer.append(div)
           reader.readAsDataURL(coursePicture);
         }
       } else {
-        // Create a new course card
-        var coursesContainer = document.getElementById("coursesContainer");
-        courseCard = document.createElement("div");
-        courseCard.className = "courseCard";
-
-        // Display category name
-        // var categoryNameElement = document.createElement("h3");
-        // categoryNameElement.textContent = "Category: " + categoryName;
-        // courseCard.appendChild(categoryNameElement);
-
-        // Display course name
-
-        // Display course picture preview or default image
-        var courseImage = document.createElement("img");
-        courseImage.className = "courseImage";
-        courseImage.style.width = "300px"; // Set the desired width
-        courseImage.style.height = "180px"; // Set the desired height
-
-        if (coursePicture) {
-          var reader = new FileReader();
-
-          reader.onload = function (e) {
-            courseImage.src = e.target.result;
-          };
-
-          reader.readAsDataURL(coursePicture);
-        } else {
-          // Use a default image if no image is selected
-          courseImage.src = "./assets/banner2.jpg";
-
-          courseCard.appendChild(courseImage);
-          // ... (rest of the code)
-        }
-        courseCard.appendChild(courseImage);
-        var courseNameElement = document.createElement("h3");
-        courseNameElement.className = "courseName";
-        courseNameElement.textContent = "" + courseName;
-        courseCard.appendChild(courseNameElement);
-
-        // Display course description
-        var courseDescriptionElement = document.createElement("p");
-        courseDescriptionElement.className = "courseDescription";
-        courseDescriptionElement.innerHTML =
-          formatDescription(courseDescription);
-        courseCard.appendChild(courseDescriptionElement);
-        // Add Edit and Delete buttons
-        var editDeleteButtons = document.createElement("div");
-        editDeleteButtons.className = "editDeleteButtons";
-
-        var editButton = document.createElement("button");
-        editButton.textContent = "Edit Course";
-        editButton.onclick = function () {
-          // Set the selected course in the dropdown
-          document.getElementById("courseSelect").value = courseName;
-
-          // Populate the modal with course details
-          showCourseModal();
-        };
-        editDeleteButtons.appendChild(editButton);
-
-        var deleteButton = document.createElement("button");
-        deleteButton.textContent = "Delete Course";
-        deleteButton.onclick = function () {
-          // Remove the course card from the display
-          coursesContainer.removeChild(courseCard);
-        };
-        editDeleteButtons.appendChild(deleteButton);
-        /////////// Add "Add Module" button
-        var addModuleButton = document.createElement("button");
-        addModuleButton.className = "addModuleButton";
-        addModuleButton.textContent = "Add Module";
-        addModuleButton.onclick = function () {
-          // Replace 'your-module-link' with the actual link you want to redirect to
-          window.location.href = "#";
-        };
-        /////////// Add "students" button
-        var addstudents = document.createElement("button");
-        addstudents.className = "addstudents";
-        addstudents.textContent = "Students";
-        addstudents.onclick = function () {
-          // Replace 'your-module-link' with the actual link you want to redirect to
-          window.location.href = "#";
-        };
-
-        editDeleteButtons.appendChild(addModuleButton);
-        editDeleteButtons.appendChild(addstudents);
-
-        courseCard.appendChild(editDeleteButtons);
-
-        // Append the course card to the container
-        coursesContainer.appendChild(courseCard);
+    
+          console.log("Please select");
       }
 
       // Close the modal
@@ -865,4 +588,5 @@ mainContainer.append(div)
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
 {% endblock %}

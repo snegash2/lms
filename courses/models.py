@@ -281,3 +281,16 @@ class CourseAccess(models.Model):
     
     def __str__(self):
         return f"{self.course}"
+    
+    
+    
+    
+class Assignment(models.Model):
+    title = models.CharField(max_length=100,blank = False,null = False)
+    module = models.ForeignKey(Module,blank = True,null = True, on_delete = models.CASCADE)
+    description = models.TextField(blank = False,null = False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    file = models.FileField(upload_to='media/assiagments')
+    
+    def __str__(self) -> str:
+        return f"{self.title}"

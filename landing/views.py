@@ -226,3 +226,57 @@ def verify_egiliable_student_ajax(request):
             'allowed':True if allowed else False
         }        
         return JsonResponse(json_course)
+    
+    
+    
+    
+@require_POST
+def student_enrolloment(request):
+   
+    if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
+        body = json.loads(request.body)
+        studentId = int(body.get("studentId"))
+        action  = body.get('action')
+       
+        course = None
+        student = None
+        allowed = False
+        courseId = int(body.get("courseId"))
+    
+        try:
+            course = Course.objects.get(id = courseId)
+            
+        except Course.DoesNotExist:
+            pass
+
+        try:
+            student = User.objects.get(id = studentId)
+
+        except User.DoesNotExist:
+            pass
+        try:
+       
+            group = CourseAccess.objects.get(course = course)
+            
+            if action == "remove":
+               
+                course.students.remove(student)
+                allowed = False
+                
+            else:
+                
+                course.students.add(student)
+                allowed = True
+                
+            group.save()
+          
+        except Course.DoesNotExist:
+            print("group ",group.students.all())
+            
+            
+     
+            
+        json_course = {
+            'allowed':True if allowed else False
+        }        
+        return JsonResponse(json_course)

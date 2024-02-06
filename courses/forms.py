@@ -1,10 +1,11 @@
 from typing import Any
 from django import forms
 from django.forms.models import inlineformset_factory
-from .models import Course, Module
+from .models import Course, Module,Assignment
 from django.forms import BaseInlineFormSet
 from django.forms import TextInput
 from django.forms import TextInput, Textarea
+from .views import *
 
 
 
@@ -17,7 +18,7 @@ fields=['title',
         'title': TextInput(attrs={'class': 'form-control-lg','placeholder': 'Enter module title','style':'width:95%;margin-bottom:5px;'}),
         'description': Textarea(attrs={'class': 'form-control', 'rows': 4, 'placeholder': 'Brief module description','style':'width:95%;'}),
     },
-extra=1,
+extra=3,
 max_num=105,
 can_delete=True,
 
@@ -73,3 +74,29 @@ class CourseUpdateForm(forms.ModelForm):
         has_practice = forms.BooleanField(label="Haspractice",widget=forms.CheckboxInput(attrs={'class':"form-check-input form-check-label"}))
         intro_video = forms.URLField(label= "You tube video",widget=forms.URLInput(attrs={'class':"form-control w-100"}))
 
+
+
+
+
+# class AssiagmentForm(forms.ModelForm):
+
+
+#     class Meta:
+#         model = Assignment
+#         fields = "__all__"
+        
+#     module = forms.ChoiceField(label="Module",choices=Course_CHOICES,widget=forms.Select(attrs={'class': "form-select"}))
+        
+        
+        
+        
+class AssiagmentForm(forms.ModelForm):
+    def __init__(self, course_instance, *args, **kwargs):
+        super(AssiagmentForm, self).__init__(*args, **kwargs)
+        self.fields['module'].queryset = Module.objects.filter(course=course_instance)
+
+    module = forms.ModelChoiceField(label="Module", queryset=Module.objects.none(), widget=forms.Select(attrs={'class': "form-select"}))
+
+    class Meta:
+        model = Assignment
+        fields = "__all__"

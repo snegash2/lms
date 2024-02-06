@@ -1,9 +1,9 @@
 {% extends '_base.html' %}
 {% load static %}
-
+{% load crispy_forms_tags %}
 {% block style%}
   
-    <link rel="icon" href="./assets/logo.png" type="image/x-icon" />
+
 
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -12,9 +12,12 @@
  
     <link rel="stylesheet" href="{% static 'student_list_main.css' %}" />
     <link rel="stylesheet" href="{% static 'student_list.css' %}"/>
-  
-  
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+ 
     <style>
+
+    
       .modal {
         display:    none;
         position:   fixed;
@@ -110,33 +113,41 @@
  {% endblock %}
 
 {% block content %}
+    <!-- Modal -->
+    
+<!-- Trigger the modal with a button -->
 
-    <script>
-      // JavaScript to toggle the active class on hamburger click
-      document.addEventListener("DOMContentLoaded", function () {
-        var navbarHamburger = document.querySelector(".navbar-hamburger");
-        var navbarMenu = document.querySelector(".navbar-menu");
 
-        navbarHamburger.addEventListener("click", function () {
-          navbarHamburger.classList.toggle("active");
-          navbarMenu.classList.toggle("active");
-        });
+<!-- Button trigger modal -->
 
-        document.addEventListener("click", function (event) {
-          var targetElement = event.target;
-          if (
-            !targetElement.closest(".navbar") &&
-            navbarHamburger.classList.contains("active")
-          ) {
-            navbarHamburger.classList.remove("active");
-            navbarMenu.classList.remove("active");
-          }
-        });
-      });
-    </script>
+<!-- Modal -->
+<div style="z-index: 1000000;" class="modal fade" id="mymodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add Assiagment to course <big>{{course.name|title}}</big> </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" >
+        <form id="as-form">
+          {% csrf_token %}
+          {{form|crispy}}
+        </form>
+  
+      </div>
+      <div class="modal-footer" >
+        <button type="button" style="background-color:rgb(211, 138, 138);" class="btn btn-danger" id="closebtn" data-bs-dismiss="modal">Close</button>
+        <div class="modal"><!-- Place at bottom of page --></div>
+        <button type="submit" style="background-color:rgb(58, 76, 58);" class="btn btn-primary" onclick="addAssiagment()">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+  
     <!-- ===========================Main body================================= -->
 
-    <div style="display: flex; justify-content:space-around;align-items:center;">
+    <div id="mainContainer" style="display: flex; justify-content:space-around;align-items:center;">
 
       <a href="{% url 'courses:course_create' %}">
         <button class="form-control btn btn-info" id="save-btns"  >
@@ -145,15 +156,16 @@
       </a>
       <div class="reminder">
         <p>This course has {{num_docs}} assignment .</p>
-        <span>
-          <big onclick="addAssiagment()">
-            Add more
-          </big>
-        </span>
+        <button type="button" class="btn btn-info" style="background-color: #079a85 !important;" data-bs-toggle="modal" data-bs-target="#mymodal">
+          Add more
+        </button>
+        
      
       </div>
 
     </div>
+
+
 
 
     <h1>{{course.name|title}} Student List</h1>
@@ -196,7 +208,18 @@
 
             <td>
 
-         
+              {% if student in candidate_students %}
+              <label class="switch">
+                <input type="checkbox" name="" id="" checked="true">
+              <span aria-label="Close modal"  class="slider"  id="span_{{student.id}}_remove" style="font-size:4em;" onclick="manageStudentEnrollement('{{student.id}}','{{course.id}}','remove')"></span>
+              </label>
+              {% else %}
+
+              <label class="switch">
+                <input type="checkbox"  value="">
+                <span aria-label="Close modal" class="slider"  id="span_{{student.id}}_add" style="font-size:4em;" onclick="manageStudentEnrollement('{{student.id}}','{{course.id}}','add')"></span>
+              </label>
+              {% endif %}
             </td>
             <td class="accessRemittance">
 
@@ -225,8 +248,38 @@
     <script>
 
       function addAssiagment() {
-        console.log("add more assig");
-      }
+        $('body').addClass('loading')
+        const form = document.getElementById("as-form");
+        const formData = new FormData(form)
+        const formDataObj = Object.fromEntries(formData.entries());
+        let data = {}
+        if(formDataObj){
+            data = JSON.stringify(formDataObj);
+        }
+
+      
+        axios.post("{% url 'ass_create'%}", formData, {
+          
+          headers: {
+            'Content-Type': 'application/octet-stream',
+            'X-CSRFToken': '{{ csrf_token }}'
+          },
+       
+     
+        })
+        .then((response) => {
+          let data = response.data
+          $('body').removeClass('loading')
+          $('#closebtn').click();
+          showSuccessMessage("success","you added successfully","delete successfully",2000)
+          form.reset()
+        })
+        .catch(((error) => {
+          console.log("error ",error);
+        }))
+
+  
+        }
 
 
       function deleteDoc(id) {
@@ -244,11 +297,11 @@
         }})
           .then(async (response) => {
             if(response.data) {
+
               $(`#table`).load(`{% url 'courses:egiliablity' course.id %} #table`)
               $('body').removeClass('loading')
               showSuccessMessage("success","delete completed","delete successfully",2000)
-              
-              
+
             }
 
           })
@@ -280,6 +333,7 @@
             action:action
 
           }
+
 
           let allowed = true;
 
@@ -313,67 +367,57 @@
             }
           });
         }
+
+
+
+        function manageStudentEnrollement(studentId,course_id,action) {
+         
+          let data = {
+            studentId:studentId,
+            courseId:course_id,
+            action:action
+
+          }
+
+
+          let allowed = true;
+
+          $.ajax({
+           
+            url:"/student_enrolloment/",
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-CSRFToken': '{{ csrf_token }}'
+            },
+          
+            data: JSON.stringify(data),
+      
+            success: function (response) {
+
+              allowed = response.allowed
+             
+              //$(`#span_${studentId}_${action}`).load(`{% url 'courses:egiliablity' course.id %} #span_${studentId}_${action}`)
+             // $(`#span_${studentId}_${action}`).text(allowed ? 'X' : '+');
+            // $(`#table`).load(`{% url 'courses:egiliablity' course.id %} #table`)
+              
+
+             
+            },
+          
+           // <!-- error block begin here -->
+            error: function (error) {
+              // Handle any error that occurred during the AJAX request
+              console.log("error ",error);
+            }
+          });
+        }
     
       </script>
       
     
 
-    <script>
-      // Sample data array with multiple assignments for each student
-      const studentData = []
-      // Get the table body element
-      const tableBody = document.getElementById("table-body");
-
-      // Loop through the data and create table rows
-      studentData.forEach((student) => {
-        const row = document.createElement("tr");
-
-        // Create and append table cells
-        ["id", "name"].forEach((key) => {
-          const cell = document.createElement("td");
-          cell.textContent = student[key];
-          row.appendChild(cell);
-        });
-
-        // Create Assignments cell with links
-        const assignmentsCell = document.createElement("td");
-        student.assignments.forEach((assignment) => {
-          const assignmentLink = document.createElement("a");
-          assignmentLink.href = assignment.attachment;
-          assignmentLink.textContent = assignment.name;
-          assignmentLink.target = "_blank"; // Open link in a new tab
-          assignmentLink.style.display = "block"; // Display each link on a new line
-          assignmentsCell.appendChild(assignmentLink);
-        });
-        row.appendChild(assignmentsCell);
-
-        // Create Activate Switch cell
-        const activateSwitchCell = document.createElement("td");
-        const activateSwitchLabel = document.createElement("label");
-        activateSwitchLabel.classList.add("switch");
-        const activateSwitchInput = document.createElement("input");
-        activateSwitchInput.type = "checkbox";
-        activateSwitchInput.classList.add("activate-switch");
-        const activateSwitchSlider = document.createElement("span");
-        activateSwitchSlider.classList.add("slider");
-        activateSwitchLabel.appendChild(activateSwitchInput);
-        activateSwitchLabel.appendChild(activateSwitchSlider);
-        activateSwitchCell.appendChild(activateSwitchLabel);
-        row.appendChild(activateSwitchCell);
-
-        // Create Take Exam cell
-        const takeExamCell = document.createElement("td");
-        const takeExamCheckbox = document.createElement("input");
-        takeExamCheckbox.type = "checkbox";
-        takeExamCheckbox.classList.add("take-exam-checkbox");
-        takeExamCell.appendChild(takeExamCheckbox);
-        row.appendChild(takeExamCell);
-
-        // Append the row to the table body
-        tableBody.appendChild(row);
-      });
-    </script>
-    <!--  -->
+ 
  
     <script>
       // JavaScript to toggle the active class on hamburger click
@@ -427,5 +471,5 @@
         });
       });
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
 {% endblock content %}
