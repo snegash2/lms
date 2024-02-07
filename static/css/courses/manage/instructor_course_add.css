@@ -80,7 +80,7 @@ select:focus {
 #coursesContainer {
   display: flex;
   flex-wrap: wrap;
-  margin-top: 5rem;
+  margin-top: 1rem;
   padding: 2rem;
   justify-content: start;
   animation: fadeIn 0.3s;
@@ -91,6 +91,7 @@ select:focus {
   padding: 10px;
   margin: 10px;
   width: 300px;
+ 
   height: fit-content;
   position: relative;
   border-radius: 5px;

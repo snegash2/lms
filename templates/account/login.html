@@ -8,41 +8,13 @@
 
 
 {% block content %}
-  <body>
-   
-  
+
 
     <!-- Body -->
     <div class="grid__container">
       <div id="mobile" class="container">
         <h3>Log in to your LMS account</h3>
-
-
-        <!-- <h3>Welcome back  <span> Username </span> </h3> -->
-
-
-        <script>
-
-          document.addEventListener("DOMContentLoaded", function(event){
-      
-            const form = document.getElementById("signup_form")
-            form.addEventListener("submit",function(event) {
-             
-              const submit_button  = document.getElementById("submit-button")
-              const container = document.getElementById("container")
-              form.removeChild(submit_button)
-              console.log(container);
-              container.innerHTML =   `
-              <div id="stripe-card" class="form-control" style="font-size:4em; ">
-                <span class="fa fa-spinner fa-spin"></span>
-                <!-- a Stripe Element will be inserted here. -->
-              </div>
-              
-              `
-            })
-            })
-          
-         </script>
+        
         <form class="signup" id="signup_form" method="post" action="{% url 'account_login' %}">
       
           {% csrf_token %}
@@ -66,71 +38,10 @@
          
       </div>
     </div>
-    <br />
-    <br />
-    <br />
-  
+ 
   
     <!-- =========================================Js code==================== -->
-    <!-- New coursers -->
 
-    <script>
-      // JavaScript to toggle the active class on hamburger click
-      document.addEventListener("DOMContentLoaded", function () {
-        var navbarHamburger = document.querySelector(".navbar-hamburger");
-        var navbarMenu = document.querySelector(".navbar-menu");
-
-        navbarHamburger.addEventListener("click", function () {
-          navbarHamburger.classList.toggle("active");
-          navbarMenu.classList.toggle("active");
-        });
-
-        document.addEventListener("click", function (event) {
-          var targetElement = event.target;
-          if (
-            !targetElement.closest(".navbar") &&
-            navbarHamburger.classList.contains("active")
-          ) {
-            navbarHamburger.classList.remove("active");
-            navbarMenu.classList.remove("active");
-          }
-        });
-      });
-    </script>
-
-    <!-- Catgory dropdown -->
-    <script>
-      const newdropdowns = document.querySelectorAll(".newdropdown");
-      newdropdowns.forEach((newdropdown) => {
-        const select = newdropdown.querySelector(".select");
-        const caret = newdropdown.querySelector(".caret");
-        const menu = newdropdown.querySelector(".menu");
-        const options = newdropdown.querySelector(".menu li");
-        const selected = newdropdown.querySelector(".selected");
-
-        select.addEventListener("click", () => {
-          select.classList.toggle("select-clicked");
-          caret.classList.toggle("caret-rotate");
-          menu.classList.toggle("menu-open");
-        });
-        options.forEach((option) => {
-          option.addEventListener("click", () => {
-            selected.innerText = option.innerText;
-            select.classList.remove("select-clicked");
-            caret.classList.remove("caret-rotate");
-            menu.classList.remove("menu-open");
-            options.forEach((option) => {
-              option.classList.remove("active");
-            });
-            option.classList.add("active");
-          });
-        });
-      });
-    </script>
-    <!-- Scripts -->
-    <script src="./script.js"></script>
-    <script type="text/javascript" src="dropdown.js"></script>
-  </body>
 {% endblock %}
 {% block extra_body %}
    <script>

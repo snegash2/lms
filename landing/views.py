@@ -12,6 +12,8 @@ import json
 from django.contrib.auth.models import Group,Permission
 from django.core import serializers
 from courses.models import CourseAccess
+from allauth.account.forms import LoginForm
+
 
 @require_POST
 def enroll_form(request):
@@ -119,7 +121,8 @@ def landing_page(request):
         'instructors':instructors,
         'students_num':student_num,
         'categories':categories,
-        'enroll_form': CourseEnrollForm
+        'enroll_form': CourseEnrollForm,
+        'login_form':LoginForm()
     }
 
     return render(request, 'landing/index.html',context)

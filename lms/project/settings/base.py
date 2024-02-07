@@ -143,6 +143,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'courses.context_processors.my_context_processor',
                 'django.template.context_processors.request',
+                'landing.utils.global_forms'
 
                  # `allauth` needs this from django
                 
