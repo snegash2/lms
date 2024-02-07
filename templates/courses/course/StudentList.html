@@ -16,7 +16,50 @@
 
  
     <style>
-
+      .switch {
+        position: relative;
+        display: inline-block;
+        width: 40px; /* Adjust the width as needed */
+        height: 20px; /* Adjust the height as needed */
+      }
+      
+      .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+      
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: gray; /* Change the color as needed */
+        border-radius: 20px; /* Adjust the border radius to make it rounder */
+        transition: 0.4s;
+      }
+      
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 16px; /* Adjust the height as needed */
+        width: 16px; /* Adjust the width as needed */
+        left: 2px;
+        bottom: 2px;
+        background-color: white; /* Change the color as needed */
+        border-radius: 50%;
+        transition: 0.4s;
+      }
+      
+      input:checked + .slider {
+        background-color: green; /* Change the color as needed */
+      }
+      
+      input:checked + .slider:before {
+        transform: translateX(20px); /* Adjust the position as needed */
+      }
     
       .modal {
         display:    none;
@@ -225,8 +268,8 @@
 
  
               {% if student in allowed_students %}
-              <label class="switch">
-                <input type="checkbox" name="" id="" checked="true">
+              <label class="switch" >
+                <input type="checkbox" name="" id="" checked="true" size="3">
               <span aria-label="Close modal"  class="slider"  id="span_{{student.id}}_remove" style="font-size:4em;" onclick="updateStudentAccess('{{student.id}}','{{course.id}}','remove')"></span>
               </label>
               {% else %}

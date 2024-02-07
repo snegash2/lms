@@ -20,10 +20,6 @@
     {% endblock %}
   
  {% block content %}
-
-
-
-   
     <!-- start -->
     <div class="main__container" id="mainContainer">
       <div class="first">
@@ -33,34 +29,11 @@
         <h1>Course guidelines</h1>
         <hr />
 
-        <div class="guide-notes-container">
-          <div class="guide-note">
-            <i class="fas fa-list-ul"></i>
-
-            <span>Select Category</span>
-          </div>
-
-          <div class="guide-note">
-            <i class="fas fa-plus"></i>
-            <span>Add Course</span>
-          </div>
-
-          <div class="guide-note" onclick="scrollToDown()">
-            <i class="far fa-save"></i>
-            <span>Save Course</span>
-          </div>
-
-          <div class="guide-note" onclick="scrollToDown()"> 
-            <i class="far fa-eye"></i>
-             <span>See Saved Courses</span> 
-          </div>
-        </div>
-        <h1>Add Course</h1>
-        <hr />
+    
 
         <div style="display: flex;flex-direction:column;">
 
-          <div>
+          <div >
             <label for="categorySelect">Select Category:</label>
             <select id="categorySelect" onchange="populateCourses()">
               <option value="">Select...</option>
@@ -71,8 +44,8 @@
             </select>
           </div>
 
-          <div>
-            <label for="courseSelect">Select Course:</label>
+          <div style="display: flex; flex-direction:row;width:100%;margin-top:20px;">
+            <label for="courseSelect" style="margin-right:30px;height:10px;margin-top:20px;">Select Course:</label>
             <select id="courseSelect" onchange="showCourseModal()">
               <!-- Courses will be populated dynamically using JavaScript -->
             </select>
@@ -130,7 +103,7 @@
                     </div>
                   </div>
           
-                  <br />
+                  <br/>
 
                   <button type="submit" class="buttons" >Save</button>
                 
@@ -140,7 +113,7 @@
     <!-- Container for displaying saved courses -->
     <div id="coursesContainer">
 
-        {%for course in mycourses %}
+      {% for course in mycourses %}
 
         
         <!-- Modal -->
@@ -163,32 +136,45 @@
         </div>
 
 
-        <div class="courseCard" id="course_{{course.id}}">
-          <img src="{{course.image.url}}" alt="{{course.name}}" class="courseImage" style="width: 300px;height:180px;" />
-          <p class="courseDescription"> {{course.overview|safe|truncatechars:100}}</p>
+        <div class="courseCard" id="course_{{course.id}}" >
+          <button type="button" class="btn btn-primary position-relative">
+            Status
+          {% if course.published%}
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                <small>Accepted</small>
+              <span class="visually-hidden">unread messages</span>
+            </span>
+
+            {% else %}
+
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+              <small>Waiting</small>
+              <span class="visually-hidden">unread messages</span>
+            </span>
+            {% endif %}
+          </button>
+          <img src="{{course.image.url}}" alt="{{course.name}}" class="courseImage" style="width: 300px;height:150px;" />
+          <h3>{{course.name|title}}</h3>
+          <p class="courseDescription" style="margin: auto;"> {{course.overview|safe|truncatechars:80}}</p>
          
-          <div class="editDeleteButtons" style="width: 100%;">
+          <div class="editDeleteButtons">
           
               <a href="{% url 'courses:course_edit' course.id %}">
-                <button  class="addModuleButton" type="button">View</button>
+                <button  class="addModuleButton" type="button">View Course</button>
               </a>
                  
                  
               <a href="{% url "courses:egiliablity" course.id %}">
-                <button  class="addModuleButton" >students</button>
+                <button  class="addModuleButton" >Students</button>
               </a>
-                 
+    
           
               <a href="{% url "courses:course_module_update" course.id %}">
-                <button class="addModuleButton">Module</button>
+                <button class="addModuleButton">Add Module</button>
               </a>
-
-
               <a>
-            
-                <button type="button" class="btn btn-secondary addModuleButton" style="background-color: brown;" id="delete-btn" onclick="deleteAction({{course.id}})" data-bs-toggle="modal" style="float:inline-end;margin-top:5px;margin-left:5px;margin-right:60px;height:60px;border-radius:5px;"data-bs-target="#exampleModal">Delete</button>
+                <button type="button" class="btn btn-secondary addModuleButton" style="background-color: brown;" id="delete-btn" onclick="deleteAction({{course.id}})" data-bs-toggle="modal" style="float:inline-end;margin-top:5px;margin-left:5px;margin-right:60px;height:60px;border-radius:5px;"data-bs-target="#exampleModal">Delete  &nbsp; &nbsp;</button>
 
-                <!-- <button class="addModuleButton" style="background-color: brown;" id="delete-btn" onclick="deleteAction({{course.id}})"> </button> -->
               </a>
 
           </div>
@@ -263,7 +249,6 @@
     // If a category is selected, populate courses and show the course dropdown
     if (selectedCategory) {
 
-
         let data = {
           category: selectedCategory  // Pass the category as data
         }
@@ -337,11 +322,15 @@
   
   }
 
+
+  
+
   function showCourseModal() {
     var modal = document.getElementById("myModal");
     modal.style.display = "block";
     var selectedCourse = document.getElementById("courseSelect").value;
     document.getElementById("courseName").value = selectedCourse;
+    document.body.style.overflow = "hidden";
      globalDict(key = "selectedCourse",value = selectedCourse)
     // Populate modal with existing course details
 
@@ -372,6 +361,7 @@
           //$('body').removeClass('loading')
   
           $(`#coursesContainer`).load(`{% url 'courses:course_create'%} #coursesContainer`)
+          document.body.style.overflow = "auto";
         })
         .catch((error) => {
           if(response.errors) {
@@ -379,7 +369,7 @@
             let errorData = JSON.parse(response.errors)
 
             
-
+            document.body.style.overflow = "auto";
             for (const key in errorData ) {
               const value = errorData[key];
               const element = ` 
@@ -422,7 +412,6 @@
    
     
           success: function (response) {
-  
             $("#myModal").remove()
             $("notificationModal").fadeOut(2000)
             showSuccessMessage("success","Course Add","Added successfully",2000)
