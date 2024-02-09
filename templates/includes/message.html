@@ -1,32 +1,23 @@
-<div class="modal fade" id="notificationModal" tabindex="-1" role="dialog" aria-labelledby="notificationModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-  
-        </div>
-        <div class="modal-body">
-            <ul class="messages">
-                <li class="alert alert-{{ message.level }}">
-                {{ message|title|safe }}
-                </li>
-  
-              </ul> 
-        </div>
-      </div>
-    </div>
-  </div>
-  
 
-  <script>
-    $(document).ready(function() {
-        // Set timeout for fading out messages after 5 seconds
-        $('#notificationModal').fadeTo(5000, 0, function() { $(this).remove()});
-        $("#btn-close").click(function() {
-          $("#notificationModal").remove();
-      });
-        
-        
-    });
 
-   
-</script>
+    {% if messages %}
+    {% for message in messages %}
+    <script>
+      function showSuccessMessage() {
+        Swal.fire({
+          icon: "success",
+          title: "{{message}}",
+          text: "{{message}}",
+          confirmButtonColor: "#079a85", // Bootstrap success color
+          timer: 3000, // Auto-close the popup after 3000 milliseconds (3 seconds)
+          showCloseButton: true, // Show close button
+        });
+      }
+
+      showSuccessMessage()
+    </script>
+
+{% endfor %}
+{% endif %}
+
+

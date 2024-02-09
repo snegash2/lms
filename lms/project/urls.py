@@ -8,8 +8,7 @@ from lms.project.views import index
 from django.contrib import admin
 from django.contrib.auth.models import User
 from .views import InstructorSignupView
-
-
+from landing.views import PasswordResetAPIView
 
 admin.site.site_header = "Abebech Gobena Hospital Admin"
 admin.site.site_title = "Abebech Gobena Hospital"
@@ -30,7 +29,9 @@ urlpatterns = [
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path('',include('landing.urls')),
     path('forum/', include("spirit.urls",namespace="forum")),
-    path('delete_doc/<id>',delete_doc,name = 'delete_doc')
+    path('delete_doc/<id>',delete_doc,name = 'delete_doc'),
+     path('api/password_reset/', PasswordResetAPIView.as_view(), name='password_reset'),
+    
   
     # path('__debug__/', include('debug_toolbar.urls')),
     # path('social-auth/',include('social_django.urls', namespace='social')),

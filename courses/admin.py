@@ -49,7 +49,7 @@ admin.site.register(File)
 admin.site.register(Task)
 admin.site.register(Reference)
 admin.site.register(CourseAccess)
-
+admin.site.register(Category)
 admin.site.register(Assignment)
 
 

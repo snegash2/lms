@@ -61,7 +61,7 @@ INSTALLED_APPS = [
 
     #custom apps
     'chat.apps.ChatConfig',
-    # 'accounts.apps.AccountsConfig',
+    'landing.apps.LandingConfig',
     'courses.apps.CoursesConfig',
     'students.apps.StudentsConfig',
     'crendential',
@@ -288,7 +288,13 @@ ACCOUNT_UNIQUE_EMAIL=False
 ACCOUNT_EMAIL_CONFORMATION=180
 ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = True
 
+ACCOUNT_FORMS = {
+    'signup': 'landing.utils.MyCustomSignupForm'
+   # 'login': 'landing.utils.MyCustomSignupForm',
+  
+}
 
+AUTH_USER_MODEL = 'landing.LmsUser'
 
 
 # This setting will redirect users to the homepage after a successful login.
@@ -333,8 +339,7 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-LOGIN_URL = '/'
-LOGIN_REDIRECT_URL = "/course/create/"
+
 
 #admin custimization
 X_FRAME_OPTIONS = "SAMEORIGIN"

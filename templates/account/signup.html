@@ -3,22 +3,22 @@
 <!--  -->
 {% load static %}
 {% load i18n %}
-{% block css %} 
+
+{% load socialaccount %}
 
 
-<style>
+{% block style %}
 
-
-  #stripe-card .fa-spinner {
-    font-size: 2em; /* Adjust the size as needed */
-  
-  }
-
-</style>
-
+<link
+href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+rel="stylesheet"
+/>
 <link rel="stylesheet"  type="text/css" href="{% static 'styles.css' %}" />
 
 {% endblock %}
+
+
+
 {% block head_title %}{% trans "Signup" %}{% endblock %}
 
 {% block content %}
@@ -30,28 +30,48 @@
  
   <div class="grid__container">
     <div id="mobile" class="container">
-      <h3>Sign up to your LMS account</h3>
+      <h3>Sign up</h3>
 
 
 
       <!-- <h3>Welcome back  <span> Username </span> </h3> -->
-      <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}"signup_form>
+      <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}" >
         {% csrf_token %}
       
+
+         {% for field in form %}
+         {% if field.name == 'first_name'%}
+         <i class="bx bxs-user"></i>
+
+         {% elif field.name == 'last_name'%}
+         <i class="bx bxs-user"></i>
+
         
-        {{form|crispy }}
-        <div class="error-message" id="error-message"></div>
-        {% if redirect_field_value %}
-        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-        {% endif %}
+         {% elif field.name == 'email' %}
+         <i class="bx bxs-envelope"></i>
+
+        {% elif field.name == 'username'%}
+         <i class="bx bxs-user"></i>
+
+         {% else %}
+         <i class="bx bxs-lock-alt"></i>
+        
+
+          {% endif %}
+        
+          {{field}}
+          <small class="text-danger">
+            {{field.errors}}
+          </small>
+
+         {%endfor %}
+     
 
         <div id="container" style="display: flex;justify-content:center">
          
         </div>
         <button type="submit" id="submit-button" class="submit-button">{% trans "Sign Up" %} &raquo;</button>
       </form>
-
-   
 
 
       <div class="forgot-password">
@@ -68,10 +88,7 @@
     <!-- Second- Socail Meda -->
     <div class="Socail-Container">
       <div></div>
-      <div>
-       {% include "socialaccount/snippets/provider_list.html" with process="login" %}
-         
-      </div>
+        {% include 'socialaccount/snippets/provider_list.html'%}
     </div>
  
 
@@ -95,10 +112,5 @@
         })
       })
     </script>
-
-  <!-- Scripts -->
-  <script src="./script.js"></script>
-  <script type="text/javascript" src="dropdown.js"></script>
- 
 
 {% endblock %}

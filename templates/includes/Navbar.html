@@ -1,7 +1,9 @@
 {% load static %}   
 {% load crispy_forms_tags %}
 {% load i18n %}
+{% load socialaccount %}
 
+  
 <!-- Modal -->
 <div style="z-index: 1000000;" class="modal fade" id="loginmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 
@@ -14,24 +16,55 @@
       <div class="modal-body" >
         <div id="mobile" class="container">
           <h3>Log in </h3>
-          
+         
           <form class="signup" id="signup_form" method="post" action="{% url 'account_login' %}">
-        
+            {{login_form.errors}}
             {% csrf_token %}
-            {{login_form|crispy }}
+             {{login_form|crispy}}
             <div class="error-message" id="error-message"></div>
-            <button type="submit" class="btn btn-primary form-control">Login</button>
+            {% if redirect_field_value %}
+            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+            {% endif %}
+    
+            <button type="submit" class="btn form-control" style="background-color: #079a85;">Login</button>
           </form>
           <div class="forgot-password">
             <a href="{% url 'account_reset_password' %}">Forgot Password? </a>
           </div>
+
+
+          <div class="forgot-password">
+            <a href="{% url 'account_signup' %}">Don't have an account ?</a>
+          </div>
         </div>
   
       </div>
-      <div class="modal-footer" >
-        <button type="button" style="background-color:rgb(211, 138, 138);" class="btn btn-danger" id="closebtn" data-bs-dismiss="modal">Close</button>
-        <div class="modal"><!-- Place at bottom of page --></div>
-        <button type="submit" style="background-color:rgb(58, 76, 58);" class="btn btn-primary" onclick="addAssiagment()">Save changes</button>
+      <div class="modal-footer" style="display:flex;flex-direction:column;width:100%;">
+        {% get_providers as socialaccount_providers %}
+
+        {% for provider in socialaccount_providers %}
+        {% if provider.id == "openid" %}
+        {% for brand in provider.get_brands %}
+          <li>
+            <div id="fa" class="fa fa-{{provider.name|lower}}" style="margin-left:10px;"></div>
+            <a title="{{provider.name}}" class="socialaccount_provider {{provider.id}}" id="fa"
+               href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}"> Continue with {{provider.name}}</a>
+          </li>
+          </ul>
+          {% endfor %}
+          {% endif %}
+
+          <li>
+        <div id="fa" class="fa fa-{{provider.name|lower}} fa-5x form-control" style="display:flex;width:450px;">
+              <a title="{{provider.name}}" class="socialaccount_provider {{provider.id}}" id="fa" style="margin-left: 50px;"
+              href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}"> Continue with {{provider.name}}</a>
+          
+        </div>
+      </li>
+ 
+          {% endfor %}
+      
+       
       </div>
     </div>
   </div>
@@ -124,16 +157,16 @@
           {% if not request.user.is_authenticated %}
 
           <li>
-            <div class="Sign">
+            <div class="Sign" style="display: flex;justify-content: center;align-items: center;" data-bs-toggle="modal" data-bs-target="#logoutModal">
             
               {% if request.path == '/accounts/login/' %}
               <a   href="{%url 'account_signup'%}" ><h6>Sign up</h6></a>
 
               {% else %}
-              <a   href="{%url 'account_login'%}" ><h6>Log in </h6></a>
-              <button type="button" class="btn btn-info" style="background-color: #079a85 !important;" data-bs-toggle="modal" data-bs-target="#loginmodal">
-                quick login
-              </button>
+            
+              <div class="Sign" style="display: flex;justify-content: center;align-items: center;" data-bs-toggle="modal" data-bs-target="#loginmodal">
+                <h6 style="margin: 0;color:white;">Login</h6>
+              </div>
         
               {% endif %}
             </div>
@@ -146,13 +179,15 @@
             </div>
           </li>
 
+          {%if request.user.is_authenticated %}
           <li>
+
             <div class="Sign">
               <a href="{%url 'students:student_update_profile' request.user.profile.pk %}" ><h6>Profile</h6></a>
               
             </div>
           </li>
-
+          {% endif %}
           {% endif %}
         </div>
       </ul>

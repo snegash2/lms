@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from courses.models import Course,Category,CourseName
 from django.contrib.auth.models import Group,User
-from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from students.forms import CourseEnrollForm
 from django.http import JsonResponse
@@ -13,6 +12,31 @@ from django.contrib.auth.models import Group,Permission
 from django.core import serializers
 from courses.models import CourseAccess
 from allauth.account.forms import LoginForm
+from django.contrib.auth.forms import PasswordResetForm
+from allauth.account.views import PasswordResetView
+from django.template.loader import render_to_string
+from django import forms
+from landing.models import LmsUser
+from django.contrib import messages
+from rest_framework import views
+from rest_framework.response import Response
+from rest_framework import status
+from django.contrib.auth.forms import PasswordResetForm
+
+
+
+
+class CustomPasswordResetView(PasswordResetView):
+    def form_valid(self, form):
+        
+        response = super().form_valid(form)
+        if response.status_code == 302:  # Redirect on success
+            html_content = render_to_string(self.get_template_names(), context=self.get_context_data())
+            return JsonResponse({'success': True, 'message': 'Email sent'})# 'html_content': html_content})
+        return response  # Handle errors normally
+
+        # Remember to set content_type and send additional data as needed
+
 
 
 @require_POST
@@ -97,6 +121,16 @@ def get_course_name(request):
         }
      
         return JsonResponse(_data)
+    
+    
+    
+class CustomLoginForm(LoginForm):
+    first_name = forms.CharField(label="",widget=forms.TextInput(attrs={'placeholder':'First name','class':"form-control"}))
+    last_name = forms.CharField(label="",widget=forms.TextInput(attrs={'placeholder':'Last name','class':""}))
+    email = forms.EmailField(label= "", required=True,widget=forms.TextInput(attrs={'placeholder':'Email','class':"form-control"}))  # Make email required
+    # username = forms.CharField(label="",widget=forms.TextInput(attrs={'placeholder':'Username','class':""}))
+    password1 = forms.CharField(label="",widget=forms.PasswordInput(attrs={'class':"form-control w-100"}))
+    password2 = forms.CharField(label="",widget=forms.PasswordInput(attrs={'class':"form-check-input form-check-label"}))
 
 def landing_page(request):
     courses = Course.objects.filter(published = True)
@@ -108,7 +142,7 @@ def landing_page(request):
     except Group.DoesNotExist:
         pass
     
-    users = User.objects.all()
+    users = LmsUser.objects.all()
     if group:
         instructors = group.user_set.count()
         
@@ -283,3 +317,21 @@ def student_enrolloment(request):
             'allowed':True if allowed else False
         }        
         return JsonResponse(json_course)
+    
+    
+    
+from rest_framework.permissions import AllowAny
+
+class PasswordResetAPIView(views.APIView):
+    queryset = LmsUser.objects.all()
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        form = PasswordResetForm(request.data)
+        
+        if form.is_valid():
+            form.save(request=request)
+            
+            return Response({'detail': 'Password reset email has been sent.'}, status=status.HTTP_200_OK)
+        else:
+            return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)

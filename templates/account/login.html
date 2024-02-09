@@ -1,4 +1,5 @@
 {% extends "_base.html" %}
+{% load socialaccount %}
 {% load static %}
 {% load crispy_forms_tags %}
 {% load i18n %}
@@ -16,10 +17,13 @@
         <h3>Log in to your LMS account</h3>
         
         <form class="signup" id="signup_form" method="post" action="{% url 'account_login' %}">
-      
+        
           {% csrf_token %}
           {{form|crispy }}
           <div class="error-message" id="error-message"></div>
+          {% if redirect_field_value %}
+          <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+          {% endif %}
           <button type="submit" class="submit-button">Login</button>
         </form>
         <div class="forgot-password">
