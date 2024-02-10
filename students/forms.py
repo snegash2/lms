@@ -15,10 +15,11 @@ class CourseEnrollForm(forms.Form):
 class StudentProfile(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = "bio","location","birth_date"
+        fields ="bio","location","birth_date"
         
         
-        
+    bio = forms.CharField(widget =forms.TextInput(attrs={'class':'form-control','row':23}))
+    location = forms.CharField(widget =forms.TextInput(attrs={'class':'form-control','row':23}))
     birth_date = forms.DateTimeField(
         widget=DateTimePicker(
             options={

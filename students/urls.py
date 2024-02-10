@@ -10,6 +10,7 @@ urlpatterns = [
     path('dropout/',views.StudentDropoutCourseView.as_view(),name='student_dropout_course'),
     path('update-profile/<int:pk>/',views.StudentProfileView.as_view(),name='student_update_profile'),
     path('courses/',views.StudentCourseListView.as_view(),name='student_course_list'),
+    path('upload_profile_pic/<pk>/',views.UploadProfilePic.as_view(),name='upload_profile_pic'),
     path('course/<pk>/',cache_page(60 * 15)(views.StudentCourseDetailView.as_view()),name='student_course_detail'),
     path('course/<pk>/<module_id>/',cache_page(60 * 15)(views.StudentCourseDetailView.as_view()),name='student_course_detail_module'),
 ]

@@ -1,8 +1,9 @@
-{% extends '_base.html'%}
+{% extends 'students/student/student_base.html'%}
 {% load static %}
+{% load i18n %}
 {% load crispy_forms_tags %}
 {% block style %}
-
+{% load embed_video_tags %}
 <link rel="icon" href="{% static 'logo.png' %}" type="image/x-icon" />
 
 <meta charset="UTF-8" />
@@ -13,431 +14,392 @@
 <link rel="stylesheet" href="{% static 'student_dashboard_main.css' %}" />
 <link rel="stylesheet" href="{% static 'student_dashboard_menu.css' %}" />
 <link rel="stylesheet" href="{% static 'student_dashboard.css' %}" />
+<script src="https://kit.fontawesome.com/84ceadd20f.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+{% endblock %}
+{% block content %}
+
+<div style="z-index: 1000000;" class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          <h1>{% trans "Sign Out" %}</h1>
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+
+
+        <p>{% trans 'Are you sure you want to sign out?' %}</p>
+
+        <form method="post" action="{% url 'account_logout' %}">
+          {% csrf_token %}
+          {% if redirect_field_value %}
+          <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+          {% endif %}
+
+          <div class="modal-footer">
+            <button type="button" style="background-color:rgb(211, 138, 138);" class="btn btn-danger" id="closebtn"
+              data-bs-dismiss="modal">Close</button>
+            <div class="modal"><!-- Place at bottom of page --></div>
+            <button type="submit" style="background-color:rgb(58, 76, 58);" class="btn btn-primary"
+              onclick="addAssiagment()">{% trans 'Sign Out' %}</button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!--  -->
+<header>
+
+
+  <img src="{% static 'logo.png'%}" class="logo">
+  <h1 class="Header-Title">Welcome {{ request.user.first_name}} {{request.user.last_name }}</h1>
+  <div id="dashboard-container">
+    <div id="profile-picture-container" onclick="openFileInput()" id="uploadForm">
+
+      {% if profile.avatar %}
+
+      <img id="profile-picture" src="{{profile.avatar.url}}" alt="Profile Picture" />
+
+
+    </div>
+    <label for="file-input" id="profile-upload-btn">Upload Profile Picture</label <input type="file" id="file-input"
+      accept="image/*" onchange="displayImage(this)" </form>
+  </div>
+
+  {% endif %}
+
+  <script>
+    // JavaScript functions
+    function openFileInput() {
+      document.getElementById("file-input").click();
+
+    }
+
+    function displayImage(input) {
+      const file = input.files[0];
+
+
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          document.getElementById("profile-picture").src = e.target.result;
+        };
+
+        reader.readAsDataURL(file);
+
+        const form = document.getElementById("uploadForm")
+        const formData = new FormData();
+
+
+
+      }
+  </script>
+</header>
+
+<section class="dashboard">
+  <div class="sidebar" id="sidebar">
+    <ul>
+      <li>
+        <a href="/" id="home"><span class="icons fas fa-home"></span>Home</a>
+      </li>
+      <li>
+        <a href="#" id="profile"><span class="icons fas fa-user"></span>Profile</a>
+      </li>
+      <li>
+        <a href="#" id="grades"><span class="icons fa fa-cog" aria-hidden="true""></span>Setting</a>
+        </li>
+        <li>
+
+        
+          <div data-bs-toggle=" modal" data-bs-target="#logoutModal"><span class="icons fa fa-sign-out"></span>
+            Logout
+  </div>
+  </li>
+  </ul>
+  </div>
+
+
+
+  <div class="content">
+    <div id="home-content">
+      <div class="dashboard">
+        <div class="counter" id="registeredCourses">
+          <i class="icon fas fa-book"></i>
+          <h2>My Courses</h2>
+          <p id="registeredCoursesCount">
+            0<span class="plus-sign">+</span>
+          </p>
+        </div>
+        <div class="counter" id="certifications">
+          <i class="icon fas fa-certificate"></i>
+          <h2>Certifications</h2>
+          <p id="certificationsCount">0<span class="plus-sign">+</span></p>
+        </div>
+        <div class="counter" id="popularCourses">
+          <i class="icon fas fa-fire"></i>
+          <h2 class="">Popular Courses</h2>
+          <p id="popularCoursesCount">0<span class="plus-sign">+</span></p>
+        </div>
+      </div>
+      <h1 class="activity">Recent Activity</h1>
+      <!-- ======Course====== -->
+      <div class="card-container" id="card-container">
+
+        {% for course in mycourses %}
+
+        <div class="card">
+
+          {% video course.intro_video as my_video %}
+          {{content.item.video}}
+          {% video my_video "small" %}
+          {% endvideo %}
+
+          <div class="card-body">
+            <h5 class="card-title">{{course.name|title}}</h5>
+            <p class="card-text">{{course.overview|truncatechars:70}}</p>
+            <div class="btn-containers">
+              <a href="{% url 'courses:course_detail' course.slug %}" class="btn btn-primary">Continue</a>
+              <a class="btn btn-secondary" href="{% url 'courses:course_detail' course.slug %}">
+                View Course
+              </a>
+
+            </div>
+          </div>
+        </div>
+
+
+        {% endfor %}
+
+      </div>
+
+
+
+
+    </div>
+    <!-- ==================================================================== -->
+
+
+    <!-- ============================================================================== -->
+
+
+    <!-- ==============popular activity===== -->
+    <h1 class="header-pop">Popular Courses</h1>
+
+    <div class="containerss" id="cardContainers">
+    {% for course in courses %}
+      <div class="card">
+
+        {% video course.intro_video as my_video %}
+        {{content.item.video}}
+        {% video my_video "small" %}
+        {% endvideo %}
+        <div class="card-body">
+          <h5 class="card-title">Video Title 1</h5>
+          <p class="card-text">Description of the video content goes here.</p>
+          <div class="btn-containers"><button class="btn btn-primary">Enroll Now</button>
+            <a class="btn btn-secondary" href="{% url 'courses:course_detail' course.slug %}">
+              View Course
+            </a>
+            </div>
+        </div>
+      </div>
+    {% endfor %}
+
+    </div>
+
+
+    <!-- ===================== -->
+    <script>
+        // Function to update the counter value with counting effect
+        function updateCounterWithEffect(counterId, maxCount) {
+          let currentCount = 0;
+          const counterElement = document.getElementById(counterId);
+
+          const intervalId = setInterval(function () {
+            if (currentCount < maxCount) {
+              currentCount++;
+              counterElement.innerText = currentCount;
+            } else {
+              clearInterval(intervalId);
+            }
+          }, 70);
+        }
+
+        // Sample values, you can replace these with actual data or fetch from a backend
+        let registeredCoursesCount = {{ course_nums }
+      };
+      let certificationsCount = {{ certifications }};
+      let popularCoursesCount = 15;
+      let AnnouncementCount = 3;
+      // Update counters with counting effect initially
+      updateCounterWithEffect(
+        "registeredCoursesCount",
+        registeredCoursesCount
+      );
+      updateCounterWithEffect("certificationsCount", certificationsCount);
+      updateCounterWithEffect("popularCoursesCount", popularCoursesCount);
+      updateCounterWithEffect("AnnouncementCount", AnnouncementCount);
+    </script>
+  </div>
+
+  <div id="profile-content" class="hidden">
+
+    {% include 'students/student/profile.html' %}
+
+  </div>
+
+  <div id="grades-content" class="hidden">
+    <h2>Settings</h2>
+    <p>Your Setting.</p>
+  </div>
+
+  <div id="schedule-content" class="hidden">
+    <h2>Logout</h2>
+    <p>logout</p>
+  </div>
+  </div>
+
+  <!-- Hamburger menu -->
+  <div class="hamburger" id="hamburger">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</section>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const tabs = ["home", "profile", "grades", "schedule"];
+    const sidebar = document.getElementById("sidebar");
+    const hamburger = document.getElementById("hamburger");
+
+    tabs.forEach((tab) => {
+      const tabElement = document.getElementById(tab);
+      const contentElement = document.getElementById(`${tab}-content`);
+
+      tabElement.addEventListener("click", function () {
+        tabs.forEach((t) => {
+          const tContent = document.getElementById(`${t}-content`);
+          tContent.classList.add("hidden");
+        });
+
+        contentElement.classList.remove("hidden");
+
+        // Close the sidebar on mobile view after clicking a tab
+        if (window.innerWidth <= 600) {
+          sidebar.classList.remove("show");
+          hamburger.classList.remove("active");
+        }
+      });
+    });
+
+    // Toggle sidebar visibility on mobile view
+    hamburger.addEventListener("click", function (event) {
+      event.stopPropagation(); // Prevents the click event from reaching the document and closing the sidebar
+
+      sidebar.classList.toggle("show");
+      hamburger.classList.toggle("active");
+    });
+
+    // Close the sidebar on mobile view when clicking outside of it
+    document.addEventListener("click", function () {
+      sidebar.classList.remove("show");
+      hamburger.classList.remove("active");
+    });
+  });
+</script>
+<!--  -->
+
+<script>
+  // JavaScript to toggle the active class on hamburger click
+  document.addEventListener("DOMContentLoaded", function () {
+    var navbarHamburger = document.querySelector(".navbar-hamburger");
+    var navbarMenu = document.querySelector(".navbar-menu");
+
+    navbarHamburger.addEventListener("click", function () {
+      navbarHamburger.classList.toggle("active");
+      navbarMenu.classList.toggle("active");
+    });
+
+    document.addEventListener("click", function (event) {
+      var targetElement = event.target;
+      if (
+        !targetElement.closest(".navbar") &&
+        navbarHamburger.classList.contains("active")
+      ) {
+        navbarHamburger.classList.remove("active");
+        navbarMenu.classList.remove("active");
+      }
+    });
+  });
+</script>
+<!--  -->
+<script>
+  // JavaScript to toggle the active class on hamburger click
+  document.addEventListener("DOMContentLoaded", function () {
+    var navbarHamburger = document.querySelector(".navbar-hamburger");
+    var navbarMenu = document.querySelector(".navbar-menu");
+
+    navbarHamburger.addEventListener("click", function () {
+      navbarHamburger.classList.toggle("active");
+      navbarMenu.classList.toggle("active");
+    });
+
+    document.addEventListener("click", function (event) {
+      var targetElement = event.target;
+      if (
+        !targetElement.closest(".navbar") &&
+        navbarHamburger.classList.contains("active")
+      ) {
+        navbarHamburger.classList.remove("active");
+        navbarMenu.classList.remove("active");
+      }
+    });
+  });
+</script>
+<!-- Catgory dropdown -->
+<script>
+  const newdropdowns = document.querySelectorAll(".newdropdown");
+  newdropdowns.forEach((newdropdown) => {
+    const select = newdropdown.querySelector(".select");
+    const caret = newdropdown.querySelector(".caret");
+    const menu = newdropdown.querySelector(".menu");
+    const options = newdropdown.querySelector(".menu li");
+    const selected = newdropdown.querySelector(".selected");
+
+    select.addEventListener("click", () => {
+      select.classList.toggle("select-clicked");
+      caret.classList.toggle("caret-rotate");
+      menu.classList.toggle("menu-open");
+    });
+    options.forEach((option) => {
+      option.addEventListener("click", () => {
+        selected.innerText = option.innerText;
+        select.classList.remove("select-clicked");
+        caret.classList.remove("caret-rotate");
+        menu.classList.remove("menu-open");
+        options.forEach((option) => {
+          option.classList.remove("active");
+        });
+        option.classList.add("active");
+      });
+    });
+  });
+</script>
+
 
 
 {% endblock %}
-
-{% block  content %}
-
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-
-
-  <!--  -->
-  <header>
-    <img src="{% static 'logo.png'%}" class="logo">
-    <h1 class="Header-Title">Welcome {{ request.user.username }}</h1>
-    <div id="dashboard-container">
-      <div id="profile-picture-container" onclick="openFileInput()">
-
-        {% if profile.avatar %}
-        <img
-          id="profile-picture"
-          src="{{profile.avatar.url}}"
-          alt="Profile Picture"
-        />
-
-        {% endif %}
-      </div>
-      <label for="file-input" id="profile-upload-btn"
-        >Upload Profile Picture</label
-      >
-      <input
-        type="file"
-        id="file-input"
-        accept="image/*"
-        onchange="displayImage(this)"
-      />
-    </div>
-    <script>
-      // JavaScript functions
-      function openFileInput() {
-        document.getElementById("file-input").click();
-      }
-
-      function displayImage(input) {
-        const file = input.files[0];
-
-        if (file) {
-          const reader = new FileReader();
-
-          reader.onload = function (e) {
-            document.getElementById("profile-picture").src = e.target.result;
-          };
-
-          reader.readAsDataURL(file);
-        }
-      }
-    </script>
-  </header>
-
-  <section class="dashboard">
-    <div class="sidebar" id="sidebar">
-      <ul>
-        <li>
-          <a href="#" id="home"
-            ><span class="icons fas fa-home"></span>Home</a
-          >
-        </li>
-        <li>
-          <a href="#" id="profile"
-            ><span class="icons fas fa-user"></span>Profile</a
-          >
-        </li>
-        <li>
-          <a href="#" id="grades"><span class="icons fa fa-cog" aria-hidden="true""></span>Setting</a>
-        </li>
-        <li>
-          <a href="{%url 'account_logout'%}" id="schedule"
-            ><span class="icons fa fa-sign-out"></span>Logout
-          </a>
-        </li>
-      </ul>
-    </div>
-
-    <div class="content">
-      <div id="home-content">
-        <div class="dashboard">
-          <div class="counter" id="registeredCourses">
-            <i class="icon fas fa-book"></i>
-            <h2>My Courses</h2>
-            <p id="registeredCoursesCount">
-              0<span class="plus-sign">+</span>
-            </p>
-          </div>
-          <div class="counter" id="certifications">
-            <i class="icon fas fa-certificate"></i>
-            <h2>Certifications</h2>
-            <p id="certificationsCount">0<span class="plus-sign">+</span></p>
-          </div>
-          <div class="counter" id="popularCourses">
-            <i class="icon fas fa-fire"></i>
-            <h2 class="">Popular Courses</h2>
-            <p id="popularCoursesCount">0<span class="plus-sign">+</span></p>
-          </div>
-        </div>
-        <h1 class="activity">Recent Activity</h1>
-     <!-- ======Course====== -->
-     <div class="card-container" id="card-container"></div>
-<!-- ==================================================================== -->
-
-
-<!-- ============================================================================== -->
-     <script>
-       // Card data
-       const cardData = [
-         {
-           video: "./video/videoplayback.mp4",
-           poster: "./assets/banner2.jpg", // Add the poster image URL
-           header: "Biomedical",
-           content: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ex, distinctio. dolorum provident ullam ducim of card 1.",
-           link: "https://example.com/card1",
-         },
-         {
-           video: "./video/videoplayback.mp4",
-           poster: "./assets/banner2.jpg", // Add the poster image URL
-           header: "Genetics",
-           content: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ex, distinctio. dolorum provident ullam ducim of card 2.",
-           link: "https://example.com/card2",
-         },
-         {
-           video: "./video/videoplayback.mp4",
-           poster: "./assets/banner2.jpg", // Add the poster image URL
-           header: "Dental",
-           content: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ex, distinctio. dolorum provident ullam ducim of card 3.",
-           link: "https://example.com/card3",
-         },
-       ];
- 
-       // Populate cards
-       const cardContainer = document.getElementById("card-container");
- 
-       cardData.forEach((data) => {
-         const card = document.createElement("div");
-         card.classList.add("card");
- 
-         const video = document.createElement("video");
-         video.src = data.video;
-         video.poster = data.poster; // Set the poster image
-         video.controls = true; // Add controls for user interaction
-         card.appendChild(video);
- 
-         const cardContent = document.createElement("div");
-         cardContent.classList.add("card-content");
- 
-         const cardHeader = document.createElement("div");
-         cardHeader.classList.add("card-header");
-         cardHeader.textContent = data.header;
- 
-         const cardText = document.createElement("p");
-         cardText.textContent = data.content;
- 
-         const cardButton = document.createElement("a");
-         cardButton.href = data.link; // Use the link from the data
-         cardButton.classList.add("card-button");
-         cardButton.textContent = "Continue";
- 
-         cardContent.appendChild(cardHeader);
-         cardContent.appendChild(cardText);
-         cardContent.appendChild(cardButton);
- 
-         card.appendChild(cardContent);
- 
-         cardContainer.appendChild(card);
-       });
-     </script>
-<!--  -->
-<!-- ==============popular activity===== -->
-<h1 class="header-pop" >Popular Courses</h1>
-
-<div class="containerss" id="cardContainers">
-</div>
-
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-  const containers = document.getElementById("cardContainers");
-
-  // Sample video paths for demonstration purposes
-  const videoPaths = [
-    "./video/videoplayback.mp4",
-    "./video/videoplayback.mp4",
-    "./video/videoplayback.mp4",
-    
-  ];
-
-  videoPaths.forEach((videoPath, index) => {
-    const card = createCard(
-      `Video Title ${index + 1}`,
-      `Description of the video content goes here.`,
-      videoPath
-    );
-    containers.appendChild(card);
-  });
-
-  function createCard(title, description, videoPath) {
-    const card = document.createElement("div");
-    card.className = "card";
-
-    const video = document.createElement("video");
-    video.src = videoPath;
-    video.controls = true;
-
-    const cardBody = document.createElement("div");
-    cardBody.className = "card-body";
-
-    const cardTitle = document.createElement("h5");
-    cardTitle.className = "card-title";
-    cardTitle.textContent = title;
-
-    const cardText = document.createElement("p");
-    cardText.className = "card-text";
-    cardText.textContent = description;
-
-    const btnContainers = document.createElement("div");
-    btnContainers.className = "btn-containers";
-
-    const enrollBtn = createButton("Enroll Now", "btn-primary");
-    const seeCourseBtn = createButton("View Course", "btn-secondary");
-
-    btnContainers.appendChild(enrollBtn);
-    btnContainers.appendChild(seeCourseBtn);
-
-    cardBody.appendChild(cardTitle);
-    cardBody.appendChild(cardText);
-    cardBody.appendChild(btnContainers);
-
-    card.appendChild(video);
-    card.appendChild(cardBody);
-
-    return card;
-  }
-
-  function createButton(text, className) {
-    const btn = document.createElement("button");
-    btn.className = `btn ${className}`;
-    btn.textContent = text;
-    return btn;
-  }
-});
-</script>
-<!-- ===================== -->
-        <script>
-          // Function to update the counter value with counting effect
-          function updateCounterWithEffect(counterId, maxCount) {
-            let currentCount = 0;
-            const counterElement = document.getElementById(counterId);
-
-            const intervalId = setInterval(function () {
-              if (currentCount < maxCount) {
-                currentCount++;
-                counterElement.innerText = currentCount;
-              } else {
-                clearInterval(intervalId);
-              }
-            }, 70);
-          }
-
-          // Sample values, you can replace these with actual data or fetch from a backend
-          let registeredCoursesCount = {{course_nums}};
-          let certificationsCount = {{certifications}};
-          let popularCoursesCount = 15;
-          let AnnouncementCount = 3;
-          // Update counters with counting effect initially
-          updateCounterWithEffect(
-            "registeredCoursesCount",
-            registeredCoursesCount
-          );
-          updateCounterWithEffect("certificationsCount", certificationsCount);
-          updateCounterWithEffect("popularCoursesCount", popularCoursesCount);
-          updateCounterWithEffect("AnnouncementCount", AnnouncementCount);
-        </script>
-      </div>
-
-      <div id="profile-content" class="hidden">
-        <h2>Profile Information</h2>
-        <p>Your profile details go here.</p>
-      
-      </div>
-
-      <div id="grades-content" class="hidden">
-        <h2>Settings</h2>
-        <p>Your Setting.</p>
-      </div>
-
-      <div id="schedule-content" class="hidden">
-        <h2>Logout</h2>
-          <p>logout</p>
-      </div>
-    </div>
-
-    <!-- Hamburger menu -->
-    <div class="hamburger" id="hamburger">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-  </section>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const tabs = ["home", "profile", "grades", "schedule"];
-      const sidebar = document.getElementById("sidebar");
-      const hamburger = document.getElementById("hamburger");
-
-      tabs.forEach((tab) => {
-        const tabElement = document.getElementById(tab);
-        const contentElement = document.getElementById(`${tab}-content`);
-
-        tabElement.addEventListener("click", function () {
-          tabs.forEach((t) => {
-            const tContent = document.getElementById(`${t}-content`);
-            tContent.classList.add("hidden");
-          });
-
-          contentElement.classList.remove("hidden");
-
-          // Close the sidebar on mobile view after clicking a tab
-          if (window.innerWidth <= 600) {
-            sidebar.classList.remove("show");
-            hamburger.classList.remove("active");
-          }
-        });
-      });
-
-      // Toggle sidebar visibility on mobile view
-      hamburger.addEventListener("click", function (event) {
-        event.stopPropagation(); // Prevents the click event from reaching the document and closing the sidebar
-
-        sidebar.classList.toggle("show");
-        hamburger.classList.toggle("active");
-      });
-
-      // Close the sidebar on mobile view when clicking outside of it
-      document.addEventListener("click", function () {
-        sidebar.classList.remove("show");
-        hamburger.classList.remove("active");
-      });
-    });
-  </script>
-  <!--  -->
-
-  <script>
-    // JavaScript to toggle the active class on hamburger click
-    document.addEventListener("DOMContentLoaded", function () {
-      var navbarHamburger = document.querySelector(".navbar-hamburger");
-      var navbarMenu = document.querySelector(".navbar-menu");
-
-      navbarHamburger.addEventListener("click", function () {
-        navbarHamburger.classList.toggle("active");
-        navbarMenu.classList.toggle("active");
-      });
-
-      document.addEventListener("click", function (event) {
-        var targetElement = event.target;
-        if (
-          !targetElement.closest(".navbar") &&
-          navbarHamburger.classList.contains("active")
-        ) {
-          navbarHamburger.classList.remove("active");
-          navbarMenu.classList.remove("active");
-        }
-      });
-    });
-  </script>
-  <!--  -->
-  <script>
-    // JavaScript to toggle the active class on hamburger click
-    document.addEventListener("DOMContentLoaded", function () {
-      var navbarHamburger = document.querySelector(".navbar-hamburger");
-      var navbarMenu = document.querySelector(".navbar-menu");
-
-      navbarHamburger.addEventListener("click", function () {
-        navbarHamburger.classList.toggle("active");
-        navbarMenu.classList.toggle("active");
-      });
-
-      document.addEventListener("click", function (event) {
-        var targetElement = event.target;
-        if (
-          !targetElement.closest(".navbar") &&
-          navbarHamburger.classList.contains("active")
-        ) {
-          navbarHamburger.classList.remove("active");
-          navbarMenu.classList.remove("active");
-        }
-      });
-    });
-  </script>
-  <!-- Catgory dropdown -->
-  <script>
-    const newdropdowns = document.querySelectorAll(".newdropdown");
-    newdropdowns.forEach((newdropdown) => {
-      const select = newdropdown.querySelector(".select");
-      const caret = newdropdown.querySelector(".caret");
-      const menu = newdropdown.querySelector(".menu");
-      const options = newdropdown.querySelector(".menu li");
-      const selected = newdropdown.querySelector(".selected");
-
-      select.addEventListener("click", () => {
-        select.classList.toggle("select-clicked");
-        caret.classList.toggle("caret-rotate");
-        menu.classList.toggle("menu-open");
-      });
-      options.forEach((option) => {
-        option.addEventListener("click", () => {
-          selected.innerText = option.innerText;
-          select.classList.remove("select-clicked");
-          caret.classList.remove("caret-rotate");
-          menu.classList.remove("menu-open");
-          options.forEach((option) => {
-            option.classList.remove("active");
-          });
-          option.classList.add("active");
-        });
-      });
-    });
-  </script>
-  <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
-
-  {% endblock %}

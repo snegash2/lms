@@ -139,7 +139,15 @@ class StudentCourseListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         qs = super().get_queryset()
         return qs.filter(students__in=[self.request.user])
-
+    
+    
+    
+class UploadProfilePic(LoginRequiredMixin, UpdateView):
+    model = Profile
+    template_name = 'students/course/list.html'
+    def get_queryset(self):
+        qs = super().get_queryset()
+        return qs.filter(students__in=[self.request.user])
 
 class StudentCourseDetailView(DetailView):
     model = Course
@@ -223,10 +231,10 @@ class StudentProfileView(LoginRequiredMixin,UpdateView):
     
         context =  super().get_context_data(**kwargs)
         course_nums = 0
-        courses = Course.objects.all()
-      
+        mycourses = self.request.user.courses_joined.all()
+        print("courses ",mycourses)
         
-        for course in courses:
+        for course in mycourses:
             students = course.students.all()
             if self.request.user in students:
                 course_nums += 1
@@ -235,8 +243,12 @@ class StudentProfileView(LoginRequiredMixin,UpdateView):
             context['certifications'] = self.request.user.certifications.count()
         actvities = self.request.user.actvities
         profile = self.request.user.profile
+        form = self.get_form()
         if profile:
             context['profile'] = profile
+            context['form'] = form
+            context['mycourses'] = mycourses
+            context['courses'] = Course.objects.all()
           
         
         if actvities:
