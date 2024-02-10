@@ -13,7 +13,7 @@ files/
 # Tailwind
 tailwind.config.js
 tailwind.css
-
+uploads
 ## Django
 *.pyc
 *.pyo
