@@ -3,7 +3,6 @@ from django import forms
 from django.forms.models import inlineformset_factory
 from .models import Course, Module,Assignment
 from django.forms import BaseInlineFormSet
-from django.forms import TextInput
 from django.forms import TextInput, Textarea
 from .views import *
 

@@ -33,7 +33,7 @@ class MyCustomSignupForm(SignupForm):
         super().__init__(*args, **kwargs)
         
         # Specify the desired order of fields
-        self.fields['username'].widget.attrs.update({'placeholder': 'Username'})
+        # self.fields['username'].widget.attrs.update({'placeholder': 'Username'})
         self.fields['email'].widget.attrs.update({'placeholder': 'Email Address'})
         self.fields['password1'].widget.attrs.update({'placeholder': 'Password'})
         self.fields['password2'].widget.attrs.update({'placeholder': 'Confirm Password'})
@@ -50,7 +50,7 @@ class MyCustomSignupForm(SignupForm):
             (key, self.fields[key]) for key in [
                 'first_name',
                 'last_name',
-                'username',
+                # 'username',
                 'email',
                 'password1',
                 'password2',

@@ -12,11 +12,11 @@ from django.utils.timezone import now
 from django.conf import settings
 from model_utils.managers import InheritanceManager
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
 from courses.models import Course
 
 
-# User = get_user_model()
+User = get_user_model()
 
 
 class CategoryManager(models.Manager):
@@ -70,8 +70,9 @@ class SubCategory(models.Model):
 
 
 class Quiz(models.Model):
+    # instructor = models.ForeignKey(User,null = True,blank = True,on_delete = models.CASCADE)
     course = models.ForeignKey(Course, on_delete = models.CASCADE,default=1)
- 
+
     title = models.CharField(
         verbose_name=_("Title"),
         max_length=60, blank=False)
@@ -151,7 +152,7 @@ class Quiz(models.Model):
         if self.single_attempt is True:
             self.exam_paper = True
 
-        if self.pass_mark > 100:
+        if int(self.pass_mark) > 100:
             raise ValidationError('%s is above 100' % self.pass_mark)
 
         super(Quiz, self).save(force_insert, force_update, *args, **kwargs)
@@ -159,6 +160,7 @@ class Quiz(models.Model):
     class Meta:
         verbose_name = _("Quiz")
         verbose_name_plural = _("Quizzes")
+        
 
     def __str__(self):
         return self.title
@@ -178,6 +180,8 @@ class Quiz(models.Model):
 
     def anon_q_data(self):
         return str(self.id) + "_data"
+    
+
 
 
 class ProgressManager(models.Manager):
@@ -378,7 +382,7 @@ class Sitting(models.Model):
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_("User"), on_delete=models.CASCADE)
 
-    quiz = models.ForeignKey(Quiz, verbose_name=_("Quiz"), on_delete=models.CASCADE)
+    quiz = models.ForeignKey(Quiz, related_name = "quiz_question",verbose_name=_("Quiz"), on_delete=models.CASCADE)
 
     question_order = models.CharField(
         max_length=1024,
@@ -596,3 +600,5 @@ class Question(models.Model):
 
     def __str__(self):
         return self.content
+    
+

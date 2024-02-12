@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 from django.utils.translation import gettext_lazy as _
 from django.db import models
-from exam.quiz.models import Question
+from exam.quiz.models import Question,Quiz
 
 
 ANSWER_ORDER_OPTIONS = (
@@ -12,7 +12,6 @@ ANSWER_ORDER_OPTIONS = (
 
 
 class MCQuestion(Question):
-
     answer_order = models.CharField(
         max_length=30, null=True, blank=True,
         choices=ANSWER_ORDER_OPTIONS,

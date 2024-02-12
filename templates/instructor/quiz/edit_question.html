@@ -1,0 +1,348 @@
+{% extends '_base.html'%}
+{% load static %}
+{% block style %}
+{% load crispy_forms_tags %}
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Course</title>
+
+   
+    <link rel="stylesheet" href="{% static 'instructor_quiz_add.css' %}" />
+    <link rel="stylesheet" href="{% static 'quiz_instrurctor_main.css'%}" />
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+{% endblock %}
+  {% block content %}
+  <div class="main-body">
+
+    <!--  -->
+    <div class="overlay" id="thankYouOverlay">
+      <div class="popup-content">
+        <i class="fa fa-check-circle" aria-hidden="true"></i>
+        <p>
+          Thank you! Your question has been successfully submitted
+          <!-- <i class="fa fa-smile"></i> -->
+        </p>
+      </div>
+    </div>
+    <div class="container">
+      <h1></h1>
+      <div id="questionForm" style="display: block">
+        <h2>Add Your Question</h2>
+
+        <!-- Combined dropdown for question type -->
+
+        <div class="modified-dropdown">
+          <div class="select" onclick="toggleModifiedDropdown()">
+            <span class="selected" onclick="toggleModifiedDropdown()">
+              Multiple Choice</span
+            >
+            <i class="caret">&#9660;</i>
+          </div>
+          <ul class="menu" id="modifiedDropdownMenu">
+            <li class="active" onclick="selectModifiedOption(event, this)">
+              Multiple Choice
+            </li>
+            <li onclick="selectModifiedOption(event, this)">True False</li>
+          </ul>
+        </div>
+        <!-- <input type="text" placeholder="Question" id="questionInput" required /> -->
+
+
+		<div>
+			<form action="." method="post" enctype="multipart/form-data" class="form-horizontal" navalidate>
+				{% csrf_token %}
+					{{form|crispy}}		
+				<hr/>
+				<h3>{{inlineformset.prefix|title}}</h3>
+		
+				<table id="formset_table" class="table table-bordered">
+					{% for form in inlineformset.forms %}
+						{{ form.pk }}
+						{% if forloop.first %}
+							<thead>
+								<tr>
+									{% for field in form.visible_fields %}
+										<th>{{ field.label_tag }}</th>
+									{% endfor %}
+								</tr>
+							</thead>
+						{% endif %}
+						
+						<tr id="{{ form.prefix }}-row">
+						{% for field in form.visible_fields %}
+							<div class="fieldWrapper">
+								{{ field.errors }}
+								<td>{{ field }}</td>
+							</div>
+						{% endfor %}
+						</tr>
+					{% endfor %}
+				</table>
+				{{ inlineformset.management_form }}
+		
+				<button id="privbutton" onclick="showPreviousQuestion()">
+					Previous Question
+				  </button>
+				  <button id="nextbutton" onclick="addNextQuestion()">
+					Next Question
+				  </button>
+				  <button id="submitButton" onclick="submitExam()">Submit</button>
+			</form>
+		</div>
+		
+      </div>
+	  
+    </div>
+
+    <script>
+      let currentQuestionIndex = 0;
+      let questions = [];
+
+      // Call showQuestionForm() when the page loads
+      window.onload = function () {
+        showQuestionForm();
+      };
+
+      function showQuestionForm() {
+        // Reset input fields
+        document.getElementById("questionInput").value = "";
+        document.querySelectorAll(".choiceInput").forEach((input) => {
+          input.value = "";
+        });
+
+        // Reset currentQuestionIndex to 0
+        currentQuestionIndex = 0;
+
+        // Clear the questions array
+        questions = [];
+
+        document.getElementById("addExamBtn").style.display = "none";
+        document.getElementById("questionForm").style.display = "block";
+        populateFormWithQuestion();
+      }
+
+      function showPreviousQuestion() {
+        if (currentQuestionIndex > 0) {
+          currentQuestionIndex--;
+          populateFormWithQuestion();
+        }
+      }
+
+      function addNextQuestion() {
+        // Validate the first three input fields before moving to the next question
+        if (validateFirstThreeInputs()) {
+          saveCurrentQuestion();
+          currentQuestionIndex++;
+          populateFormWithQuestion();
+        }
+      }
+
+      function validateFirstThreeInputs() {
+        const inputs = document.querySelectorAll(".choiceInput");
+        for (let i = 0; i < 2; i++) {
+          if (!inputs[i].value.trim()) {
+            // Use SweetAlert2 for a custom popup
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "Please fill in all choices before proceeding.",
+            });
+            return false;
+          }
+        }
+        return true;
+      }
+
+      function populateFormWithQuestion() {
+        if (
+          currentQuestionIndex >= 0 &&
+          currentQuestionIndex < questions.length
+        ) {
+          const currentQuestion = questions[currentQuestionIndex];
+          document.getElementById("questionInput").value =
+            currentQuestion.question || "";
+
+          const choices = currentQuestion.choices || [];
+          document.querySelectorAll(".choiceInput").forEach((input, index) => {
+            input.value = choices[index] || "";
+          });
+        } else {
+          // If no more questions, clear the form
+          document.getElementById("questionInput").value = "";
+          document
+            .querySelectorAll(".choiceInput")
+            .forEach((input) => (input.value = ""));
+        }
+      }
+
+      function saveCurrentQuestion() {
+        const question = document.getElementById("questionInput").value;
+        const choices = Array.from(
+          document.querySelectorAll(".choiceInput")
+        ).map((input) => input.value);
+        questions[currentQuestionIndex] = { question, choices };
+      }
+
+      function submitExam() {
+        saveCurrentQuestion();
+        // Your logic to submit the exam
+        // This example shows the animated "Thank you" popup.
+        document.getElementById("questionForm").style.display = "none";
+        document.getElementById("thankYouOverlay").style.display = "flex";
+        setTimeout(() => {
+          document.getElementById("thankYouOverlay").style.display = "none";
+          // document.getElementById("addExamBtn").style.display = "block";
+          // Show the question form again after submitting
+          document.getElementById("questionForm").style.display = "block";
+          // Clear all input fields
+          document.getElementById("questionInput").value = "";
+          document.querySelectorAll(".choiceInput").forEach((input) => {
+            input.value = "";
+          });
+        }, 3000); // Hide popup after 3 seconds (adjust as needed)
+      }
+
+      // Modified dropdown script
+      function toggleModifiedDropdown() {
+        const menu = document.getElementById("modifiedDropdownMenu");
+        menu.classList.toggle("menu-open");
+      }
+
+      function selectModifiedOption(event, option) {
+        const selected = document.querySelector(".modified-dropdown .selected");
+        selected.innerText = option.innerText;
+
+        // Close the dropdown immediately after selecting an option
+        toggleModifiedDropdown();
+
+        // Prevent the click event from reaching toggleModifiedDropdown
+        event.stopPropagation();
+
+        // Hide options C and D for "True False" selection
+        const multipleChoice = document.querySelector(".multiple-choice");
+        if (option.innerText === "True False") {
+          document.querySelector(".choiceInput:nth-child(3)").style.display =
+            "none";
+          document.querySelector(".choiceInput:nth-child(4)").style.display =
+            "none";
+        } else {
+          document.querySelector(".choiceInput:nth-child(3)").style.display =
+            "block";
+          document.querySelector(".choiceInput:nth-child(4)").style.display =
+            "block";
+        }
+      }
+
+      // Add event listener for modified dropdown selection
+      document.addEventListener("DOMContentLoaded", function () {
+        const customDropdown = document.querySelector(".modified-dropdown");
+        const selected = customDropdown.querySelector(".selected");
+        const menu = customDropdown.querySelector(".menu");
+        const options = customDropdown.querySelectorAll(".menu li");
+
+        customDropdown.addEventListener("click", (event) => {
+          if (event.target === selected) {
+            menu.classList.toggle("menu-open");
+          }
+        });
+
+        options.forEach((option) => {
+          option.addEventListener("click", () => {
+            selectModifiedOption(option);
+          });
+        });
+
+        // Close the dropdown if clicked outside
+        document.addEventListener("click", (event) => {
+          if (!customDropdown.contains(event.target)) {
+            menu.classList.remove("menu-open");
+          }
+        });
+      });
+    </script>
+    <!--  -->
+
+    <script>
+      // JavaScript to toggle the active class on hamburger click
+      document.addEventListener("DOMContentLoaded", function () {
+        var navbarHamburger = document.querySelector(".navbar-hamburger");
+        var navbarMenu = document.querySelector(".navbar-menu");
+
+        navbarHamburger.addEventListener("click", function () {
+          navbarHamburger.classList.toggle("active");
+          navbarMenu.classList.toggle("active");
+        });
+
+        document.addEventListener("click", function (event) {
+          var targetElement = event.target;
+          if (
+            !targetElement.closest(".navbar") &&
+            navbarHamburger.classList.contains("active")
+          ) {
+            navbarHamburger.classList.remove("active");
+            navbarMenu.classList.remove("active");
+          }
+        });
+      });
+    </script>
+    <!--  -->
+    <script>
+      // JavaScript to toggle the active class on hamburger click
+      document.addEventListener("DOMContentLoaded", function () {
+        var navbarHamburger = document.querySelector(".navbar-hamburger");
+        var navbarMenu = document.querySelector(".navbar-menu");
+
+        navbarHamburger.addEventListener("click", function () {
+          navbarHamburger.classList.toggle("active");
+          navbarMenu.classList.toggle("active");
+        });
+
+        document.addEventListener("click", function (event) {
+          var targetElement = event.target;
+          if (
+            !targetElement.closest(".navbar") &&
+            navbarHamburger.classList.contains("active")
+          ) {
+            navbarHamburger.classList.remove("active");
+            navbarMenu.classList.remove("active");
+          }
+        });
+      });
+    </script>
+    <!-- Catgory dropdown -->
+    <script>
+      const newdropdowns = document.querySelectorAll(".newdropdown");
+      newdropdowns.forEach((newdropdown) => {
+        const select = newdropdown.querySelector(".select");
+        const caret = newdropdown.querySelector(".caret");
+        const menu = newdropdown.querySelector(".menu");
+        const options = newdropdown.querySelector(".menu li");
+        const selected = newdropdown.querySelector(".selected");
+
+        select.addEventListener("click", () => {
+          select.classList.toggle("select-clicked");
+          caret.classList.toggle("caret-rotate");
+          menu.classList.toggle("menu-open");
+        });
+        options.forEach((option) => {
+          option.addEventListener("click", () => {
+            selected.innerText = option.innerText;
+            select.classList.remove("select-clicked");
+            caret.classList.remove("caret-rotate");
+            menu.classList.remove("menu-open");
+            options.forEach((option) => {
+              option.classList.remove("active");
+            });
+            option.classList.add("active");
+          });
+        });
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+	<br>
+	<br>
+  </div>
+
+  {% endblock %}

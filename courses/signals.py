@@ -5,8 +5,9 @@ from django.db.models.signals import post_save
 from allauth.account.signals import user_logged_in,user_logged_out
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group,Permission
-
 from students.models import GlobalSetting
+from exam.quiz.models import Quiz
+from exam.multichoice.models import MCQuestion
 
 
 User = get_user_model()
@@ -64,6 +65,38 @@ def insert_course_to_specific_category(sender, instance, created,**kwargs):
         except Category.DoesNotExist:
             pass
 
+
+
+
+
+@receiver(post_save, sender=Course)
+def create_quiz_when_course_created(sender, instance, created,**kwargs):
+    category = None
+    if created:
+        quiz = Quiz.objects.create(
+            course = instance,
+            title = f"quiz of course {instance.slug}",
+            description = f"""
+                    Exam Details:
+                    1. Answer the following questions to the best of your ability.
+
+                    2. The exam consists of 3 true/false questions and 5 multiple-choice questions.
+                                
+            """,
+            url = instance.slug,
+            random_order = True,
+            max_questions = 100,
+            answers_at_end = True,
+            pass_mark = 50,
+            success_text = f"""
+            well done 
+            """,
+            fail_text = f"""
+            failed
+            
+            """,
+            draft = True
+        )
    
 
 @receiver(post_save, sender=User)
@@ -78,3 +111,20 @@ def create_global_setting_when_user_is_create(sender, instance, created,**kwargs
         
         
         print("global_setting  ",global_setting)
+        
+        
+        
+
+# @receiver(post_save, sender=MCQuestion)
+# def automatically_insert_question_to_quiz(sender, instance,created,**kwargs):
+ 
+#     if created:
+        
+#         quizes = Quiz.objects.all()
+#         for quiz in quizes:
+#             quiz.questions.set(instance)
+#             quiz.save()
+#         print("kwargs ",kwargs)
+        
+        
+        

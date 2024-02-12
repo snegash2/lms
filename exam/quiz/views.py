@@ -2,32 +2,133 @@ import random
 
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.exceptions import PermissionDenied
+from django.forms import BaseModelForm
+from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.utils.decorators import method_decorator
 from django.views.generic import DetailView, ListView, TemplateView, FormView,CreateView
-
-from .forms import QuestionForm, EssayForm
+from courses.models import Course
+from .forms import QuestionForm, EssayForm,InstructorAnswerEditViewForm
 from .models import Quiz, Category, Progress, Sitting, Question
 from exam.essay.models import Essay_Question
+from exam.multichoice.models import MCQuestion,Answer
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from .forms import InstructorQuizEditViewForm,InstructorQuestionEditViewForm,QuestionFormSet
+from django.views.generic.base import TemplateResponseMixin, View
 
 
+class InstructorQuestionEditView(CreateView):
+    model = MCQuestion
+    form_class = QuestionFormSet
+    template_name = "instructor/quiz/edit_question.html"
+    success_url = '/'
+    
+    
+    
+    
+    
+# class InstructorQuestionEditView(TemplateResponseMixin, View):
+#     module = None
+#     model = None
+#     obj = None
+#     template_name = "instructor/quiz/edit_question.html"
 
-from .forms import InstructorQuizEditView
+ 
+#     def get_form(self, model, *args, **kwargs):
+#         Form = QuestionFormSet()
+#         return Form(*args, **kwargs)
 
+#     # def dispatch(self, request, module_id, model_name, id=None):
+#     #     self.module = get_object_or_404(Module,
+#     #                                    id=module_id,
+#     #                                    course__teacher=request.user)
+#     #     self.model = self.get_model(model_name)
+#     #     if id:
+#     #         self.obj = get_object_or_404(self.model,
+#     #                                      id=id,
+#     #                                      teacher=request.user)
+#     #     return super().dispatch(request, module_id, model_name, id)
+
+#     def get(self, request, module_id, model_name, id=None):
+#         form = self.get_form(self.model, instance=self.obj)
+#         return self.render_to_response({'form': form,
+#                                         'object': self.obj})
+
+#     # def post(self, request, module_id, model_name, id=None):
+#     #     form = self.get_form(self.model,
+#     #                          instance=self.obj,
+#     #                          data=request.POST,
+#     #                          files=request.FILES)
+#     #     if form.is_valid():
+#     #         obj = form.save(commit=False)
+#     #         obj.teacher = request.user
+#     #         obj.save()
+#     #         if not id:
+#     #             # new content
+#     #             Content.objects.create(module=self.module,item=obj)
+#     #         return redirect('courses:module_content_list', self.module.id)
+#     #     return self.render_to_response({'form': form,
+#     #                                     'object': self.obj})
+    
+    
+    
+class InstructorAnswerEditView(CreateView):
+    model = Answer
+    form_class = InstructorAnswerEditViewForm
+    template_name = "instructor/quiz/edit_answer.html"
+    success_url = '/'
+    
+
+    
 
 class InstructorQuizEditView(CreateView):
     model = Quiz
-    form_class = InstructorQuizEditView
+    form_class = InstructorQuizEditViewForm
     template_name = "instructor/quiz/edit.html"
     
     success_url = '/'
-
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # context['form'].fields['name'].label = 'Your name'
+        # Get the specific course instance based on URL parameter, ID, etc.
+        course_instance = get_object_or_404(Course, pk=self.kwargs.get('pk'))
+        course_instance = Course.objects.all()
+        context['form'] = InstructorQuizEditViewForm(course_instance=course_instance)
         return context
+    
+    def get(self, request: HttpRequest, *args: str, **kwargs) -> HttpResponse:
+        course_instance = Course.objects.filter(teacher = request.user)
+        context = {
+            'form':InstructorQuizEditViewForm(course_instance=course_instance)
+        }
+        return render(request,"instructor/quiz/edit.html",context)
+    
+    
+    def post(self, request: HttpRequest, *args: str, **kwargs: random) -> HttpResponse:
+        course_instance = Course.objects.filter(teacher = request.user)
+        # print("data ",request.POST)
+        # quiz = Quiz()
+        # quiz.course = Course.objects.get(id = request.POST.get("course"))
+        # quiz.title = request.POST.get("title")
+        # quiz.description = request.POST.get("description")
+        # quiz.url = request.POST.get("url")
+        # quiz.random_order = request.POST.get("random_order")
+        # quiz.max_questions = request.POST.get("max_questions")
+        # quiz.answers_at_end = request.POST.get("answers_at_end")
+        # quiz.pass_mark = request.POST.get("pass_mark")
+        # quiz.success_text = request.POST.get("success_text")
+        # quiz.fail_text = request.POST.get("fail_text")
+        # quiz.save()
+        
+        form = InstructorQuizEditViewForm(request.POST)
+        
+        context = {
+            'form':InstructorQuizEditViewForm(course_instance=course_instance)
+        }
+        return render(request,"instructor/quiz/edit.html",context)
+
+    
 
 
 

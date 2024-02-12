@@ -2,8 +2,6 @@ from django import forms
 from django.contrib import admin
 from django.contrib.admin.widgets import FilteredSelectMultiple
 from django.utils.translation import gettext_lazy as _
-
-
 from .models import Quiz, Category, SubCategory, Progress, Question
 from exam.multichoice.models import MCQuestion, Answer
 from exam.true_false.models import TF_Question
@@ -12,6 +10,9 @@ from exam.essay.models import Essay_Question
 
 class AnswerInline(admin.TabularInline):
     model = Answer
+
+
+
 
 
 class QuizAdminForm(forms.ModelForm):

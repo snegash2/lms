@@ -182,8 +182,8 @@
           {%if request.user.is_authenticated %}
           <li>
 
-            <div class="Sign">
-              <a href="{%url 'students:student_update_profile' request.user.profile.pk %}" ><h6>Profile</h6></a>
+            <div class="Sign" style="display: flex;justify-content: center;align-items: center; margin-bottom:5px;" >
+              <a  style="margin:0px;padding:0px;" href="{%url 'students:student_update_profile' request.user.profile.pk %}" ><h6>Profile</h6></a>
               
             </div>
           </li>

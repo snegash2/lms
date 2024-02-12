@@ -53,6 +53,8 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'tempus_dominus',
     "bootstrap_datepicker_plus",
+    'django_tables2',
+    'crudbuilder',
   
 
    
@@ -277,14 +279,14 @@ AUTHENTICATION_BACKENDS = [
 
 
 # Django Allauth settings
-ACCOUNT_AUTHENTICATION_METHOD = 'username'
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED= True
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS=10 
 ACCOUNT_LOGIN_ATTEMPTS_LIMIT=5
 ACCOUNT_EMAIL_VERIFICATION="optional"
 ACCOUNT_REDIRECT_URL='/course/course_list/'
 ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT=86400
-ACCOUNT_UNIQUE_EMAIL=False
+ACCOUNT_UNIQUE_EMAIL=True
 ACCOUNT_EMAIL_CONFORMATION=180
 ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = True
 
@@ -386,5 +388,4 @@ CACHES.update({
         'TIMEOUT': None
     }
 })
-
 
