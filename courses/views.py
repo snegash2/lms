@@ -28,7 +28,8 @@ from django.views.decorators.http import require_POST
 import json
 import random
 from django.core import serializers
-
+from django_tables2 import SingleTableView
+from .tables import *
 
 
 # common behavior for all classes this class return courses which create only by currently logedin user
@@ -61,8 +62,10 @@ class ManageCourseListView(OwnerCourseMixin, ListView):
     
 
 
-class CourseCreateView(OwnerCourseEditMixin, CreateView):
+class CourseCreateView(OwnerCourseEditMixin,CreateView,SingleTableView):
+    model = Course
     permission_required = 'courses.add_course'
+    table_class = CourseTable
     form_class = CourseCreateForm
     
 

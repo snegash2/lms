@@ -18,6 +18,7 @@ CSRF_TRUSTED_ORIGINS = [
 # Application definition
 
 INSTALLED_APPS = [
+    #   'avatar',
     'rolepermissions',
     'django_roles_access',
     "admin_interface",
@@ -55,6 +56,8 @@ INSTALLED_APPS = [
     "bootstrap_datepicker_plus",
     'django_tables2',
     'crudbuilder',
+     'newsfeed',
+      
   
 
    

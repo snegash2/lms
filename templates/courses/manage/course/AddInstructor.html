@@ -1,7 +1,7 @@
 {% extends '_base.html' %}
 {% load static %}
 {% load crispy_forms_tags %}
-
+{% load render_table from django_tables2 %}
     {% block title %} {{request.user.username }} add course{% endblock %}
 
     {% block style %}
@@ -116,75 +116,12 @@
     <!-- Container for displaying saved courses -->
     <div id="coursesContainer">
 
-      {% for course in mycourses %}
+      {% render_table table %}
 
-        
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Delete {{course.name|title}}</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-                Are you sure you want to delete this {{course.slug}}?
-              </div>
-              <div class="modal-footer">
-                <button type="button" id="modal-delete-btn" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-danger" onclick = "deleteId({{course.id}})">Delete</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-
-        <div class="courseCard" id="course_{{course.id}}" >
-          <button type="button" class="btn btn-primary position-relative">
-            Status
-          {% if course.published%}
-            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                <small>Accepted</small>
-              <span class="visually-hidden">unread messages</span>
-            </span>
-
-            {% else %}
-
-            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-              <small>Waiting</small>
-              <span class="visually-hidden">unread messages</span>
-            </span>
-            {% endif %}
-          </button>
-          <img src="{{course.image.url}}" alt="{{course.name}}" class="courseImage" style="width: 300px;height:150px;" />
-          <h3>{{course.name|title}}</h3>
-          <p class="courseDescription" style="margin: auto;"> {{course.overview|safe|truncatechars:80}}</p>
-         
-          <div class="editDeleteButtons">
-          
-              <a href="{% url 'courses:course_edit' course.id %}">
-                <button  class="addModuleButton" type="button">View Course</button>
-              </a>
-                 
-                 
-              <a href="{% url "courses:egiliablity" course.id %}">
-                <button  class="addModuleButton" >Students</button>
-              </a>
-    
-          
-              <a href="{% url "courses:course_module_update" course.id %}">
-                <button class="addModuleButton">Add Module</button>
-              </a>
-              <a>
-                <button type="button" class="btn btn-secondary addModuleButton" style="background-color: brown;" id="delete-btn" onclick="deleteAction({{course.id}})" data-bs-toggle="modal" style="float:inline-end;margin-top:5px;margin-left:5px;margin-right:60px;height:60px;border-radius:5px;"data-bs-target="#exampleModal"> &nbsp; Delete  &nbsp;</button>
-
-              </a>
-
-          </div>
-        </div>
-
-        {% endfor %}
     </div>
+
+
+
  <script>
 
   function scrollToDown() {

@@ -19,6 +19,7 @@ urlpatterns = [
 
     path('admin/', admin.site.urls),
     path('instructor-quiz/',  include('crudbuilder.urls')),
+    path('avatar/', include('avatar.urls')),
     path('instructor/', InstructorSignupView.as_view(), name='instructor_account_signup'),
     path('accounts/', include('allauth.urls')),
     path('quiz/',include('exam.quiz.urls')),   
@@ -31,7 +32,8 @@ urlpatterns = [
     path('',include('landing.urls')),
     path('forum/', include("spirit.urls",namespace="forum")),
     path('delete_doc/<id>',delete_doc,name = 'delete_doc'),
-     path('api/password_reset/', PasswordResetAPIView.as_view(), name='password_reset'),
+    path('api/password_reset/', PasswordResetAPIView.as_view(), name='password_reset'),
+    path('newsfeed/', include('newsfeed.urls', namespace='newsfeed')),
     
   
     # path('__debug__/', include('debug_toolbar.urls')),

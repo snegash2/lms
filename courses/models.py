@@ -125,7 +125,7 @@ class Course(models.Model):
                                 on_delete=models.CASCADE,
                                 null = True,
                                 blank = True)
-    course_type = models.CharField(max_length=255, choices=Course_CHOICES, default='PDF')
+    course_type = models.CharField("Type",max_length=255, choices=Course_CHOICES, default='PDF')
 
 
     slug = models.SlugField(max_length=200, unique=False)
@@ -136,7 +136,7 @@ class Course(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     students = models.ManyToManyField(User,related_name='courses_joined',blank=True)
     image = models.ImageField(null = False,blank = False,upload_to='media/images',default="media/images/avatar.png")
-    has_practice = models.BooleanField(default=False,null = True,blank = True)
+    has_practice = models.BooleanField('practice',default=False,null = True,blank = True)
     ceu          = models.IntegerField(default= 34)
     published   = models.BooleanField(default=False)
     reason_not_published = models.TextField(default="",blank = True,null= True,help_text = "Reason not published.")

@@ -14,7 +14,7 @@ from courses.models import Course
 from .forms import CourseEnrollForm
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from crendential.models import Crendential
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from students.models import Certification,StudentActivity,Profile
 from .forms import StudentProfile
 from django.shortcuts import  render
@@ -27,7 +27,7 @@ from django.views import generic
 
 
 
-
+User = get_user_model()
 class StudentRegistrationView(CreateView):
     template_name = 'students/student/registration.html'
     form_class = UserCreationForm

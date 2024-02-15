@@ -50,7 +50,7 @@ class CourseCreateForm(forms.ModelForm):
         model = Course
         exclude = 'category','teacher','published','students','reason_not_published','slug','name',"ceu","has_practice"
         
-    course_type = forms.ChoiceField(label="Course Type",choices=Course_CHOICES,widget=forms.Select(attrs={'class':"form-select"}))
+    course_type = forms.ChoiceField(label="type",choices=Course_CHOICES,widget=forms.Select(attrs={'class':"form-select"}))
     intro_video = forms.URLField(widget=forms.URLInput(attrs={'class':"form-control w-100",'placeholder':"Intro video"}))
 
 
@@ -68,10 +68,10 @@ class CourseUpdateForm(forms.ModelForm):
         exclude = 'category','teacher','published','students','reason_not_published','slug','name',"ceu","has_practice"
         
         
-        course_type = forms.ChoiceField(label="Course Type",choices=Course_CHOICES,widget=forms.Select(attrs={'class':"form-select"}))
-        ceu = forms.IntegerField(label="Credit Hourse",widget=forms.NumberInput(attrs={'class':"form-control w-100"}))
-        has_practice = forms.BooleanField(label="Haspractice",widget=forms.CheckboxInput(attrs={'class':"form-check-input form-check-label"}))
-        intro_video = forms.URLField(label= "You tube video",widget=forms.URLInput(attrs={'class':"form-control w-100"}))
+        course_type = forms.ChoiceField(label="Type",choices=Course_CHOICES,widget=forms.Select(attrs={'class':"form-select"}))
+        ceu = forms.IntegerField(label="CEU",widget=forms.NumberInput(attrs={'class':"form-control w-100"}))
+        has_practice = forms.BooleanField(label="practice",widget=forms.CheckboxInput(attrs={'class':"form-check-input form-check-label"}))
+        intro_video = forms.URLField(label= "Intro",widget=forms.URLInput(attrs={'class':"form-control w-100"}))
 
 
 

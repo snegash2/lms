@@ -71,7 +71,7 @@ class MCQuestion(BaseCrudBuilder):
     
     custom_templates = {
         #'list': 'quiz/your_list_template.html',
-        'create': 'instructor/quiz/edit_question.html',
+        # 'create': 'instructor/quiz/edit_question.html',
         #'detail': 'quiz/your_detail_template.html',
         #'update': 'quiz/your_update_template.html',
         #'delete': 'auiz/your_delete_template.html'
