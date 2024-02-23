@@ -1,15 +1,15 @@
-from django_tables2 import Column, tables
+from django_tables2 import Column, tables,LinkColumn
 from .models import Course
 from django.utils.safestring import mark_safe
 
 
 class CourseTable(tables.Table):
-    # actions = Column()
- 
+
     class Meta:
         model = Course
         template_name = "django_tables2/bootstrap.html"
-        fields = ('published','course_type', 'has_practice','created','students','id')
+        fields = ('published','course_type','image','id')
+        tables2_css_class = "table table-bordered table-condensed"
         # exclude = ("teacher",'image','slug','reason_not_published')
         
         
@@ -21,9 +21,7 @@ class CourseTable(tables.Table):
         # generate button HTML based on data and desired behavior
         
         button_html = f'''
-        
-        
-                
+   
         <!-- Modal -->
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -44,25 +42,31 @@ class CourseTable(tables.Table):
             </div>
          <div>
     
+    
+    
         <a href="/course/{value}/edit/">
           <button  class="btn btn-small" type="button">View Course</button>
         </a>
            
            
-        <a href="#">
+        <a href="/course/eligibility/{value}/">
           <button  class="btn btn-small" >Students</button>
         </a>
 
     
-        <a href="#">
+        <a href="/course/{value}/module/">
           <button class="btn small">Add Module</button>
         </a>
         <a>
-          <button class="btn btn-samll" style="background-color: brown;" id="delete-btn" onclick="deleteAction({value})" data-bs-toggle="modal"  data-bs-target="#exampleModal">Delete</button>
+          <button class="btn btn-samll" id="delete-btn" onclick="deleteAction({value})" data-bs-toggle="modal"  data-bs-target="#exampleModal">Delete</button>
+
+        </a>
+            <a  href="/quiz/instructor/edit-question/{value}/">
+          <button class="btn btn-samll" id="delete-btn"  data-bs-toggle="modal"  data-bs-target="#exampleModal">exam</button>
 
         </a>
 
-    </div>
+    
         '''
 
         return mark_safe(button_html)

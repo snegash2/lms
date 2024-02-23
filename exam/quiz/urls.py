@@ -1,11 +1,16 @@
 try:
     from django.conf.urls import url
 except ImportError:
-    from django.urls import re_path as url
+    from django.urls import re_path as url,path
 
 from .views import QuizListView, CategoriesListView, \
     ViewQuizListByCategory, QuizUserProgressView, QuizMarkingList, \
-    QuizMarkingDetail, QuizDetailView, QuizTake,InstructorQuizEditView,InstructorQuestionEditView,InstructorAnswerEditView
+    QuizMarkingDetail, QuizDetailView, QuizTake,InstructorQuizEditView,\
+        InstructorQuestionEditView,InstructorAnswerEditView,add_mc_answer,\
+            InstructorListEditView,InstructorDeleteView,InstructorListSearchView,\
+                InstructorListDeleteView,InstructorUpdateEditView
+    
+    
 
 urlpatterns = [
 
@@ -15,9 +20,32 @@ urlpatterns = [
     
     
     
-    url(r'^instructor/edit-question/$',
+    path('instructor/edit-question/<pk>/',
         view=InstructorQuestionEditView.as_view(),
         name='edit-question'),
+
+    
+    
+    path('instructor/list-question/',
+        view=InstructorListEditView.as_view(),
+        name='list-question'),
+    
+    
+    path('instructor/search-question/',
+        view=InstructorListSearchView.as_view(),
+        name='search-question'),
+    
+    
+        
+    path('instructor/delete-question/',
+        view=InstructorListDeleteView,
+        name='delete-question'),
+    
+    
+    path('instructor/update-question/',
+        view=InstructorUpdateEditView,
+        name='update-question'),
+    
     
     
     url(r'^instructor/edit-answer/$',
@@ -56,4 +84,12 @@ urlpatterns = [
     url(r'^(?P<quiz_name>[\w-]+)/take/$',
         view=QuizTake.as_view(),
         name='quiz_question'),
+    
+    url('add_mc_answer',
+        view=add_mc_answer,
+        name='mc_answer'),
+    
+    
+        
+  
 ]

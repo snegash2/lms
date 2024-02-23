@@ -2,79 +2,158 @@ import random
 
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.exceptions import PermissionDenied
+from django.db.models.query import QuerySet
 from django.forms import BaseModelForm
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.utils.decorators import method_decorator
-from django.views.generic import DetailView, ListView, TemplateView, FormView,CreateView
+from django.views.generic import DetailView, ListView, TemplateView, FormView,CreateView,DeleteView,UpdateView
 from courses.models import Course
-from .forms import QuestionForm, EssayForm,InstructorAnswerEditViewForm
+from .forms import QuestionForm, EssayForm,InstructorAnswerEditViewForm,InstructorQuizEditViewForm,InstructorQuestionEditViewForm,QuestionFormSet,MCAnswerForm
 from .models import Quiz, Category, Progress, Sitting, Question
 from exam.essay.models import Essay_Question
 from exam.multichoice.models import MCQuestion,Answer
 from django.contrib.auth.decorators import permission_required
-from django.contrib.auth.mixins import PermissionRequiredMixin
-from .forms import InstructorQuizEditViewForm,InstructorQuestionEditViewForm,QuestionFormSet
+from django.contrib.auth.mixins import PermissionRequiredMixin,LoginRequiredMixin
 from django.views.generic.base import TemplateResponseMixin, View
+from django.urls import reverse,resolve
+from django.shortcuts import redirect
+from django.http import JsonResponse
+import json
+from django.core.paginator import Paginator
+# from django_remote_forms.forms import RemoteForm
 
 
-class InstructorQuestionEditView(CreateView):
+class InstructorQuestionEditView(LoginRequiredMixin,CreateView):
     model = MCQuestion
+    # fields = "__all__"
+  
     form_class = QuestionFormSet
     template_name = "instructor/quiz/edit_question.html"
+    success_url = '/'
+    
+
+    def post(self, request: HttpRequest, *args: str, **kwargs) -> HttpResponse:
+        pk = kwargs.get("pk")
+        course = get_object_or_404(Course,pk = pk)
+        # course = request.user.courses_joined.all().first()
+        self.request.session['question_pk'] = pk
+        LETTERS = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P']
+        quiz = Quiz.objects.get(course = course)
+        question_data = request.POST.get("question")
+        question = MCQuestion.objects.create(answer_order = "random",figure = "",content = question_data)
+        question.quiz.add(quiz)
+        for letter in LETTERS:
+            choice = request.POST.get(f"choice_{letter}")
+            correct = True  if request.POST.get(f'checkbox_{letter}') == "on"  else False
+            if choice:
+                answer = Answer.objects.create(question = question,content = choice,correct = correct)
+                answer.save()
+     
+        return redirect(reverse('list-question'))
+    
+    
+    def get(self, request: HttpRequest, *args: str, **kwargs) -> HttpResponse:
+
+        course = get_object_or_404(Course,pk = kwargs.get("pk"))
+      
+        quiz = Quiz.objects.get(course = course)
+        request.session['quiz_id'] = quiz.id
+        context = {
+            
+            'quiz':quiz,
+            'course':course
+        }
+        return render(request,"instructor/quiz/edit_question.html",context )
+    
+    
+    
+    
+class InstructorListEditView(LoginRequiredMixin,ListView):
+    model = MCQuestion
+ 
+
+    template_name ="instructor/quiz/question_detail.html"
+
+    def get_context_data(self, **kwargs):
+        context =  super().get_context_data(**kwargs)
+        quiz_id = self.request.session.get('quiz_id')
+       
+        quiz = Quiz.objects.get(id = quiz_id)
+        context['question'] = quiz.get_questions()
+        context['question_pk'] = self.request.session.get('question_pk')
+        # context[f'form'] = QuestionFormSet(instance=q)
+      
+        return context
+    
+    
+    
+    
+@login_required
+def InstructorUpdateEditView(request):
+    form_class = QuestionFormSet
+    print("form class ")
+    form = QuestionFormSet()
+    return JsonResponse({
+        "form":form
+    })
+    
+ 
+    
+    
+    
+    
+    
+class InstructorListSearchView(LoginRequiredMixin,ListView):
+    model = MCQuestion
+    paginate_by = 2
+    template_name ="instructor/quiz/question_detail.html"
+    
+    
+    def get_queryset(self):
+        quryset =  super().get_queryset()
+        search_query = self.request.GET.get('q')
+        query =  quryset.filter(content__istartswith = search_query).filter(content__icontains = search_query)
+    
+        return query
+    
+
+    def get_context_data(self, **kwargs):
+        context =  super().get_context_data(**kwargs)
+        quiz_id = self.request.session.get('quiz_id')
+        quiz = Quiz.objects.get(id = quiz_id)
+    
+        context['question'] = quiz.get_questions()
+        context['question_pk'] = self.request.session.get('question_pk')
+        return context
+    
+    
+    
+    
+@login_required
+def InstructorListDeleteView(request):
+    body = json.loads(request.body)
+    id = body['id']
+    question = MCQuestion.objects.get(id = id)
+    question.delete()
+    return HttpResponse("Deleted")
+    
+   
+
+
+    
+class InstructorAnswerEditView(CreateView):
+    model = Answer
+    form_class = InstructorAnswerEditViewForm
+    template_name = "instructor/quiz/edit_answer.html"
     success_url = '/'
     
     
     
     
     
-# class InstructorQuestionEditView(TemplateResponseMixin, View):
-#     module = None
-#     model = None
-#     obj = None
-#     template_name = "instructor/quiz/edit_question.html"
-
- 
-#     def get_form(self, model, *args, **kwargs):
-#         Form = QuestionFormSet()
-#         return Form(*args, **kwargs)
-
-#     # def dispatch(self, request, module_id, model_name, id=None):
-#     #     self.module = get_object_or_404(Module,
-#     #                                    id=module_id,
-#     #                                    course__teacher=request.user)
-#     #     self.model = self.get_model(model_name)
-#     #     if id:
-#     #         self.obj = get_object_or_404(self.model,
-#     #                                      id=id,
-#     #                                      teacher=request.user)
-#     #     return super().dispatch(request, module_id, model_name, id)
-
-#     def get(self, request, module_id, model_name, id=None):
-#         form = self.get_form(self.model, instance=self.obj)
-#         return self.render_to_response({'form': form,
-#                                         'object': self.obj})
-
-#     # def post(self, request, module_id, model_name, id=None):
-#     #     form = self.get_form(self.model,
-#     #                          instance=self.obj,
-#     #                          data=request.POST,
-#     #                          files=request.FILES)
-#     #     if form.is_valid():
-#     #         obj = form.save(commit=False)
-#     #         obj.teacher = request.user
-#     #         obj.save()
-#     #         if not id:
-#     #             # new content
-#     #             Content.objects.create(module=self.module,item=obj)
-#     #         return redirect('courses:module_content_list', self.module.id)
-#     #     return self.render_to_response({'form': form,
-#     #                                     'object': self.obj})
-    
-    
-    
-class InstructorAnswerEditView(CreateView):
-    model = Answer
+class InstructorDeleteView(CreateView):
+    model = MCQuestion
     form_class = InstructorAnswerEditViewForm
     template_name = "instructor/quiz/edit_answer.html"
     success_url = '/'
@@ -506,3 +585,38 @@ def anon_session_score(session, to_add=0, possible=0):
         session["session_score_possible"] += possible
 
     return session["session_score"], session["session_score_possible"]
+
+
+
+
+def add_mc_answer(request):
+    # myform = MCAnswerForm()
+    myform = QuestionFormSet()
+    course = request.user.courses_joined.all().first()
+    quiz = Quiz.objects.get(course = course)
+    question_data = request.POST.get("question")
+    content = request.POST
+  
+    context = {
+        'formset':myform
+    }
+    
+    print("request data ",request.POST)
+
+    if request.method == "POST":
+        myform = QuestionFormSet(request.POST or None)
+        question = MCQuestion.objects.create(answer_order = "random",figure = "",content = question_data)
+        question.quiz.add(quiz)
+       
+        
+        if myform.is_valid():
+            print("form is ",myform.data)
+            return HttpResponse("Created")
+    
+        return render(request,"instructor/quiz/mc_answer.html",context)
+    
+
+    return render(request,"instructor/quiz/mc_answer.html",context)
+
+
+

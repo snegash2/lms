@@ -1,0 +1,245 @@
+* {
+    font-family: Kanit;
+  }
+  body {
+    font-family: Kanit;
+  
+    /* margin: 20px; */
+    background-color: #f0f0f0;
+    /* position: relative; */
+  }
+  .exam-header {
+    margin-top: 5rem;
+  }
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  table {
+    width: 85%;
+    margin: auto;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    animation: fadeInUp 0.5s ease;
+    background-color: white;
+  }
+  
+  table,
+  th,
+  td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    padding-bottom: 1.5rem;
+  }
+  
+  th {
+    text-align: left;
+    background-color: #f2f2f2;
+  }
+  
+  .add-question-btn {
+    text-align: right;
+    margin-bottom: 10px;
+    animation: slideInRight 0.5s ease;
+  }
+  
+  .add-question-btn button {
+    padding: 10px 20px;
+    background-color: #079a85;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .add-question-btn button:hover {
+    background-color: #079a85;
+  }
+  
+  #search {
+    margin-left: 6rem;
+    padding: 10px;
+    width: 200px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    transition: border-color 0.3s;
+  }
+  
+  #search:focus {
+    border-color: #079a85;
+  }
+  
+  .pagination {
+    margin-top: 20px;
+    margin-left: 6rem;
+    display: inline-block;
+    animation: fadeInUp 0.5s ease;
+  }
+  .pagination a.active {
+    background-color: #079a85;
+    color: white;
+    border: 1px solid #079a85;
+  }
+  .pagination a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    border: 1px solid #ddd;
+    margin: 0 4px;
+    transition: background-color 0.3s;
+  }
+  
+  .pagination a.active {
+    background-color: #079a85;
+    color: white;
+    border: 1px solid #079a85;
+  }
+  
+  /* .pagination a:hover:not(.active) {
+  background-color: #ddd;
+  } */
+  
+  .pagination a.active,
+  .pagination a:hover {
+    background-color: #079a85;
+    color: white;
+    border: 1px solid #079a85;
+  }
+  
+  .pagination a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    border: 1px solid #ddd;
+    margin: 0 4px;
+    transition: background-color 0.3s;
+  }
+  
+  .pagination a:not(.active):hover {
+    background-color: #14917e;
+  }
+  button {
+    padding: 10px 20px;
+    background-color: #079a85;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s, transform 0.3s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  button:hover {
+    background-color: #079a85;
+    color: black;
+    transform: scale(0.9); /* Scale the button on hover */
+  }
+  th.question-number {
+    width: 50px; /* Adjust the width as needed */
+  }
+  .add-question-btn {
+    position: absolute;
+    top: 0;
+    right: 84px;
+    margin: 20px; /* Adjust as needed */
+  }
+  
+  .add-question-btn button {
+    padding: 10px 20px;
+    background-color: #079a85;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .add-question-btn button:hover {
+    background-color: #079a85;
+  }
+  .top-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .add-question-btn button {
+    padding: 10px 20px;
+    background-color: #079a85;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-top: 16rem;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .add-question-btn button:hover {
+    background-color: #079a85;
+  }
+  
+  .search-box input {
+    padding: 8px;
+    width: 200px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    transition: border-color 0.3s;
+  }
+  
+  .search-box input:focus {
+    border-color: #079a85;
+  }
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes slideInRight {
+    from {
+      opacity: 0;
+      transform: translateX(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  /* Responsive styles */
+  @media (max-width: 768px) {
+    .pagination {
+      text-align: center;
+    }
+    .pagination a {
+      display: inline-block;
+      margin: 0 2px;
+      padding: 5px 10px;
+    }
+    #search {
+      margin-left: 1rem;
+    }
+    .add-question-btn {
+      position: absolute;
+      top: -15px;
+      right: 8px;
+    }
+    button {
+      margin-top: 5px;
+    }
+  }
+  

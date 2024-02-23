@@ -39,6 +39,10 @@ class MCQuestion(Question):
 
     def get_answers(self):
         return self.order_answers(Answer.objects.filter(question=self))
+    
+    
+    def get_correct_answers(self):
+        return self.order_answers(Answer.objects.filter(question=self,correct = True))
 
     def get_answers_list(self):
         return [(answer.id, answer.content) for answer in
@@ -61,7 +65,7 @@ class Answer(models.Model):
                                            "you want displayed"),
                                verbose_name=_("Content"))
 
-    correct = models.BooleanField(blank=False,
+    correct = models.BooleanField(blank=True,
                                   default=False,
                                   help_text=_("Is this a correct answer?"),
                                   verbose_name=_("Correct"))

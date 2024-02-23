@@ -18,7 +18,7 @@ CSRF_TRUSTED_ORIGINS = [
 # Application definition
 
 INSTALLED_APPS = [
-    #   'avatar',
+ 
     'rolepermissions',
     'django_roles_access',
     "admin_interface",
@@ -57,10 +57,6 @@ INSTALLED_APPS = [
     'django_tables2',
     'crudbuilder',
      'newsfeed',
-      
-  
-
-   
 
     
 
@@ -70,6 +66,7 @@ INSTALLED_APPS = [
     'courses.apps.CoursesConfig',
     'students.apps.StudentsConfig',
     'crendential',
+    # 'avatars',
 
     #exam related
     'exam.essay',
@@ -392,3 +389,16 @@ CACHES.update({
     }
 })
 
+
+
+
+DJANGO_TABLES2_TABLE_ATTRS = {
+    'class': 'table  table-hover table-centered',
+    'thead': {
+        'class': 'table-light',
+    },
+   
+    'td': {
+        'class':'table-active'
+    }
+}

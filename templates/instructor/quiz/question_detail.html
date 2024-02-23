@@ -1,0 +1,197 @@
+{% extends '_base.html'%}
+{% load static %}
+{% load crispy_forms_tags %}
+  {% block style %}
+
+    <link rel="stylesheet" href="{% static 'question_detail.css' %}" />
+    <link rel="stylesheet" href="{% static 'question_detail_main.css' %}" />
+      <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+  {% endblock %}
+
+  {% block content %}
+  <body class="main-body">
+      <!-- Modal -->
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Edit answer</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+          
+      
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button>Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <script>
+      // JavaScript to toggle the active class on hamburger click
+      document.addEventListener("DOMContentLoaded", function () {
+        var navbarHamburger = document.querySelector(".navbar-hamburger");
+        var navbarMenu = document.querySelector(".navbar-menu");
+
+        navbarHamburger.addEventListener("click", function () {
+          navbarHamburger.classList.toggle("active");
+          navbarMenu.classList.toggle("active");
+        });
+
+        document.addEventListener("click", function (event) {
+          var targetElement = event.target;
+          if (
+            !targetElement.closest(".navbar") &&
+            navbarHamburger.classList.contains("active")
+          ) {
+            navbarHamburger.classList.remove("active");
+            navbarMenu.classList.remove("active");
+          }
+        });
+      });
+    </script>
+    <!-- ===========================Start================================= -->
+    <h1 class="exam-header">All Exam Question</h1>
+
+    <div class="top-buttons">
+      <div class="add-question-btn">
+        <a href="{% url 'edit-question' question_pk %}" target="_blank" rel="noopener noreferrer">
+          <button onclick="addQuestion()">Add your question</button>
+        </a>
+        
+      </div>
+      <div class="search-box">
+        <input
+          type="text"
+          id="search"
+          onkeyup="search(event)"
+       
+          placeholder="Enter search term..."
+        />
+      </div>
+    </div>
+    <div id="questionTables">
+      <table id="questionTable1" class="questionTable">
+        <thead>
+          <tr>
+            <th style="width: 3rem">Number</th>
+            <th>Question</th>
+            <th>Choices / Correct Answer</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody id="questionList1">
+          <!-- Questions will be added here -->
+
+          {% for q in question %}
+          <tr>
+            <td style="width: 3rem">{{q.pk}}</td>
+            <td>{{q.content}}</td>
+            <!-- <td>Choices / Correct Answer</td> -->
+            <td> 
+              {% for answer in q.get_answers.all %}
+
+                {{answer}}
+
+              {% endfor%}
+
+              <p>Correct </p> 
+              {% for answer in q.get_correct_answers.all %}
+
+                {{answer}}
+
+            {% endfor%}
+            </td>
+            <td style="display: flex;justify-content:space-between;align-content:center;border:0;">
+
+
+
+          
+
+           
+                <button onclick="editQuestion({{q.id}})">Edit</button>
+                <span class="hidden" data-bs-toggle="modal" data-bs-target="#exampleModal" id="hiddenEdit"></span>
+                <button  onclick="deleteQuestion({{q.id}})" style="margin-left: 10px;height:100%;">Delete</button>
+            
+            </td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  
+
+    <script>
+
+      function search(event) {
+        const value = document.getElementById("search")
+        $(`#questionTables`).load(`{% url 'search-question' %}?q=${value.value} #questionTables`)
+      }
+
+      function deleteQuestion(id) {
+        let formData = {
+          id
+        }
+
+
+        let data =  JSON.stringify(formData);
+
+        axios.post("{% url 'delete-question' %}", data, {
+          
+          headers: {
+            //'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+          },
+       
+     
+        })
+        .then((response) => {
+
+          $(`#questionTables`).load(`{% url 'list-question' %} #questionTables`)
+        })
+        .catch((error) =>{
+          console.log("error ",error);
+        })
+      } 
+  
+
+
+      function editQuestion(id) {
+     
+        const data = {
+          "id":id
+        }
+        
+
+        $.ajax({
+          url: `{% url 'update-question' %}?q=${id}`,  // URL for the AJAX view
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+          },
+          contentType: 'application/json',
+          data: JSON.stringify(data),
+    
+          success: function (response) {
+            $('#hiddenEdit').click()
+          
+          },
+          error: function (xhr, status, error) {
+           
+            $('#hiddenEdit').click()
+          }
+        });
+
+        
+      } 
+    </script>
+ 
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+  
+  {% endblock %}

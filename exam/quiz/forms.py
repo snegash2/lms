@@ -1,4 +1,8 @@
+from typing import Any, Mapping
 from django import forms
+from django.core.files.base import File
+from django.db.models.base import Model
+from django.forms.utils import ErrorList
 from django.forms.widgets import RadioSelect, Textarea
 from .models import Quiz,Question,Sitting
 from exam.multichoice.models import  Answer,MCQuestion
@@ -7,40 +11,59 @@ from exam.quiz.models import Category,SubCategory
 from exam.multichoice.models import MCQuestion,Answer
 from django.contrib.admin.widgets import FilteredSelectMultiple
 from django.utils.translation import gettext_lazy as _
-from django.forms.models import inlineformset_factory
+from django.forms.models import inlineformset_factory,modelformset_factory
 from django.forms import TextInput, Textarea
 from crudbuilder.formset import BaseInlineFormset
 
-# QuestionFormSet = inlineformset_factory(MCQuestion,
-#             Answer,
-#             fields=['content',
-#             'correct',],
-#             #  widgets={
-#             #         'content': TextInput(attrs={'class': 'form-control-lg','placeholder': 'Enter module title','style':'width:95%;margin-bottom:5px;'}),
-#             #         'corre': Textarea(attrs={'class': 'form-control', 'rows': 4, 'placeholder': 'Brief module description','style':'width:95%;'}),
-#             #     },
-#             extra=3,
-#             max_num=105,
-#             can_delete=True,
 
-#             )
+class MCAnswerForm(forms.ModelForm):
+    class Meta:
+        model = Answer
+        fields = "__all__"
+        
+    # content = forms.CharField(label="Answer",widget=forms.TextInput(attrs={'style':'height:15px;'}))
+    # correct = forms.CharField(label="correct",required=False,widget=forms.CheckboxInput(attrs={'style':'height:15px;'}))
+
+QuestionFormSet = inlineformset_factory(MCQuestion,
+            Answer,
+         
+            form = MCAnswerForm,
+             can_order=False,
+            extra=3,
+            can_delete=False,
+            max_num=105,
+            help_texts="Edit Question answers"
+
+           )
+
+
+
+
 
 class ChildModelForm(forms.ModelForm):
     class Meta:
         model = MCQuestion
-        fields = "__all__"
+        exclude = ('category',)
     answer_order = forms.CharField(label="Answer order",widget=forms.TextInput(attrs={'class':'form-select'}))
 
 
-class QuestionFormSet(BaseInlineFormset):
+# class QuestionFormSet(forms.ModelForm):
+#     request = None
     
-        def __init__(self) -> None:
-            print("Creating Question Form")
-            super().__init__()
-        inline_model = Answer
-        parent_model = MCQuestion
-        exclude = ['category', 'sub_category']
-        extra = 4
+#     def __init__(self, user, *args, **kwargs):
+#         super(QuestionFormSet, self).__init__(*args, **kwargs)
+#         self.fields['quiz'].queryset = Course.objects.filter(teacher=user)
+    
+    
+    
+#     class Meta:
+#         model = Question
+#         exclude= ('category','explanation','sub_category')
+#     quiz = forms.ModelChoiceField(label ='Question', queryset=Quiz.objects.none(),widget=forms.HiddenInput(attrs={'class':'form-select'}))
+#     content = forms.CharField(label ='Question', widget=forms.Textarea(attrs={"id":"questionInput"}))
+#     # figure = forms.FileField(label ='Question', widget=forms.FileInput(attrs={"class":"form-control"}))
+        
+
         
      
 

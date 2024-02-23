@@ -1,4 +1,69 @@
 
+
+
+
+
+
+
+<div class="inputs">
+  <div> <label>Exam</label>{% render_field form.quiz id="additionalInput" %}</div>
+  <div ><label id="textlable">Question</label><textarea
+    id="questionInput"
+    type="text"
+    name="question"
+    placeholder="Question"
+    rows="4"
+    cols="40"
+    class="text-area"
+
+    required
+  ></textarea></div>
+</div>
+<br>
+<div class="image-upload" >
+<label for="imageInput">Choose Image:</label>
+<input type="file" id="imageInput" accept="image/*" style="width:95%;margin-bottom:5px;height:60px;"/>
+</div>
+
+<div class="multiple-choice" id="choicesContainer">
+
+  </div>
+  
+  <!-- Add file input for image upload -->
+ 
+  <div id="addChoiceText"  hx-get="{% url 'mc_answer' %}"   hx-target="#choicesContainer"  hx-swap="beforeend scroll:bottom">
+    Add Choice
+  </div>
+  <!-- <button id="add" onclick="addChoice()">Add Another Choice</button> -->
+  <button id="privbutton" onclick="showPreviousQuestion()">Previous Question</button>
+  <button id="nextbutton" onclick="addNextQuestion()">Next Question</button>
+  <!-- <button id="submitButton" onclick="submitExam()">Submit</button> -->
+  <button id="submitButton" type="submit"  hx-target=".container">Submit</button>
+  </div>
+<div class="choice">
+  <input type="text" placeholder="A" class="choiceInput" required />
+  <i class="checkbox-icon far fa-square" onclick="toggleCheckbox(this)"></i>
+  <i class="remove-icon fas fa-times" onclick="removeChoice(this.parentNode)"></i>
+</div>
+
+<div class="choice">
+  <input type="text" placeholder="B" class="choiceInput" required />
+  <i class="checkbox-icon far fa-square" onclick="toggleCheckbox(this)"></i>
+  <i class="remove-icon fas fa-times" onclick="removeChoice(this.parentNode)"></i>
+</div>
+
+<div class="choice">
+  <input type="text" placeholder="C" class="choiceInput" required />
+  <i class="checkbox-icon far fa-square" onclick="toggleCheckbox(this)"></i>
+  <i class="remove-icon fas fa-times" onclick="removeChoice(this.parentNode)"></i>
+</div>
+
+<div class="choice">
+  <input type="text" placeholder="D" class="choiceInput" required />
+  <i class="checkbox-icon far fa-square" onclick="toggleCheckbox(this)"></i>
+  <i class="remove-icon fas fa-times" onclick="removeChoice(this.parentNode)"></i>
+</div>
+
 https://github.com/jazzband/django-widget-tweaks
 
 

@@ -1,0 +1,16 @@
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+<form method="post"  hx-post="{% url 'mc_answer' %}" hx-target=".container">
+
+    {% csrf_token %}
+{% for myform in formset %}
+<div class="choice" style="display: inline-flex;align-items:center;">
+      {{myform|crispy}}
+   
+    <i class="remove-icon fas fa-times" onclick="removeChoice(this.parentNode)"></i>
+  </div>
+
+
+  {% endfor%}
+
+  </form>
