@@ -21,7 +21,7 @@ from django.shortcuts import redirect
 from django.http import JsonResponse
 import json
 from django.core.paginator import Paginator
-# from django_remote_forms.forms import RemoteForm
+
 
 
 class InstructorQuestionEditView(LoginRequiredMixin,CreateView):
@@ -91,12 +91,24 @@ class InstructorListEditView(LoginRequiredMixin,ListView):
     
 @login_required
 def InstructorUpdateEditView(request):
-    form_class = QuestionFormSet
-    print("form class ")
-    form = QuestionFormSet()
-    return JsonResponse({
-        "form":form
-    })
+    
+    id  = request.GET.get('q')
+    question = MCQuestion.objects.get(id = id)
+    form = QuestionFormSet(instance=question)
+ 
+    if request.method == 'POST':
+        form = QuestionFormSet(request.POST or None)
+        print("form ",form.data)
+        if form.is_valid():
+            form.instance = question
+           
+            form.save()
+        return redirect(reverse('list-question'))
+    context = {
+        'form':form,
+        'id':id
+    }
+    return render(request,"instructor/quiz/update_question.html",context)
     
  
     

@@ -1,0 +1,907 @@
+{% extends '_base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load render_table from django_tables2 %}
+    {% block title %} {{request.user.username }} add course{% endblock %}
+
+    {% block style %}
+
+     
+  
+
+        <link rel="stylesheet" href="{% static 'instructor_course_add.css' %}" />
+        <link rel="stylesheet" href="{% static 'instructor_course_add_footer.css'%} " />
+        <link rel="stylesheet" href="{% static 'instructor_course_add_css.css' %}" />
+        <link rel="stylesheet" href="{% static 'instructor_course_add_main.css'%}" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+
+
+    {% endblock %}
+  
+ {% block content %}
+    <!-- start -->
+    <div class="main__container" id="mainContainer">
+      <div class="first">
+        <img src="{% static 'back.png' %}" alt="" />
+      </div>
+      <div class="second">
+        <h1>Add Course</h1>
+        <hr />
+        <h1>Course guidelines</h1>
+        <hr />
+
+    
+
+        <div style="display: flex;flex-direction:column;">
+
+          <div >
+            <label for="categorySelect">Select Category:</label>
+            <select id="categorySelect" onchange="populateCourses()">
+              <option value="">Select...</option>
+              {% for category in categories %}
+                <option value="{{category}}" id="{{category}}">{{category|title}}</option>
+              {% endfor %}
+    
+            </select>
+          </div>
+
+          <div style="display: flex; flex-direction:row;width:100%;margin-top:20px;">
+            <label for="courseSelect" style="margin-right:30px;height:10px;margin-top:20px;">Select Course:</label>
+            <select id="courseSelect" onchange="showCourseModal()">
+              <!-- Courses will be populated dynamically using JavaScript -->
+            </select>
+          </div>
+       
+  
+      
+        </div>
+    
+      </div>
+    </div>
+    <!-- Modal -->
+
+    <!-- Modal -->
+        <div id="myModal">
+          <div id="error-container"></div>
+          <div class="modal-content" style="max-width:80vh; max-height: 90vh; overflow-y: auto;;">
+            <span id="closeModal" onclick="closeModal()">&times;</span>
+            <h2>Course Information</h2>
+            <!-- Wrapping the course description section for horizontal scrolling -->
+            <div class="scrollable-section" style="overflow-x: auto">
+              
+              <div class="popup-field">
+                <label for="courseName">Course Name:</label>
+                <input type="text" id="courseName" readonly />
+                  <script>
+                   
+                  </script>
+                <i
+                  class="icon fas fa-pencil-alt"
+                  onclick="enableEdit('courseName')"
+                ></i>
+              </div>
+              <form method="post" action="." id="course-form" enctype="multipart/form-data">   
+                {% csrf_token %}
+                <div id="myerror"></div>
+                {{form|crispy}}
+
+                  <input type="hidden" name="subCategory" value="{{courseName}}" />
+                  <input type="hidden" name="category" value="{{category}}" />
+
+              
+                    <div class="popup-field">
+                      <label for="courseDescription"></label>
+                      <div
+                        id="courseDescription"
+                        rows="4"
+                        cols="50"
+                  
+                      ></div
+                      <i
+                        class="icon fas fa-pencil-alt"
+                        onclick="enableEdit('courseDescription')"
+                      ></i>
+                    </div>
+                  </div>
+          
+                  <br/>
+
+                  <button type="submit" class="buttons" >Save</button>
+                
+          </form>
+          </div>
+        </div>
+    <!-- Container for displaying saved courses -->
+    <div id="coursesContainer">
+
+      {% render_table table %}
+
+    </div>
+
+
+
+ <script>
+
+  function scrollToDown() {
+  let scrollPosition = window.scrollY;
+  let height = document.body.scrollHeight;
+  let steps = Math.ceil(height / 50); // Adjust steps based on desired scroll speed
+  let interval = setInterval(() => {
+    if (scrollPosition < height) {
+      scrollPosition += Math.ceil(height / steps);
+      window.scrollBy(0, scrollPosition - window.scrollY);
+    } else {
+      clearInterval(interval);
+    }
+  }, 60); // Adjust interval for desired smoothness
+
+  }
+  function deleteAction(courseId) {
+
+  }
+
+
+  function deleteId(id) {
+    const data = {
+      "pk":id
+    }
+    
+    const course = $(`#course_${id}`)
+    $.ajax({
+      url: `/course/${id}/delete/`,  // URL for the AJAX view
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': '{{ csrf_token }}'
+      },
+      contentType: 'application/json',
+      data: JSON.stringify(data),
+
+      success: function (response) {
+        $("#modalContainer").remove()
+        course.remove()
+        $("#modal-delete-btn").click()
+        $(`#coursesContainer`).load(`{% url 'courses:course_create'%} #coursesContainer`)
+      },
+      error: function (xhr, status, error) {
+       
+        console.error(error);
+      }
+    });
+  
+  
+  }
+
+ 
+
+  function populateCourses() {
+    var categorySelect = document.getElementById("categorySelect");
+    var courseSelect = document.getElementById("courseSelect");
+
+    // Clear previous options
+    courseSelect.innerHTML = '<option value="">Select...</option>';
+
+    // Get the selected category
+    var selectedCategory = categorySelect.value;
+
+    // If a category is selected, populate courses and show the course dropdown
+    if (selectedCategory) {
+
+        let data = {
+          category: selectedCategory  // Pass the category as data
+        }
+    
+    
+        $.ajax({
+          url: '/get_course_name/',  // URL for the AJAX view
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+          },
+          contentType: 'application/json',
+          data: JSON.stringify(data),
+    
+          success: function (response) {
+            // Handle the successful response
+            var courses = response.courses;
+          
+
+                      // Add courses to the dropdown
+            courses.forEach(function (course) {
+              var option = document.createElement("option");
+              option.value = course;
+              option.text = course;
+              courseSelect.add(option);
+            
+             
+            });
+    
+          },
+          error: function (xhr, status, error) {
+            // Handle any error that occurred during the AJAX request
+            console.error(error);
+          }
+        });
+      }
+
+      // This is a simple example; you may want to fetch courses dynamically based on the selected category
+      var courses;
+      courseSelect.style.display = "block";
+    } 
+  
+
+ async  function globalDict(key,value) {
+
+
+  let data = {
+    key:key,
+    value:value
+  }
+    $.ajax({
+      url: '/user_global_settings_update/',  // URL for the AJAX view
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': '{{ csrf_token }}'
+      },
+      contentType: 'application/json',
+      data: JSON.stringify(data),
+
+      success: function (response) {
+        
+       
+      },
+      error: function (xhr, status, error) {
+        // Handle any error that occurred during the AJAX request
+        console.error(error);
+      }
+    });
+  
+  }
+
+
+  
+
+  function showCourseModal() {
+    var modal = document.getElementById("myModal");
+    modal.style.display = "block";
+    var selectedCourse = document.getElementById("courseSelect").value;
+    document.getElementById("courseName").value = selectedCourse;
+    document.body.style.overflow = "hidden";
+    globalDict(key = "selectedCourse",value = selectedCourse)
+    // Populate modal with existing course details
+
+    const form = document.getElementById("course-form");
+    form.addEventListener("submit", function(event) {
+      
+        event.preventDefault();
+        $('body').addClass('loading')
+        const formData = new FormData(form);
+        const formDataObj = Object.fromEntries(formData.entries());
+        let data = {}
+        if(formDataObj){
+            data = JSON.stringify(formDataObj);
+        }
+        axios.post("{% url 'courses:course_create'%}", formData, {
+          
+          headers: {
+            'Content-Type': 'application/octet-stream',
+            'X-CSRFToken': '{{ csrf_token }}'
+          },
+       
+     
+        })
+        .then((response) => {
+      
+          let data = JSON.parse(response.data.response)
+          const course = data[0].fields
+          $('body').removeClass('loading')
+          $(`#coursesContainer`).load(`{% url 'courses:course_create'%} #coursesContainer`)
+          $(`#courseSelect`).load(`{% url 'courses:course_create'%} #courseSelect`)
+          document.body.style.overflow = "auto";
+        })
+        .catch((error) => {
+          $(`#coursesContainer`).load(`{% url 'courses:course_create'%} #coursesContainer`)
+          $(`#courseSelect`).load(`{% url 'courses:course_create'%} #courseSelect`)
+          document.body.style.overflow = "auto";
+          if(response.errors) {
+            const error = document.getElementById("error-container")
+            let errorData = JSON.parse(response.errors)
+
+            
+            document.body.style.overflow = "auto";
+            for (const key in errorData ) {
+              const value = errorData[key];
+              const element = ` 
+              <div class="modal fade" id="errorModal" tabindex="-1" id="my-error-modal" role="dialog" style="position: relative;z-index: 999;">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                        
+                            <div class="modal-body">
+                                <p id="error-message"> <h1>${key} </h1> ${value}</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick = "closeErrorModal()">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `
+
+            error.innerHTML = element
+            setTimeout(function(){
+              error.innerText = ""
+            },3000)
+          }
+        
+        }
+
+     
+        });
+        
+        $.ajax({
+          url: "{% url 'courses:course_create'%}",  // URL for the AJAX view
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+          },
+          data:data,
+          //processData: false,
+          contentType: false,
+   
+    
+          success: function (response) {
+            $("#myModal").remove()
+            $("notificationModal").fadeOut(2000)
+            showSuccessMessage("success","Course Add","Added successfully",2000)
+            $(`#coursesContainer`).load(`{% url 'courses:course_create'%} #coursesContainer`)
+
+
+          }
+       
+        });
+
+    })
+
+  }
+  
+
+
+  function showSuccessMessage(icon,title,message,timer) {
+    Swal.fire({
+      icon: icon,
+      title: title,
+      text: message,
+      confirmButtonColor: "#079a85", // Bootstrap success color
+      timer: timer, // Auto-close the popup after 3000 milliseconds (3 seconds)
+      showCloseButton: true, // Show close button
+    });
+  }
+
+
+
+
+  function closeErrorModal(){
+    const mymodal = $("#my-error-modal").remove()
+      console.log("my modal",mymodal.remove());
+   
+  }
+
+
+
+
+  function closeModal() {
+    var modal = document.getElementById("myModal");
+    modal.style.display = "none";
+  }
+  // Add an event listener to the document body to close the popup when clicked outside
+
+  function findCourseCard(courseName) {
+
+    return courseName
+  }
+
+  function saveCourse() {
+    var categoryName = document.getElementById("categorySelect").value;
+    var courseName = document.getElementById("courseSelect").value;
+    var courseDescription =
+      document.getElementById("courseDescription").value;
+    var coursePictureInput = document.getElementById("coursePicture");
+    var coursePicture = coursePictureInput.files[0];
+
+    if (categoryName && courseName && courseDescription) {
+      var courseCard = findCourseCard(courseName);
+
+      if (courseCard) {
+        // Update existing course card
+        var courseDescriptionElement =
+          courseCard.querySelector(".courseDescription");
+        courseDescriptionElement.innerHTML =
+          formatDescription(courseDescription);
+
+        // Update course picture only if a new file is selected
+        var courseImage = courseCard.querySelector(".courseImage");
+        if (coursePicture) {
+          var reader = new FileReader();
+
+          reader.onload = function (e) {
+            courseImage.src = e.target.result;
+          };    <form action="." method="post">
+            {% csrf_token %}
+          <div class="inputs">
+            <div>
+              <label>Exam</label>
+              <input type="text" id="additionalInput" required />
+            </div>
+          </div>
+          <div class="texts-drop">
+            <div class="first"><label>Question</label></div>
+            <div class="text-area-container">
+              <textarea
+                id="questionInput"
+                type="text"
+                name="question"
+                placeholder="Question"
+                rows="4"
+                cols="40"
+                class="text-area"
+                required
+              ></textarea>
+            </div>
+          </div>
+      
+          <div class="image-upload">
+            <label for="imageInput">Choose Image:</label>
+            <input type="file" id="imageInput" accept="image/*" style="
+            height:60px;margin: 10px 0;
+            margin-top: 10px;
+            margin-right: 0px;
+            margin-bottom: 10px;
+            margin-left: 0px;
+            padding-left: 12px;
+            
+            " />
+          </div>
+      
+          <br>
+      
+          <div id="questionForm" style="display: block;">
+            <div class="check-container">
+              <div>
+                <div class="modified-dropdown" >
+                  <div class="select" onclick="toggleModifiedDropdown()" style="display:flex;justify-content:center;margin-left:50px;width:200px;">
+                    <span class="selected" onclick="toggleModifiedDropdown()"
+                      >Select Question Type</span
+                    >
+                    <i class="caret">&#9660;</i>
+                  </div>
+                  <ul class="menu" id="modifiedDropdownMenu">
+                    <li class="active" onclick="selectModifiedOption(event, this)">
+                      Random Question
+                    </li>
+                    <li onclick="selectModifiedOption(event, this)">
+                      Normal Question
+                    </li>
+                    <!-- <li onclick="selectModifiedOption(event, this)">True False</li> -->
+                  </ul>
+                </div>
+              </div>
+           
+              <div>
+                <p>Correct Answer</p>
+              </div>
+              <div>
+                <p>Remove</p>
+              </div>
+            </div>
+      
+            <div class="multiple-choice" id="choicesContainer">
+              <!-- Initial choice inputs -->
+              <!-- ... (previous code) ... -->
+      
+              <div class="choice">
+                <input type="text" placeholder="A" name="choice_A" class="choiceInput" required />
+                <div class="checkbox-container">
+                  <input type="checkbox" name="checkbox_A" class="checkbox-input" id="checkboxA" />
+                  <label for="checkboxA" class="checkbox-label">
+                    <!-- <i class="bx bx-check"></i> -->
+                  </label>
+                </div>
+                <i class="remove-icon fas fa-times" onclick="removeChoice(this.parentNode)"></i>
+              </div>
+              
+              <div class="choice">
+                <input type="text" name="choice_B" placeholder="B" class="choiceInput" required />
+                <div class="checkbox-container">
+                  <input type="checkbox" name="checkbox_B" class="checkbox-input" id="checkboxB" />
+                  <label for="checkboxB" class="checkbox-label">
+                    <!-- <i class="bx bx-check"></i> -->
+                  </label>
+                </div>
+                <i class="remove-icon fas fa-times" onclick="removeChoice(this.parentNode)"></i>
+              </div>
+              
+              <div class="choice">
+                <input type="text" placeholder="C" name="choice_C" class="choiceInput" required />
+                <div class="checkbox-container">
+                  <input type="checkbox" name="checkbox_C" class="checkbox-input" id="checkboxC" />
+                  <label for="checkboxC" class="checkbox-label">
+                    <!-- <i class="bx bx-check"></i> -->
+                  </label>
+                </div>
+                <i class="remove-icon fas fa-times" onclick="removeChoice(this.parentNode)"></i>
+              </div>
+          
+      
+              <!-- ... (remaining code) ... -->
+            </div>
+      
+            <!-- Add file input for image upload -->
+      
+            <div id="addChoiceText">Add Another Choice</div>
+            <!-- <button id="add" onclick="addChoice()">Add Another Choice</button> -->
+            <button id="privbutton" onclick="showPreviousQuestion()">
+              Previous Question
+            </button>
+            <button id="nextbutton"  type="submit" onclick="addNextQuestion()">
+              Next Question
+            </button>
+            <button id="submitButton" type="submit" onclick="submitExam()">Submit</button>
+          </div>
+      
+          <script>
+             Function to add another choice dynamically
+            function addChoice() {
+              const choicesContainer = document.getElementById("choicesContainer");
+              const newChoiceDiv = document.createElement("div");
+              newChoiceDiv.className = "choice";
+          
+              const newChoiceInput = document.createElement("input");
+              newChoiceInput.type = "text";
+              newChoiceInput.placeholder = String.fromCharCode(65 + choicesContainer.children.length); // A, B, C, ...
+              newChoiceInput.name = 'choice_' + String.fromCharCode(65 + choicesContainer.children.length); // A, B, C, ...
+      
+              newChoiceInput.className = "choiceInput";
+              newChoiceInput.required = true;
+          
+              const checkboxContainer = document.createElement("div");
+              checkboxContainer.className = "checkbox-container";
+          
+              const newCheckbox = document.createElement("input");
+              newCheckbox.type = "checkbox";
+              newCheckbox.className = "checkbox-input";
+              newCheckbox.id = "checkbox" + String.fromCharCode(65 + choicesContainer.children.length); // checkboxA, checkboxB, ...
+              newCheckbox.name = "checkbox_" + String.fromCharCode(65 + choicesContainer.children.length); // checkboxA, checkboxB, ..
+          
+              const checkboxLabel = document.createElement("label");
+              checkboxLabel.className = "checkbox-label";
+              checkboxLabel.htmlFor = "checkbox" + String.fromCharCode(65 + choicesContainer.children.length);
+          
+              const removeIcon = document.createElement("i");
+              removeIcon.className = "remove-icon fas fa-times";
+              removeIcon.onclick = function () {
+                removeChoice(newChoiceDiv);
+              };
+          
+              checkboxContainer.appendChild(newCheckbox);
+              checkboxContainer.appendChild(checkboxLabel);
+          
+              newChoiceDiv.appendChild(newChoiceInput);
+              newChoiceDiv.appendChild(checkboxContainer);
+              newChoiceDiv.appendChild(removeIcon);
+          
+              choicesContainer.appendChild(newChoiceDiv);
+              document.getElementById("addChoiceText").innerText = "Add Another Choice"; // Reset the text
+            }
+          
+            // Attach click event to the clickable text
+            document.getElementById("addChoiceText").addEventListener("click", addChoice);
+          </script>
+          
+          
+      
+          <!-- JavaScript code -->
+          <script>
+            function removeChoice(choiceElement) {
+              // Remove the selected choice from the DOM
+              choiceElement.parentNode.removeChild(choiceElement);
+      
+              // Reset the choice placeholders
+              const choicesContainer = document.getElementById("choicesContainer");
+              const choices = choicesContainer.querySelectorAll(".choice");
+              choices.forEach((choice, index) => {
+                choice.querySelector(".choiceInput").placeholder =
+                  String.fromCharCode(65 + index);
+              });
+            }
+      
+            // ... (previous JavaScript code) ...
+          </script>
+      
+          <script>
+            const newdropdowns = document.querySelectorAll(".newdropdown");
+            newdropdowns.forEach((newdropdown) => {
+              const select = newdropdown.querySelector(".select");
+              const caret = newdropdown.querySelector(".caret");
+              const menu = newdropdown.querySelector(".menu");
+              const options = newdropdown.querySelector(".menu li");
+              const selected = newdropdown.querySelector(".selected");
+      
+              select.addEventListener("click", () => {
+                select.classList.toggle("select-clicked");
+                caret.classList.toggle("caret-rotate");
+                menu.classList.toggle("menu-open");
+              });
+              options.forEach((option) => {
+                option.addEventListener("click", () => {
+                  selected.innerText = option.innerText;
+                  select.classList.remove("select-clicked");
+                  caret.classList.remove("caret-rotate");
+                  menu.classList.remove("menu-open");
+                  options.forEach((option) => {
+                    option.classList.remove("active");
+                  });
+                  option.classList.add("active");
+                });
+              });
+            });
+          </script>
+      
+          <script>
+            let currentQuestionIndex = 0;
+            let questions = [];
+      
+            // Call showQuestionForm() when the page loads
+            window.onload = function () {
+              showQuestionForm();
+            };
+      
+            function showQuestionForm() {
+              // Reset input fields
+              document.getElementById("questionInput").value = "";
+              document.querySelectorAll(".choiceInput").forEach((input) => {
+                input.value = "";
+              });
+      
+              // Reset currentQuestionIndex to 0
+              currentQuestionIndex = 0;
+      
+              // Clear the questions array
+              questions = [];
+      
+              document.getElementById("addExamBtn").style.display = "none";
+              document.getElementById("questionForm").style.display = "block";
+              populateFormWithQuestion();
+            }
+      
+            function showPreviousQuestion() {
+              if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                populateFormWithQuestion();
+              }
+            }
+      
+            function addNextQuestion() {
+              // Validate the first three input fields before moving to the next question
+              if (validateFirstThreeInputs()) {
+                saveCurrentQuestion();
+                currentQuestionIndex++;
+                populateFormWithQuestion();
+              }
+            }
+      
+            function validateFirstThreeInputs() {
+              const inputs = document.querySelectorAll(".choiceInput");
+              for (let i = 0; i < 2; i++) {
+                if (!inputs[i].value.trim()) {
+                  // Use SweetAlert2 for a custom popup
+                  Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Please fill in all choices before proceeding.",
+                  });
+                  return false;
+                }
+              }
+              return true;
+            }
+      
+            function populateFormWithQuestion() {
+              if (
+                currentQuestionIndex >= 0 &&
+                currentQuestionIndex < questions.length
+              ) {
+                const currentQuestion = questions[currentQuestionIndex];
+                document.getElementById("questionInput").value =
+                  currentQuestion.question || "";
+      
+                const choices = currentQuestion.choices || [];
+                document
+                  .querySelectorAll(".choiceInput")
+                  .forEach((input, index) => {
+                    input.value = choices[index] || "";
+                  });
+              } else {
+                // If no more questions, clear the form
+                document.getElementById("questionInput").value = "";
+                document
+                  .querySelectorAll(".choiceInput")
+                  .forEach((input) => (input.value = ""));
+              }
+            }
+      
+            function saveCurrentQuestion() {
+              const question = document.getElementById("questionInput").value;
+              const choices = Array.from(
+                document.querySelectorAll(".choiceInput")
+              ).map((input) => input.value);
+              questions[currentQuestionIndex] = { question, choices };
+            }
+      
+            function submitExam() {
+              saveCurrentQuestion();
+              // Your logic to submit the exam
+              // This example shows the animated "Thank you" popup.
+              document.getElementById("questionForm").style.display = "none";
+              document.getElementById("thankYouOverlay").style.display = "flex";
+              setTimeout(() => {
+                document.getElementById("thankYouOverlay").style.display = "none";
+                // document.getElementById("addExamBtn").style.display = "block";
+                // Show the question form again after submitting
+                document.getElementById("questionForm").style.display = "block";
+                // Clear all input fields
+                document.getElementById("questionInput").value = "";
+                document.querySelectorAll(".choiceInput").forEach((input) => {
+                  input.value = "";
+                });
+              }, 3000); // Hide popup after 3 seconds (adjust as needed)
+            }
+      
+            // Modified dropdown script
+            function toggleModifiedDropdown() {
+              const menu = document.getElementById("modifiedDropdownMenu");
+              menu.classList.toggle("menu-open");
+            }
+      
+            function selectModifiedOption(event, option) {
+              const selected = document.querySelector(
+                ".modified-dropdown .selected"
+              );
+              selected.innerText = option.innerText;
+      
+              // Close the dropdown immediately after selecting an option
+              toggleModifiedDropdown();
+      
+              // Prevent the click event from reaching toggleModifiedDropdown
+              event.stopPropagation();
+      
+              // Hide options C and D for "True False" selection
+              const multipleChoice = document.querySelector(".multiple-choice");
+              if (option.innerText === "True False") {
+                document.querySelector(".choiceInput:nth-child(3)").style.display =
+                  "none";
+                document.querySelector(".choiceInput:nth-child(4)").style.display =
+                  "none";
+              } else {
+                document.querySelector(".choiceInput:nth-child(3)").style.display =
+                  "block";
+                document.querySelector(".choiceInput:nth-child(4)").style.display =
+                  "block";
+              }
+            }
+      
+            // Add event listener for modified dropdown selection
+            document.addEventListener("DOMContentLoaded", function () {
+              const customDropdown = document.querySelector(".modified-dropdown");
+              const selected = customDropdown.querySelector(".selected");
+              const menu = customDropdown.querySelector(".menu");
+              const options = customDropdown.querySelectorAll(".menu li");
+      
+              customDropdown.addEventListener("click", (event) => {
+                if (event.target === selected) {
+                  menu.classList.toggle("menu-open");
+                }
+              });
+      
+              options.forEach((option) => {
+                option.addEventListener("click", () => {
+                  selectModifiedOption(option);
+                });
+              });
+      
+              // Close the dropdown if clicked outside
+              document.addEventListener("click", (event) => {
+                if (!customDropdown.contains(event.target)) {
+                  menu.classList.remove("menu-open");
+                }
+              });
+            });
+          </script>
+        </form>
+
+      // Close the modal
+      closeModal();
+    } else {
+      alert("Please enter category, course name, and description.");
+    }
+  }
+
+  function formatDescription(description) {
+    var formattedDescription = "";
+    var words = description.split(" ");
+    var wordLimit = 15;
+
+    for (var i = 0; i < words.length; i++) {
+      var word = words[i];
+      if (i >= wordLimit) {
+        break;
+      }
+      if (word.length > 10) {
+        // Insert line breaks after every 10 characters
+        word = word.replace(/(.{10})/g, "$1<wbr>");
+      }
+      formattedDescription += word + " ";
+    }
+
+    return formattedDescription.trim();
+  }
+</script>
+
+
+    <!-- end -->
+    <!-- Footer and Dropdwon content  -->
+  
+    <script>
+      // JavaScript to toggle the active class on hamburger click
+      document.addEventListener("DOMContentLoaded", function () {
+        var navbarHamburger = document.querySelector(".navbar-hamburger");
+        var navbarMenu = document.querySelector(".navbar-menu");
+
+        navbarHamburger.addEventListener("click", function () {
+          navbarHamburger.classList.toggle("active");
+          navbarMenu.classList.toggle("active");
+        });
+
+        document.addEventListener("click", function (event) {
+          var targetElement = event.target;
+          if (
+            !targetElement.closest(".navbar") &&
+            navbarHamburger.classList.contains("active")
+          ) {
+            navbarHamburger.classList.remove("active");
+            navbarMenu.classList.remove("active");
+          }
+        });
+      });
+    </script>
+    <!--  -->
+    <script>
+      // JavaScript to toggle the active class on hamburger click
+      document.addEventListener("DOMContentLoaded", function () {
+        var navbarHamburger = document.querySelector(".navbar-hamburger");
+        var navbarMenu = document.querySelector(".navbar-menu");
+
+        navbarHamburger.addEventListener("click", function () {
+          navbarHamburger.classList.toggle("active");
+          navbarMenu.classList.toggle("active");
+        });
+
+        document.addEventListener("click", function (event) {
+          var targetElement = event.target;
+          if (
+            !targetElement.closest(".navbar") &&
+            navbarHamburger.classList.contains("active")
+          ) {
+            navbarHamburger.classList.remove("active");
+            navbarMenu.classList.remove("active");
+          }
+        });
+      });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
+{% endblock %}

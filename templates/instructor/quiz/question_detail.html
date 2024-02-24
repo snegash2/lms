@@ -18,14 +18,11 @@
               <h1 class="modal-title fs-5" id="exampleModalLabel">Edit answer</h1>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" id="modal-body">
           
       
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button>Save changes</button>
-            </div>
+
           </div>
         </div>
       </div>
@@ -58,9 +55,9 @@
 
     <div class="top-buttons">
       <div class="add-question-btn">
-        <a href="{% url 'edit-question' question_pk %}" target="_blank" rel="noopener noreferrer">
-          <button onclick="addQuestion()">Add your question</button>
-        </a>
+    
+          <button hx-get = "{% url 'edit-question' question_pk %}" hx-target="#modal-body" >Add your question</button>
+        
         
       </div>
       <div class="search-box">
@@ -89,8 +86,14 @@
 
           {% for q in question %}
           <tr>
-            <td style="width: 3rem">{{q.pk}}</td>
-            <td>{{q.content}}</td>
+            <td style="width: 3rem">
+           
+              {{q.pk}}</td>
+            <td>
+             
+              {{q.content}}
+
+            </td>
             <!-- <td>Choices / Correct Answer</td> -->
             <td> 
               {% for answer in q.get_answers.all %}
@@ -107,13 +110,8 @@
             {% endfor%}
             </td>
             <td style="display: flex;justify-content:space-between;align-content:center;border:0;">
-
-
-
-          
-
            
-                <button onclick="editQuestion({{q.id}})">Edit</button>
+                <button hx-get="{%url 'update-question'%}?q={{q.id}}" hx-target="#modal-body"  data-bs-toggle="modal" data-bs-target="#exampleModal">Edit</button>
                 <span class="hidden" data-bs-toggle="modal" data-bs-target="#exampleModal" id="hiddenEdit"></span>
                 <button  onclick="deleteQuestion({{q.id}})" style="margin-left: 10px;height:100%;">Delete</button>
             
