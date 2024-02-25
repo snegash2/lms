@@ -55,10 +55,10 @@
 
     <div class="top-buttons">
       <div class="add-question-btn">
-    
-          <button hx-get = "{% url 'edit-question' question_pk %}" hx-target="#modal-body" >Add your question</button>
-        
-        
+        <a href="{% url 'edit-question' question_pk %}">
+          <button>Add your question</button>
+        </a>
+
       </div>
       <div class="search-box">
         <input
@@ -98,22 +98,30 @@
             <td> 
               {% for answer in q.get_answers.all %}
 
-                {{answer}}
+                {{answer.order}} {{answer}}
+                <br>
 
               {% endfor%}
 
-              <p>Correct </p> 
-              {% for answer in q.get_correct_answers.all %}
+              <strong>Correct </strong> 
+              {% for answer in q.get_correct_answers.all%}
+                <div>
+                  {{answer}}
+                  <br>
 
-                {{answer}}
+                </div>
+          
+             
 
             {% endfor%}
             </td>
             <td style="display: flex;justify-content:space-between;align-content:center;border:0;">
            
-                <button hx-get="{%url 'update-question'%}?q={{q.id}}" hx-target="#modal-body"  data-bs-toggle="modal" data-bs-target="#exampleModal">Edit</button>
-                <span class="hidden" data-bs-toggle="modal" data-bs-target="#exampleModal" id="hiddenEdit"></span>
-                <button  onclick="deleteQuestion({{q.id}})" style="margin-left: 10px;height:100%;">Delete</button>
+                <button hx-get="{%url 'update-question-content' %}?q={{q.id}}" hx-target="#modal-body"  data-bs-toggle="modal" data-bs-target="#exampleModal">Edit question</button>
+                <button style="margin-left: 10px;" hx-get="{%url 'update-question'%}?q={{q.id}}" hx-target="#modal-body"  data-bs-toggle="modal" data-bs-target="#exampleModal">Edit answer</button>
+
+                <button  onclick="deleteQuestion({{q.id}})" style="margin-left: 10px;">Delete question</button>
+             
             
             </td>
           </tr>

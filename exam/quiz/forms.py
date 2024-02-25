@@ -17,13 +17,17 @@ from crudbuilder.formset import BaseInlineFormset
 
 
 class MCAnswerForm(forms.ModelForm):
+    ANSWER_ORDER_OPTIONS = (
+    ('content', _('Content')),
+    ('random', _('Random')),
+    ('none', _('None'))
+)
     class Meta:
-        model = Answer
-        fields = "__all__"
+        model = MCQuestion
+        exclude = "category","sub_category"
+    
+    answer_order = forms.ChoiceField(label="Answer Order",choices=ANSWER_ORDER_OPTIONS,widget=forms.Select(attrs={'class':"form-select"}))
         
-    # content = forms.CharField(label="Answer",widget=forms.TextInput(attrs={'style':'height:15px;'}))
-    # correct = forms.CharField(label="correct",required=False,widget=forms.CheckboxInput(attrs={'style':'height:15px;'}))
-
 QuestionFormSet = inlineformset_factory(MCQuestion,
             Answer,
          
@@ -44,7 +48,6 @@ class ChildModelForm(forms.ModelForm):
     class Meta:
         model = MCQuestion
         exclude = ('category',)
-    answer_order = forms.CharField(label="Answer order",widget=forms.TextInput(attrs={'class':'form-select'}))
 
 
 # class QuestionFormSet(forms.ModelForm):

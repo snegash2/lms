@@ -3,14 +3,14 @@ try:
 except ImportError:
     from django.urls import re_path as url,path
 
-from .views import QuizListView, CategoriesListView, \
+from .views import QuizListView,InstructorUpdateContentEditView, CategoriesListView, \
     ViewQuizListByCategory, QuizUserProgressView, QuizMarkingList, \
     QuizMarkingDetail, QuizDetailView, QuizTake,InstructorQuizEditView,\
         InstructorQuestionEditView,InstructorAnswerEditView,add_mc_answer,\
             InstructorListEditView,InstructorDeleteView,InstructorListSearchView,\
                 InstructorListDeleteView,InstructorUpdateEditView
     
-    
+
 
 urlpatterns = [
 
@@ -42,11 +42,13 @@ urlpatterns = [
         name='delete-question'),
     
     
+    path('instructor/update-question-content/',
+        view=InstructorUpdateContentEditView,
+        name='update-question-content'),
+    
     path('instructor/update-question/',
         view=InstructorUpdateEditView,
         name='update-question'),
-    
-    
     
     url(r'^instructor/edit-answer/$',
         view=InstructorAnswerEditView.as_view(),

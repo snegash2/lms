@@ -112,7 +112,28 @@ def InstructorUpdateEditView(request):
     
  
     
+@login_required
+def InstructorUpdateContentEditView(request):
     
+    id  = request.GET.get('q')
+    question = MCQuestion.objects.get(id = id)
+    form = MCAnswerForm(instance=question)
+ 
+    if request.method == 'POST':
+        form = MCAnswerForm(request.POST or None,instance=question)
+        
+        if form.is_valid():
+           
+            form.save()
+            print("form after saving ",form.data)
+        return redirect(reverse('list-question'))
+    context = {
+        'form':form,
+        'id':id
+    }
+    return render(request,"instructor/quiz/update_question_content.html",context)
+    
+  
     
     
     
@@ -125,9 +146,9 @@ class InstructorListSearchView(LoginRequiredMixin,ListView):
     def get_queryset(self):
         quryset =  super().get_queryset()
         search_query = self.request.GET.get('q')
-        query =  quryset.filter(content__istartswith = search_query).filter(content__icontains = search_query)
-    
-        return query
+        qs =  quryset.filter(content__contains = search_query)
+        print("qs",qs)
+        return qs
     
 
     def get_context_data(self, **kwargs):

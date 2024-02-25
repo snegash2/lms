@@ -53,7 +53,7 @@ class OwnerCourseMixin(OwnerMixin,LoginRequiredMixin,PermissionRequiredMixin):
 
 class OwnerCourseEditMixin(OwnerCourseMixin, OwnerEditMixin):
     # template_name = 'courses/manage/course/form.html'
-    template_name = 'courses/manage/course/_AddInstructor.html'
+    template_name = 'courses/manage/course/AddInstructor.html'
 
 
 class ManageCourseListView(OwnerCourseMixin, ListView):
