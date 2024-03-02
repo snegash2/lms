@@ -28,7 +28,7 @@
   </div>
   <div class="container">
     <h2>Add Your Question</h2>
-    <form action="." method="post">
+    <form action="{% url 'edit-question'%}?q={{course.id}}" method="post" id="form">
       {% csrf_token %}
  
     <div class="texts-drop">
@@ -49,7 +49,7 @@
 
     <div class="image-upload">
       <label for="imageInput">Choose Image:</label>
-      <input type="file" id="imageInput" accept="image/*" style="
+      <input type="file" name="figure" id="imageInput" accept="image/*" style="
       height:60px;margin: 10px 0;
       margin-top: 10px;
       margin-right: 0px;
@@ -65,23 +65,16 @@
     <div id="questionForm" style="display: block;">
       <div class="check-container">
         <div>
-          <div class="modified-dropdown" >
-            <div class="select" onclick="toggleModifiedDropdown()" style="display:flex;justify-content:center;margin-left:50px;width:200px;">
-              <span class="selected" onclick="toggleModifiedDropdown()"
-                >Select Question Type</span
-              >
-              <i class="caret">&#9660;</i>
-            </div>
-            <ul class="menu" id="modifiedDropdownMenu">
-              <li class="active" onclick="selectModifiedOption(event, this)">
-                Random Question
-              </li>
-              <li onclick="selectModifiedOption(event, this)">
-                Normal Question
-              </li>
-              <!-- <li onclick="selectModifiedOption(event, this)">True False</li> -->
-            </ul>
+          <div class="modified-dropdown">
+            <select class="select" onchange="selectModifiedOption(event, this)">
+              <option disabled selected>Select Question Type</option>
+              <option value="Random" onclick="selectModifiedOption(event, this)">Random Question</option>
+              <option value="Normal" onclick="selectModifiedOption(event, this)">Normal Question</option>
+              <!-- Uncomment the line below if you want to include True False option -->
+              <!-- <option value="TrueFalse" onclick="selectModifiedOption(event, this)">True False</option> -->
+            </select>
           </div>
+  
         </div>
      
         <div>
@@ -136,7 +129,9 @@
       <!-- Add file input for image upload -->
 
       <div id="addChoiceText">Add Another Choice</div>
-     
+         <!-- <button id="add" onclick="addChoice()">Add Another Choice</button> -->
+         <button id="privbutton" onclick="showPreviousQuestion()">Previous Question</button>
+         <button id="nextbutton"  onclick="addNextQuestion()" >Next Question</button>
 
       <button id="submitButton" type="submit" onclick="submitExam()">Submit</button>
     </div>
@@ -198,7 +193,7 @@
         // Remove the selected choice from the DOM
         choiceElement.parentNode.removeChild(choiceElement);
 
-        // Reset the choice placeholders
+        // Reset the choice placeholderstoggleModifiedDropdown()
         const choicesContainer = document.getElementById("choicesContainer");
         const choices = choicesContainer.querySelectorAll(".choice");
         choices.forEach((choice, index) => {
@@ -324,10 +319,34 @@
 
       function saveCurrentQuestion() {
         const question = document.getElementById("questionInput").value;
-        const choices = Array.from(
-          document.querySelectorAll(".choiceInput")
-        ).map((input) => input.value);
-        questions[currentQuestionIndex] = { question, choices };
+        const form = document.getElementById("form")
+        const formData = new FormData(form);
+        const formDataObj = Object.fromEntries(formData.entries());
+        let data = {}
+        if(formDataObj){
+            data = JSON.stringify(formDataObj);
+        }
+
+        axios.post("{% url 'edit-question'%}?q={{course.id}}", formData, {
+          
+          headers: {
+            'Content-Type': 'application/octet-stream',
+            'X-CSRFToken': '{{ csrf_token }}'
+          },
+       
+     
+        })
+        .then((response) => {
+          $('body').removeClass('loading')
+          showSuccessMessage("success","Uploaded successfully","you uploaded successfully",3000)
+
+        })
+        .catch((error) => {
+          setInterval("$('body').removeClass('loading')", 4000);
+        })
+
+
+
       }
 
       function submitExam() {

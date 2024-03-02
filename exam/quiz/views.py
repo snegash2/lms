@@ -21,6 +21,7 @@ from django.shortcuts import redirect
 from django.http import JsonResponse
 import json
 from django.core.paginator import Paginator
+from urllib.parse import urlencode
 
 
 
@@ -33,15 +34,16 @@ class InstructorQuestionEditView(LoginRequiredMixin,CreateView):
     success_url = '/'
     
 
+        
     def post(self, request: HttpRequest, *args: str, **kwargs) -> HttpResponse:
         pk = kwargs.get("pk")
-        course = get_object_or_404(Course,pk = pk)
-        # course = request.user.courses_joined.all().first()
+        figure = request.FILES.get('figure')
+        course = get_object_or_404(Course,pk = request.GET.get('q'))
         self.request.session['question_pk'] = pk
         LETTERS = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P']
         quiz = Quiz.objects.get(course = course)
         question_data = request.POST.get("question")
-        question = MCQuestion.objects.create(answer_order = "random",figure = "",content = question_data)
+        question = MCQuestion.objects.create(answer_order = "random",figure = figure,content = question_data)
         question.quiz.add(quiz)
         for letter in LETTERS:
             choice = request.POST.get(f"choice_{letter}")
@@ -49,20 +51,26 @@ class InstructorQuestionEditView(LoginRequiredMixin,CreateView):
             if choice:
                 answer = Answer.objects.create(question = question,content = choice,correct = correct)
                 answer.save()
-     
-        return redirect(reverse('list-question'))
+                
+                url_name = 'list-question'
+                q_value = pk
+                url = reverse(url_name)
+
+        return redirect(url_name)
     
     
     def get(self, request: HttpRequest, *args: str, **kwargs) -> HttpResponse:
 
-        course = get_object_or_404(Course,pk = kwargs.get("pk"))
-      
+        course = get_object_or_404(Course,pk = request.GET.get('q'))
         quiz = Quiz.objects.get(course = course)
+        
         request.session['quiz_id'] = quiz.id
         context = {
             
             'quiz':quiz,
-            'course':course
+            'course':course,
+            'course_id':course.id
+            
         }
         return render(request,"instructor/quiz/edit_question.html",context )
     
@@ -77,13 +85,24 @@ class InstructorListEditView(LoginRequiredMixin,ListView):
 
     def get_context_data(self, **kwargs):
         context =  super().get_context_data(**kwargs)
-        quiz_id = self.request.session.get('quiz_id')
-       
-        quiz = Quiz.objects.get(id = quiz_id)
+        quiz = None
+        course = None
+        if self.request.GET.get('q'):
+            course_id = self.request.GET.get('q')
+            try:
+                course = Course.objects.get(id = course_id)
+            except Course.DoesNotExist:
+                pass
+            quiz  = Quiz.objects.get(course = course)
+            self.request.session['quiz_id'] = quiz.id
+        else:
+            quiz_id = self.request.session.get('quiz_id')
+            quiz = Quiz.objects.get(id = quiz_id)
+            
+            
         context['question'] = quiz.get_questions()
-        context['question_pk'] = self.request.session.get('question_pk')
-        # context[f'form'] = QuestionFormSet(instance=q)
-      
+        context['question_pk'] = self.request.session.get('quiz_id')
+        context['course_id'] =  self.request.GET.get('q')
         return context
     
     
@@ -94,19 +113,43 @@ def InstructorUpdateEditView(request):
     
     id  = request.GET.get('q')
     question = MCQuestion.objects.get(id = id)
-    form = QuestionFormSet(instance=question)
- 
+    LETTERS = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P'] 
+    
     if request.method == 'POST':
-        form = QuestionFormSet(request.POST or None)
-        print("form ",form.data)
-        if form.is_valid():
-            form.instance = question
-           
-            form.save()
+     
+        print("id ",id)
+        print("data ",request.POST)
+        print("question ",question)
+        question_content = question.content
+        question.content = request.POST.get("question")
+        figure = request.FILES.get('figure')
+        
+        for answer,letter in zip(question.get_answers(),LETTERS):
+            choice = request.POST.get(f"choice_{letter}")
+            correct = True  if request.POST.get(f'checkbox_{letter}') == "on"  else False
+            print("correct ",request.POST.get(f'checkbox_{letter}'))
+            answer.content = choice
+            answer.correct = correct
+            answer.figure = figure
+            answer.save()
+            question.save()
+        question.save()
         return redirect(reverse('list-question'))
+    
+
+    
+
+    data = {
+        'content':question.content,
+        'answers':question.get_answers(),
+        'figure':question.figure
+        
+    }
     context = {
-        'form':form,
-        'id':id
+    
+        'id':id,
+        "data":data,
+        'question_content':question.content
     }
     return render(request,"instructor/quiz/update_question.html",context)
     
@@ -123,9 +166,8 @@ def InstructorUpdateContentEditView(request):
         form = MCAnswerForm(request.POST or None,instance=question)
         
         if form.is_valid():
-           
             form.save()
-            print("form after saving ",form.data)
+       
         return redirect(reverse('list-question'))
     context = {
         'form':form,

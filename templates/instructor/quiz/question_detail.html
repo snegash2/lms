@@ -55,7 +55,7 @@
 
     <div class="top-buttons">
       <div class="add-question-btn">
-        <a href="{% url 'edit-question' question_pk %}">
+        <a href="{% url 'edit-question' %}?q={{course_id}}">
           <button>Add your question</button>
         </a>
 
@@ -115,10 +115,12 @@
 
             {% endfor%}
             </td>
-            <td style="display: flex;justify-content:space-between;align-content:center;border:0;">
-           
-                <button hx-get="{%url 'update-question-content' %}?q={{q.id}}" hx-target="#modal-body"  data-bs-toggle="modal" data-bs-target="#exampleModal">Edit question</button>
-                <button style="margin-left: 10px;" hx-get="{%url 'update-question'%}?q={{q.id}}" hx-target="#modal-body"  data-bs-toggle="modal" data-bs-target="#exampleModal">Edit answer</button>
+            <td >
+
+              <a href="{%url 'update-question'%}?q={{q.id}}" target="_blank" rel="noopener noreferrer">
+                <button style="margin-left: 10px;" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit question</button>
+              </a>
+             
 
                 <button  onclick="deleteQuestion({{q.id}})" style="margin-left: 10px;">Delete question</button>
              

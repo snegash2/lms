@@ -8,7 +8,7 @@ class CourseTable(tables.Table):
     class Meta:
         model = Course
         template_name = "django_tables2/bootstrap.html"
-        fields = ('published','course_type','image','id')
+        fields = ('published','course_type','name','id')
         tables2_css_class = "table table-bordered table-condensed"
         # exclude = ("teacher",'image','slug','reason_not_published')
         
@@ -61,8 +61,8 @@ class CourseTable(tables.Table):
           <button class="btn btn-samll" id="delete-btn" onclick="deleteAction({value})" data-bs-toggle="modal"  data-bs-target="#exampleModal">Delete</button>
 
         </a>
-            <a  href="/quiz/instructor/edit-question/{value}/">
-          <button class="btn btn-samll" id="delete-btn"  data-bs-toggle="modal"  data-bs-target="#exampleModal">exam</button>
+            <a  href="/quiz/instructor/list-question/?q={value}">
+          <button class="btn btn-samll" id="delete-btn" >exam</button>
 
         </a>
 

@@ -62,6 +62,7 @@ class MyCustomSignupForm(SignupForm):
     # username = forms.CharField(label="",widget=forms.TextInput(attrs={'placeholder':'Username','class':""}))
     password1 = forms.CharField(label="",widget=forms.PasswordInput(attrs={'class':"form-control w-100"}))
     password2 = forms.CharField(label="",widget=forms.PasswordInput(attrs={'class':"form-check-input form-check-label"}))
+    role = forms.CharField(label="Role",widget=forms.PasswordInput(attrs={'class':"form-check-input form-check-label"}))
 
 
 

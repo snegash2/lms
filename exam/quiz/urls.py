@@ -20,7 +20,7 @@ urlpatterns = [
     
     
     
-    path('instructor/edit-question/<pk>/',
+    path('instructor/edit-question/',
         view=InstructorQuestionEditView.as_view(),
         name='edit-question'),
 

@@ -145,9 +145,7 @@ button {
   );
   animation: progressAnimation 3s infinite linear;
 }
-.modified-dropdown {
-  background-color: #ffffff;
-}
+
 /* Modal styles */
 .modal {
   display: none;
@@ -474,7 +472,7 @@ button.swal2-confirm.swal2-styled {
   text-align: left;
   margin-left: -6rem;
   margin-bottom: 1rem;
-  width: 300px !important;
+ 
  
 }
 
@@ -503,7 +501,7 @@ button.swal2-confirm.swal2-styled {
   padding: 10px;
   border: 1px solid #ccc;
   border-top: none;
-  width: 200px;
+
   z-index: 1;
 }
 

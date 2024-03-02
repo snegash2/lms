@@ -1,14 +1,338 @@
+{% extends '_base.html' %}
+{% load static %}
 {% load widget_tweaks %}
+
 {% load crispy_forms_tags %}
 
-<div>
-    <form action="{% url 'update-question' %}?q={{id}}" method="post">
-        {% csrf_token %}
-        {{form|crispy}}
 
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Save changes</button>
+{% block style %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+<link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="{% static 'instructor_quiz_add.css'%}" />
+<link rel="stylesheet" href="{% static 'quiz_instrurctor_main.css'%}" />
+<link rel="stylesheet" href="{% static 'quiz-detail-main.css'%}" />
+{% endblock %}
+
+{% block content %}
+<body class="main-body">
+ 
+  <!--  -->
+  <div class="overlay" id="thankYouOverlay">
+    <div class="popup-content">
+      <i class="fa fa-check-circle" aria-hidden="true"></i>
+      <p>
+        Thank you! Your question has been successfully submitted
+        <!-- <i class="fa fa-smile"></i> -->
+      </p>
+    </div>
+  </div>
+  <div class="container">
+    <h2>Update Your Question</h2>
+    <form action="{% url 'update-question' %}?q={{id}}" method="post" id="form">
+      {% csrf_token %}
+ 
+    <div class="texts-drop">
+      <div class="first"><label>Question</label></div>
+      <div class="text-area-container">
+        
+        <textarea
+          id="questionInput"
+          type="text"
+          value="This is the prepopulated text"
+          name="question"
+          placeholder="edit your question"
+          rows="4"
+          cols="40"
+          class="text-area"
+          required
+        ></textarea>
+      </div>
+    </div>
+
+    <div class="image-upload">
+      <label for="imageInput">Choose Image:</label>
+
+      <input type="file" id="imageInput" accept="image/*" value="" name="figure" style="
+      height:60px;margin: 10px 0;
+      margin-top: 10px;
+      margin-right: 0px;
+      margin-bottom: 10px;
+      margin-left: 0px;
+      padding-left: 12px;
+      
+      " />
+    </div>
+
+    <br>
+
+    <div id="questionForm" style="display: inline-block;">
+      <div class="modified-dropdown">
+        <select class="select" onchange="selectModifiedOption(event, this)">
+          <option disabled selected>Select Question Type</option>
+          <option value="Random" onclick="selectModifiedOption(event, this)">Random Question</option>
+          <option value="Normal" onclick="selectModifiedOption(event, this)">Normal Question</option>
+          <!-- Uncomment the line below if you want to include True False option -->
+          <!-- <option value="TrueFalse" onclick="selectModifiedOption(event, this)">True False</option> -->
+        </select>
+      </div>
+      </div>
+
+      <div class="multiple-choice" id="choicesContainer">
+        <!-- Initial choice inputs -->
+        <!-- ... (previous code) ... -->
+      {% for answer in data.answers %}
+        <div class="choice">
+    
+          <input type="text"  name="choice_A" class="choiceInput" value="{{answer.content}}"  required />
+          <div class="checkbox-container">
+
+            {% if answer.correct %}
+          
+              <input type="checkbox"   class="checkbox-input" id="checkboxA"  checked="true"/>
+            {% else %}
+              <input type="checkbox" class="checkbox-input" id="checkboxA" />
+            {% endif %}
+            <label for="checkboxA" class="checkbox-label">
+              <!-- <i class="bx bx-check"></i> -->
+            </label>
           </div>
-    </form>
-</div>
+          <i class="remove-icon fas fa-times" onclick="removeChoice(this.parentNode)"></i>
+        </div>
+        
+        {% endfor %}
+    
+    
+
+        <!-- ... (remaining code) ... -->
+      </div>
+
+      <!-- Add file input for image upload -->
+
+  
+      <div id="addChoiceText">Add Another Choice</div>
+   
+
+      <button id="submitButton" type="submit">Update</button>
+    </div>
+        
+    <script>
+      
+      // Function to add another choice dynamically
+      function addChoice() {
+        const choicesContainer = document.getElementById("choicesContainer");
+        const newChoiceDiv = document.createElement("div");
+        newChoiceDiv.className = "choice";
+    
+        const newChoiceInput = document.createElement("input");
+        newChoiceInput.type = "text";
+        newChoiceInput.placeholder = String.fromCharCode(65 + choicesContainer.children.length); // A, B, C, ...
+        newChoiceInput.name = 'choice_' + String.fromCharCode(65 + choicesContainer.children.length); // A, B, C, ...
+
+        newChoiceInput.className = "choiceInput";
+        newChoiceInput.required = true;
+    
+        const checkboxContainer = document.createElement("div");
+        checkboxContainer.className = "checkbox-container";
+    
+        const newCheckbox = document.createElement("input");
+        newCheckbox.type = "checkbox";
+        newCheckbox.className = "checkbox-input";
+        newCheckbox.id = "checkbox" + String.fromCharCode(65 + choicesContainer.children.length); // checkboxA, checkboxB, ...
+        newCheckbox.name = "checkbox_" + String.fromCharCode(65 + choicesContainer.children.length); // checkboxA, checkboxB, ..
+    
+        const checkboxLabel = document.createElement("label");
+        checkboxLabel.className = "checkbox-label";
+        checkboxLabel.htmlFor = "checkbox" + String.fromCharCode(65 + choicesContainer.children.length);
+    
+        const removeIcon = document.createElement("i");
+        removeIcon.className = "remove-icon fas fa-times";
+        removeIcon.onclick = function () {
+          removeChoice(newChoiceDiv);
+        };
+    
+        checkboxContainer.appendChild(newCheckbox);
+        checkboxContainer.appendChild(checkboxLabel);
+    
+        newChoiceDiv.appendChild(newChoiceInput);
+        newChoiceDiv.appendChild(checkboxContainer);
+        newChoiceDiv.appendChild(removeIcon);
+    
+        choicesContainer.appendChild(newChoiceDiv);
+        document.getElementById("addChoiceText").innerText = "Add Another Choice"; // Reset the text
+      }
+    
+      // Attach click event to the clickable text
+      document.getElementById("addChoiceText").addEventListener("click", addChoice);
+    </script>
+    
+    
+
+    <!-- JavaScript code -->
+    <script>
+      function removeChoice(choiceElement) {
+        // Remove the selected choice from the DOM
+        choiceElement.parentNode.removeChild(choiceElement);
+
+        // Reset the choice placeholderstoggleModifiedDropdown()
+        const choicesContainer = document.getElementById("choicesContainer");
+        const choices = choicesContainer.querySelectorAll(".choice");
+        choices.forEach((choice, index) => {
+          choice.querySelector(".choiceInput").placeholder =
+            String.fromCharCode(65 + index);
+        });
+      }
+
+    </script>
+
+    <script>
+      const newdropdowns = document.querySelectorAll(".newdropdown");
+      newdropdowns.forEach((newdropdown) => {
+        const select = newdropdown.querySelector(".select");
+        const caret = newdropdown.querySelector(".caret");
+        const menu = newdropdown.querySelector(".menu");
+        const options = newdropdown.querySelector(".menu li");
+        const selected = newdropdown.querySelector(".selected");
+
+        select.addEventListener("click", () => {
+          select.classList.toggle("select-clicked");
+          caret.classList.toggle("caret-rotate");
+          menu.classList.toggle("menu-open");
+        });
+        options.forEach((option) => {
+          option.addEventListener("click", () => {
+            selected.innerText = option.innerText;
+            select.classList.remove("select-clicked");
+            caret.classList.remove("caret-rotate");
+            menu.classList.remove("menu-open");
+            options.forEach((option) => {
+              option.classList.remove("active");
+            });
+            option.classList.add("active");
+          });
+        });
+      });
+    </script>
+
+    <script>
+      let currentQuestionIndex = 0;
+      let questions = [];
+
+      // Call showQuestionForm() when the page loads
+      window.onload = function () {
+        const question = document.getElementById("questionInput")
+        question.value = "{{question_content}}"
+
+          // Reset the choice placeholderstoggleModifiedDropdown()
+          
+          const choicesContainer = document.getElementById("choicesContainer");
+          const choices = choicesContainer.querySelectorAll(".choice");
+          choices.forEach((choice, index) => {
+            choice.querySelector(".choiceInput").name = `choice_${String.fromCharCode(65 + index)}`
+
+          });
+
+
+          const checkboxes = choicesContainer.querySelectorAll(".checkbox-input");
+          checkboxes.forEach((choice, index) => {
+            choice.name = `checkbox_${String.fromCharCode(65 + index)}`
+
+          });
+        };
+
+
+
+
+ 
+
+      function submitExam() {
+        saveCurrentQuestion();
+        // Your logic to submit the exam
+        // This example shows the animated "Thank you" popup.
+        document.getElementById("questionForm").style.display = "none";
+        document.getElementById("thankYouOverlay").style.display = "flex";
+        setTimeout(() => {
+          document.getElementById("thankYouOverlay").style.display = "none";
+          // document.getElementById("addExamBtn").style.display = "block";
+          // Show the question form again after submitting
+          document.getElementById("questionForm").style.display = "block";
+          // Clear all input fields
+          document.getElementById("questionInput").value = "";
+          document.querySelectorAll(".choiceInput").forEach((input) => {
+            input.value = "";
+          });
+        }, 3000); // Hide popup after 3 seconds (adjust as needed)
+      }
+
+      // Modified dropdown script
+      function toggleModifiedDropdown() {
+        const menu = document.getElementById("modifiedDropdownMenu");
+        menu.classList.toggle("menu-open");
+      }
+
+      function selectModifiedOption(event, option) {
+        const selected = document.querySelector(
+          ".modified-dropdown .selected"
+        );
+        selected.innerText = option.innerText;
+
+        // Close the dropdown immediately after selecting an option
+        toggleModifiedDropdown();
+
+        // Prevent the click event from reaching toggleModifiedDropdown
+        event.stopPropagation();
+
+        // Hide options C and D for "True False" selection
+        const multipleChoice = document.querySelector(".multiple-choice");
+        if (option.innerText === "True False") {
+          document.querySelector(".choiceInput:nth-child(3)").style.display =
+            "none";
+          document.querySelector(".choiceInput:nth-child(4)").style.display =
+            "none";
+        } else {
+          document.querySelector(".choiceInput:nth-child(3)").style.display =
+            "block";
+          document.querySelector(".choiceInput:nth-child(4)").style.display =
+            "block";
+        }
+      }
+
+      // Add event listener for modified dropdown selection
+      document.addEventListener("DOMContentLoaded", function () {
+        const customDropdown = document.querySelector(".modified-dropdown");
+        const selected = customDropdown.querySelector(".selected");
+        const menu = customDropdown.querySelector(".menu");
+        const options = customDropdown.querySelectorAll(".menu li");
+
+        customDropdown.addEventListener("click", (event) => {
+          if (event.target === selected) {
+            menu.classList.toggle("menu-open");
+          }
+        });
+
+        options.forEach((option) => {
+          option.addEventListener("click", () => {
+            selectModifiedOption(option);
+          });
+        });
+
+        // Close the dropdown if clicked outside
+        document.addEventListener("click", (event) => {
+          if (!customDropdown.contains(event.target)) {
+            menu.classList.remove("menu-open");
+          }
+        });
+      });
+    </script>
+  </form>
+
+  </div>
+
+  <br>
+  <br>
+  <br>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+  <script src="script.js"></script>
+  <!-- --------------------footermenu---------------------- -->
+
+</body>
+{% endblock %}
