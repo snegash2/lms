@@ -4,7 +4,7 @@ from allauth.account.views import LogoutView,LoginForm
 from django import forms
 from collections import OrderedDict
 from django.urls import path
-from rest_framework import views
+# from rest_framework import views
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth.forms import PasswordResetForm

@@ -1,5 +1,5 @@
 from django import forms
-from tempus_dominus.widgets import DateTimePicker
+# from tempus_dominus.widgets import DateTimePicker
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Field
 from students. models import Profile
@@ -20,27 +20,27 @@ class StudentProfile(forms.ModelForm):
         
     bio = forms.CharField(widget =forms.TextInput(attrs={'class':'form-control','row':23}))
     location = forms.CharField(widget =forms.TextInput(attrs={'class':'form-control','row':23}))
-    birth_date = forms.DateTimeField(
-        widget=DateTimePicker(
-            options={
-                'useCurrent': True,
-                'collapse': False,
-            },
-            attrs={
-                'append': 'fa fa-calendar',
-                'input_toggle': False,
-            }
-        ),
-        label='Select a date and time'
-    )
+    # birth_date = forms.DateTimeField(
+    #     widget=DateTimePicker(
+    #         options={
+    #             'useCurrent': True,
+    #             'collapse': False,
+    #         },
+    #         attrs={
+    #             'append': 'fa fa-calendar',
+    #             'input_toggle': False,
+    #         }
+    #     ),
+    #     label='Select a date and time'
+    # )
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.layout = Layout(
-            Field('datetime_field', css_class='datetimepicker-input'),
-            Submit('submit', 'Submit')
-        )
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     self.helper = FormHelper()
+    #     self.helper.layout = Layout(
+    #         Field('datetime_field', css_class='datetimepicker-input'),
+    #         Submit('submit', 'Submit')
+    #     )
         
     
     

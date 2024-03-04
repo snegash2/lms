@@ -19,7 +19,7 @@ if not os.path.isabs(LOCAL_SETTINGS_PATH):
 
 include(
     'base.py',
-    'rest_api.py',
+    # 'rest_api.py',
     'ckeditor.py',
     'custom.py',
     # 'cache.py',

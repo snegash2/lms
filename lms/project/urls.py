@@ -3,12 +3,12 @@ from django.conf.urls.static import static
 from courses.views import CourseListView,delete_doc
 from django.contrib import admin
 from django.urls import path,re_path, include
-import spirit.urls
+# import spirit.urls
 from lms.project.views import index
 from django.contrib import admin
 from django.contrib.auth.models import User
 from .views import InstructorSignupView
-from landing.views import PasswordResetAPIView
+# from landing.views import PasswordResetAPIView
 
 admin.site.site_header = "Abebech Gobena Hospital Admin"
 admin.site.site_title = "Abebech Gobena Hospital"
@@ -19,7 +19,7 @@ urlpatterns = [
 
     path('admin/', admin.site.urls),
     path('instructor-quiz/',  include('crudbuilder.urls')),
-    path('avatar/', include('avatar.urls')),
+    # path('avatar/', include('avatar.urls')),
     path('instructor/', InstructorSignupView.as_view(), name='instructor_account_signup'),
     path('accounts/', include('allauth.urls')),
     path('quiz/',include('exam.quiz.urls')),   
@@ -30,10 +30,10 @@ urlpatterns = [
     path('chat/', include('chat.urls', namespace='chat')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path('',include('landing.urls')),
-    path('forum/', include("spirit.urls",namespace="forum")),
+    # path('forum/', include("spirit.urls",namespace="forum")),
     path('delete_doc/<id>',delete_doc,name = 'delete_doc'),
-    path('api/password_reset/', PasswordResetAPIView.as_view(), name='password_reset'),
-    path('newsfeed/', include('newsfeed.urls', namespace='newsfeed')),
+    # path('api/password_reset/', PasswordResetAPIView.as_view(), name='password_reset'),
+    # path('newsfeed/', include('newsfeed.urls', namespace='newsfeed')),
     
   
     # path('__debug__/', include('debug_toolbar.urls')),

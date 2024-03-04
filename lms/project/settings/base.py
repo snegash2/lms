@@ -52,7 +52,7 @@ INSTALLED_APPS = [
     # 'social_django',
     'django_extensions',
     'widget_tweaks',
-    'tempus_dominus',
+    # 'tempus_dominus',
     "bootstrap_datepicker_plus",
     'django_tables2',
     'crudbuilder',
@@ -76,35 +76,35 @@ INSTALLED_APPS = [
     
     
     
-    'spirit.core',
-    'spirit.admin',
-    'spirit.search',
+    # 'spirit.core',
+    # 'spirit.admin',
+    # 'spirit.search',
 
-    'spirit.user',
-    'spirit.user.admin',
-    'spirit.user.auth',
+    # 'spirit.user',
+    # 'spirit.user.admin',
+    # 'spirit.user.auth',
 
-    'spirit.category',
-    'spirit.category.admin',
+    # 'spirit.category',
+    # 'spirit.category.admin',
 
-    'spirit.topic',
-    'spirit.topic.admin',
-    'spirit.topic.favorite',
-    'spirit.topic.moderate',
-    'spirit.topic.notification',
-    'spirit.topic.private',
-    'spirit.topic.unread',
+    # 'spirit.topic',
+    # 'spirit.topic.admin',
+    # 'spirit.topic.favorite',
+    # 'spirit.topic.moderate',
+    # 'spirit.topic.notification',
+    # 'spirit.topic.private',
+    # 'spirit.topic.unread',
 
-    'spirit.comment',
-    'spirit.comment.bookmark',
-    'spirit.comment.flag',
-    'spirit.comment.flag.admin',
-    'spirit.comment.history',
-    'spirit.comment.like',
-    'spirit.comment.poll',
+    # 'spirit.comment',
+    # 'spirit.comment.bookmark',
+    # 'spirit.comment.flag',
+    # 'spirit.comment.flag.admin',
+    # 'spirit.comment.history',
+    # 'spirit.comment.like',
+    # 'spirit.comment.poll',
 
-    'djconfig',
-    'haystack',
+    # 'djconfig',
+    # 'haystack',
 ]
 
 MIDDLEWARE = [
@@ -121,12 +121,12 @@ MIDDLEWARE = [
     
     
        # 'spirit.core.middleware.XForwardedForMiddleware',
-    'spirit.user.middleware.TimezoneMiddleware',
-    'spirit.user.middleware.LastIPMiddleware',
-    'spirit.user.middleware.LastSeenMiddleware',
-    'spirit.user.middleware.ActiveUserMiddleware',
-    'spirit.core.middleware.PrivateForumMiddleware',
-    'djconfig.middleware.DjConfigMiddleware',
+    # 'spirit.user.middleware.TimezoneMiddleware',
+    # 'spirit.user.middleware.LastIPMiddleware',
+    # 'spirit.user.middleware.LastSeenMiddleware',
+    # 'spirit.user.middleware.ActiveUserMiddleware',
+    # 'spirit.core.middleware.PrivateForumMiddleware',
+    # 'djconfig.middleware.DjConfigMiddleware',
 ]
 
 ROOT_URLCONF = 'lms.project.urls'
@@ -370,11 +370,11 @@ CACHES = {
         'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
         'LOCATION': 'spirit_cache',
     },
-    'st_rate_limit': {
-        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
-        'LOCATION': 'spirit_rl_cache',
-        'TIMEOUT': None
-    }
+    # 'st_rate_limit': {
+    #     'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+    #     'LOCATION': 'spirit_rl_cache',
+    #     'TIMEOUT': None
+    # }
 }
 
 
@@ -382,11 +382,11 @@ CACHES.update({
     'default': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
     },
-    'st_rate_limit': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        'LOCATION': 'spirit_rl_cache',
-        'TIMEOUT': None
-    }
+    # 'st_rate_limit': {
+    #     'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+    #     'LOCATION': 'spirit_rl_cache',
+    #     'TIMEOUT': None
+    # }
 })
 
 

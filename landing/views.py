@@ -18,9 +18,9 @@ from django.template.loader import render_to_string
 from django import forms
 from landing.models import LmsUser
 from django.contrib import messages
-from rest_framework import views
-from rest_framework.response import Response
-from rest_framework import status
+# from rest_framework import views
+# from rest_framework.response import Response
+# from rest_framework import status
 from django.contrib.auth.forms import PasswordResetForm
 
 
@@ -320,18 +320,18 @@ def student_enrolloment(request):
     
     
     
-from rest_framework.permissions import AllowAny
+# from rest_framework.permissions import AllowAny
 
-class PasswordResetAPIView(views.APIView):
-    queryset = LmsUser.objects.all()
-    permission_classes = [AllowAny]
+# class PasswordResetAPIView(views.APIView):
+#     queryset = LmsUser.objects.all()
+#     permission_classes = [AllowAny]
 
-    def post(self, request):
-        form = PasswordResetForm(request.data)
+#     def post(self, reuest):
+#         form = PasswordResetForm(request.data)
         
-        if form.is_valid():
-            form.save(request=request)
+#         if form.is_valid():
+#             form.save(request=request)
             
-            return Response({'detail': 'Password reset email has been sent.'}, status=status.HTTP_200_OK)
-        else:
-            return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
+#             return Response({'detail': 'Password reset email has been sent.'}, status=status.HTTP_200_OK)
+#         else:
+#             return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
