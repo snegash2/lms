@@ -28,7 +28,8 @@
   </div>
   <div class="container">
     <h2>Update Your Question</h2>
-    <form action="{% url 'update-question' %}?q={{id}}" method="post" id="form">
+  
+    <form action="{% url 'update-question' %}?q={{id}}&id={{question_pk}}" method="post" id="form">
       {% csrf_token %}
  
     <div class="texts-drop">
@@ -52,6 +53,20 @@
     <div class="image-upload">
       <label for="imageInput">Choose Image:</label>
 
+      {% if data.figure %}
+      <a href="{{data.figure.url}}" target="_blank" rel="noopener noreferrer">currently</a>
+        <input type="file" id="imageInput" accept="image/*" value="{{data.figure.url}}" name="figure" style="
+        height:60px;margin: 10px 0;
+        margin-top: 10px;
+        margin-right: 0px;
+        margin-bottom: 10px;
+        margin-left: 0px;
+        padding-left: 12px;
+        
+        " />
+      {% else %}
+
+
       <input type="file" id="imageInput" accept="image/*" value="" name="figure" style="
       height:60px;margin: 10px 0;
       margin-top: 10px;
@@ -61,6 +76,8 @@
       padding-left: 12px;
       
       " />
+
+      {% endif %}
     </div>
 
     <br>

@@ -13,7 +13,8 @@ from django.contrib.auth.forms import PasswordResetForm
 
 
 class LmsSignupForm(LoginForm):
-    first_name = forms.CharField(label="",widget=forms.TextInput(attrs={'placeholder':'First name','class':"form-control"}))
+    pass
+    # first_name = forms.CharField(label="",widget=forms.TextInput(attrs={'placeholder':'First name','class':"form-control"}))
 
 
 def global_forms(request):
@@ -54,15 +55,28 @@ class MyCustomSignupForm(SignupForm):
                 'email',
                 'password1',
                 'password2',
+                'role'
             ]
         )
+        
+    STUDENT_CHOICES = (
+     
+        ('STUDENT', 'STUDENT'),
+        ('INSTRUCTOR', 'INSTRUCTOR'),
+     
+    )
     first_name = forms.CharField(label="",widget=forms.TextInput(attrs={'placeholder':'First name','class':"form-control"}))
     last_name = forms.CharField(label="",widget=forms.TextInput(attrs={'placeholder':'Last name','class':"form-control"}))
     email = forms.EmailField(label= "", required=True,widget=forms.TextInput(attrs={'placeholder':'Email','class':"form-control"}))  # Make email required
-    # username = forms.CharField(label="",widget=forms.TextInput(attrs={'placeholder':'Username','class':""}))
     password1 = forms.CharField(label="",widget=forms.PasswordInput(attrs={'class':"form-control w-100"}))
     password2 = forms.CharField(label="",widget=forms.PasswordInput(attrs={'class':"form-check-input form-check-label"}))
-    role = forms.CharField(label="Role",widget=forms.PasswordInput(attrs={'class':"form-check-input form-check-label"}))
+    role = forms.ChoiceField(label="Role", choices=STUDENT_CHOICES,widget=forms.Select(attrs={'class':"form-select"}))
+    
+    def save(self, request):
+            user = super().save(request)
+            user.role = self.cleaned_data['role']
+            user.save()
+            return user
 
 
 

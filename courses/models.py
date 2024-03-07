@@ -147,8 +147,8 @@ class Course(models.Model):
         ordering = ['-created']
         verbose_name = "Course"
 
-    def __str__(self):
-        return f"{self.slug}"
+    def __repr__(self):
+        return f"{self.teacher}"
     
     @property
     def detail(self):

@@ -24,6 +24,20 @@ from rest_framework import status
 from django.contrib.auth.forms import PasswordResetForm
 
 
+from django.shortcuts import render, redirect
+from allauth.account.forms import LoginForm
+from .utils import MyCustomSignupForm,LmsSignupForm
+
+def custom_login(request):
+    if request.method == 'POST':
+        form = LmsSignupForm(request.POST)
+        if form.is_valid():
+            # Use Allauth's login function or implement your authentication logic
+            login(request, form.cleaned_data['login'])
+            return redirect('your_success_url')  # Replace with your desired redirect URL
+    else:
+        form = LoginForm()
+    return render(request, 'account/login.html', {'form': LmsSignupForm})
 
 
 class CustomPasswordResetView(PasswordResetView):

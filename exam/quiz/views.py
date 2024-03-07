@@ -22,6 +22,7 @@ from django.http import JsonResponse
 import json
 from django.core.paginator import Paginator
 from urllib.parse import urlencode
+from django.http import HttpResponseRedirect
 
 
 
@@ -45,6 +46,8 @@ class InstructorQuestionEditView(LoginRequiredMixin,CreateView):
         question_data = request.POST.get("question")
         question = MCQuestion.objects.create(answer_order = "random",figure = figure,content = question_data)
         question.quiz.add(quiz)
+        query_params = request.GET.urlencode()
+
         for letter in LETTERS:
             choice = request.POST.get(f"choice_{letter}")
             correct = True  if request.POST.get(f'checkbox_{letter}') == "on"  else False
@@ -56,7 +59,8 @@ class InstructorQuestionEditView(LoginRequiredMixin,CreateView):
                 q_value = pk
                 url = reverse(url_name)
 
-        return redirect(url_name)
+        # return redirect(url_name)
+        return HttpResponseRedirect('/quiz/instructor/list-question/?' + query_params)
     
     
     def get(self, request: HttpRequest, *args: str, **kwargs) -> HttpResponse:
@@ -81,7 +85,7 @@ class InstructorListEditView(LoginRequiredMixin,ListView):
     model = MCQuestion
  
 
-    template_name ="instructor/quiz/question_detail.html"
+    template_name ="instructor/quiz/question_list.html"
 
     def get_context_data(self, **kwargs):
         context =  super().get_context_data(**kwargs)
@@ -112,30 +116,32 @@ class InstructorListEditView(LoginRequiredMixin,ListView):
 def InstructorUpdateEditView(request):
     
     id  = request.GET.get('q')
+
+    quiz_id = None
     question = MCQuestion.objects.get(id = id)
     LETTERS = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P'] 
-    
     if request.method == 'POST':
-     
-        print("id ",id)
-        print("data ",request.POST)
-        print("question ",question)
+        quiz_id = request.session.get('quiz_id')
+        quiz = Quiz.objects.get(id=quiz_id)
+        course_id = quiz.course.id
         question_content = question.content
         question.content = request.POST.get("question")
         figure = request.FILES.get('figure')
-        
-        for answer,letter in zip(question.get_answers(),LETTERS):
+        question_list = question.get_answers()
+        question_list_indices = len(question_list) - 1
+        for answer,letter in zip(question_list,LETTERS):
             choice = request.POST.get(f"choice_{letter}")
             correct = True  if request.POST.get(f'checkbox_{letter}') == "on"  else False
-            print("correct ",request.POST.get(f'checkbox_{letter}'))
-            answer.content = choice
-            answer.correct = correct
-            answer.figure = figure
-            answer.save()
-            question.save()
+            letter = letter.upper()
+           
+            if choice:
+                answer.content = choice
+                answer.correct = correct
+                answer.figure = figure
+                answer.save()
+                question.save()
         question.save()
-        return redirect(reverse('list-question'))
-    
+        return HttpResponseRedirect('/quiz/instructor/list-question/?q=' + str(course_id))
 
     
 
@@ -149,7 +155,8 @@ def InstructorUpdateEditView(request):
     
         'id':id,
         "data":data,
-        'question_content':question.content
+        'question_content':question.content,
+        "quiz_id":quiz_id
     }
     return render(request,"instructor/quiz/update_question.html",context)
     

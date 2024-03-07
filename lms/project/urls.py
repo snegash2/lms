@@ -8,7 +8,7 @@ from lms.project.views import index
 from django.contrib import admin
 from django.contrib.auth.models import User
 from .views import InstructorSignupView
-from landing.views import PasswordResetAPIView
+from landing.views import PasswordResetAPIView,custom_login
 
 admin.site.site_header = "Abebech Gobena Hospital Admin"
 admin.site.site_title = "Abebech Gobena Hospital"
@@ -22,6 +22,8 @@ urlpatterns = [
     path('avatar/', include('avatar.urls')),
     path('instructor/', InstructorSignupView.as_view(), name='instructor_account_signup'),
     path('accounts/', include('allauth.urls')),
+    path('auth/login/',custom_login, name='auth'),
+
     path('quiz/',include('exam.quiz.urls')),   
     path('course/', include('courses.urls')),
     path('students/', include('students.urls')),

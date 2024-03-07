@@ -116,15 +116,11 @@
             {% endfor%}
             </td>
             <td >
-
-              <a href="{%url 'update-question'%}?q={{q.id}}" target="_blank" rel="noopener noreferrer">
+              
+              <a href="{%url 'update-question'%}?q={{q.id}}&id={{quiz_id}}">
                 <button style="margin-left: 10px;" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit question</button>
               </a>
-             
-
                 <button  onclick="deleteQuestion({{q.id}})" style="margin-left: 10px;">Delete question</button>
-             
-            
             </td>
           </tr>
 

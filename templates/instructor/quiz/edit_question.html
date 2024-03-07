@@ -28,6 +28,7 @@
   </div>
   <div class="container">
     <h2>Add Your Question</h2>
+   
     <form action="{% url 'edit-question'%}?q={{course.id}}" method="post" id="form">
       {% csrf_token %}
  
@@ -350,7 +351,7 @@
       }
 
       function submitExam() {
-        saveCurrentQuestion();
+        //saveCurrentQuestion();
         // Your logic to submit the exam
         // This example shows the animated "Thank you" popup.
         document.getElementById("questionForm").style.display = "none";
