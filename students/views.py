@@ -101,6 +101,30 @@ class StudentEnrollCourseView(LoginRequiredMixin,FormView):
         return super().form_valid(form)
     
     
+class StudentSubmitAss(LoginRequiredMixin,FormView):
+    course = None
+    form_class = CourseEnrollForm
+    template_name = "courses/course/submit_ass.html"
+
+    def post(self,request):
+        user_id = request.POST.get("user")
+        course_id   = request.POST.get("id")
+        slug = request.POST.get("slug")
+        course = get_object_or_404(Course,id = course_id)
+        user = get_object_or_404(User,id = user_id)
+        
+        course.students.add(user)
+        course.save()
+        activity = StudentActivity.objects.create(user = self.request.user,activity = f"Student Enroled")
+        activity.save()
+        
+        return redirect("courses:course_detail",slug = slug)
+
+
+    def form_valid(self, form):
+        self.course = form.cleaned_data['course']
+        self.course.students.add(self.request.user)
+        return super().form_valid(form)
     
     
 class StudentDropoutCourseView(LoginRequiredMixin,FormView):

@@ -386,6 +386,7 @@ class CourseListView(TemplateResponseMixin, View):
 class CourseDetailView(DetailView):
     model = Course
     template_name = 'courses/course/detail.html'
+  
 
     def get_context_data(self, **kwargs):
         crendentials = None

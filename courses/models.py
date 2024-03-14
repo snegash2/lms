@@ -150,6 +150,8 @@ class Course(models.Model):
     def __repr__(self):
         return f"{self.teacher}"
     
+    def __str__(self):
+        return f"{self.name}"
     @property
     def detail(self):
         return f"{self.overview[3:70]} ..."

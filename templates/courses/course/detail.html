@@ -147,15 +147,17 @@
     </script>
     <div class="dashboard-container">
       <div id="left" class="course">
-        <h2>{{course|title}}</h2>
 
+        <h2>{{course|title}}</h2>
+         
         {% for module in course.modules.all %}
+     
         <!-- ====================================Introduction One============================================ -->
         <div class="accordion">
           <div id="module-one" class="accordion-item">
             <div class="accordion-header">
               <!-- <i class="fas fa-angle-right"></i> -->
-              <img src="{% static 'files.png' %}" /> Module:{{module.order}} {{module.detail }}
+              <img src="{% static 'files.png' %}"  /> Module:{{module.order}} {{module.detail }}
               <i class="fas fa-angle-right"></i>
             </div>
             <div class="accordion-content">
@@ -184,6 +186,7 @@
                     <div class="video-list">
 
                      {% for content in  module.contents.all %}
+                   
                       {% if  content.content_type.model == "video"  %}
                         {% video content.item.video  as my_video %}
                         {{content.item.video}}
@@ -207,6 +210,21 @@
                     ></i>
 
 
+                  </div>
+
+
+                  <div class="sub-accordion-item">
+                    <div class="sub-accordion-header">
+                      <img src="{% static 'newfile.png' %}" />Assignment
+                      <i class="fas fa-angle-right"></i>
+                    </div>
+                    <div class="sub-accordion-content">
+                      <ul>
+                        <li><a href="#Assignment1">Assignment 1</a></li>
+                        <li><a href="#Assignment2">Assignment 2</a></li>
+                        <li><a href="#Assignment3">Assignment 3</a></li>
+                      </ul>
+                    </div>
                   </div>
                   <div class="sub-accordion-content">
 
@@ -233,71 +251,16 @@
             </div>
           </div>
         </div>
+
+   
         {% endfor %}
-        <!--  -------------------------------Accordion Js-------------------------------p------>
-        <script>
-          const accordions = document.querySelectorAll(
-            ".accordion .accordion-item .accordion-header"
-          );
-          accordions.forEach((accordion) => {
-            accordion.addEventListener("click", function () {
-              const content = this.nextElementSibling;
-              const icon = this.querySelector("i");
-              content.style.display =
-                content.style.display === "block" ? "none" : "block";
 
-              // Change the icon
-              if (content.style.display === "block") {
-                icon.classList.remove("fa-angle-right");
-                icon.classList.add("fa-angle-down");
-              } else {
-                icon.classList.remove("fa-angle-down");
-                icon.classList.add("fa-angle-right");
-              }
-
-              // Close other open accordions
-              accordions.forEach((otherAccordion) => {
-                if (otherAccordion !== accordion) {
-                  otherAccordion.nextElementSibling.style.display = "none";
-                  const otherIcon = otherAccordion.querySelector("i");
-                  otherIcon.classList.remove("fa-angle-down");
-                  otherIcon.classList.add("fa-angle-right");
-                }
-              });
-            });
-          });
-
-          const subAccordions = document.querySelectorAll(
-            ".sub-accordion .sub-accordion-item .sub-accordion-header"
-          );
-          subAccordions.forEach((subAccordion) => {
-            subAccordion.addEventListener("click", function () {
-              const content = this.nextElementSibling;
-              const icon = this.querySelector("i");
-              content.style.display =
-                content.style.display === "block" ? "none" : "block";
-
-              // Change the icon
-              if (content.style.display === "block") {
-                icon.classList.remove("fa-angle-right");
-                icon.classList.add("fa-angle-down");
-              } else {
-                icon.classList.remove("fa-angle-down");
-                icon.classList.add("fa-angle-right");
-              }
-
-              // Close other open sub-accordions
-              subAccordions.forEach((otherSubAccordion) => {
-                if (otherSubAccordion !== subAccordion) {
-                  otherSubAccordion.nextElementSibling.style.display = "none";
-                  const otherIcon = otherSubAccordion.querySelector("i");
-                  otherIcon.classList.remove("fa-angle-down");
-                  otherIcon.classList.add("fa-angle-right");
-                }
-              });
-            });
-          });
-        </script>
+        <div class="accordion">
+          <div id="module-one" class="accordion-item">
+            <div class="accordion-header">
+              <img src="{% static 'files.png' %}" /> Attach file
+              <i class="fas fa-angle-right"></i>
+            </div>
         <!-- ==========================================Attach File====================================== -->
         {% if request.user.is_authenticated and request.user in course.students.all %}
 
@@ -370,8 +333,8 @@
        {% else %}
 
        <div id="left" class="attach">
-        <div id="Attach" class="container">
-          <h1>Your crendetials</h1>
+        <div id="Attach" style="display: none;">
+          <h1></h1>
           <form id="fileForm" aria-disabled="true">
             <!-- <label for="fileInput">Select a file:</label> -->
             <!-- <input type="file" id="fileInput" name="fileInput" /> -->
@@ -384,6 +347,74 @@
     </div>
 
       {% endif %}
+          </div>
+        </div>
+        
+        <!--  -------------------------------Accordion Js-------------------------------p------>
+        <script>
+          const accordions = document.querySelectorAll(
+            ".accordion .accordion-item .accordion-header"
+          );
+          accordions.forEach((accordion) => {
+            accordion.addEventListener("click", function () {
+              const content = this.nextElementSibling;
+              const icon = this.querySelector("i");
+              content.style.display =
+                content.style.display === "block" ? "none" : "block";
+
+              // Change the icon
+              if (content.style.display === "block") {
+                icon.classList.remove("fa-angle-right");
+                icon.classList.add("fa-angle-down");
+              } else {
+                icon.classList.remove("fa-angle-down");
+                icon.classList.add("fa-angle-right");
+              }
+
+              // Close other open accordions
+              accordions.forEach((otherAccordion) => {
+                if (otherAccordion !== accordion) {
+                  otherAccordion.nextElementSibling.style.display = "none";
+                  const otherIcon = otherAccordion.querySelector("i");
+                  otherIcon.classList.remove("fa-angle-down");
+                  otherIcon.classList.add("fa-angle-right");
+                }
+              });
+            });
+          });
+
+          const subAccordions = document.querySelectorAll(
+            ".sub-accordion .sub-accordion-item .sub-accordion-header"
+          );
+          subAccordions.forEach((subAccordion) => {
+            subAccordion.addEventListener("click", function () {
+              const content = this.nextElementSibling;
+              const icon = this.querySelector("i");
+              content.style.display =
+                content.style.display === "block" ? "none" : "block";
+
+              // Change the icon
+              if (content.style.display === "block") {
+                icon.classList.remove("fa-angle-right");
+                icon.classList.add("fa-angle-down");
+              } else {
+                icon.classList.remove("fa-angle-down");
+                icon.classList.add("fa-angle-right");
+              }
+
+              // Close other open sub-accordions
+              subAccordions.forEach((otherSubAccordion) => {
+                if (otherSubAccordion !== subAccordion) {
+                  otherSubAccordion.nextElementSibling.style.display = "none";
+                  const otherIcon = otherSubAccordion.querySelector("i");
+                  otherIcon.classList.remove("fa-angle-down");
+                  otherIcon.classList.add("fa-angle-right");
+                }
+              });
+            });
+          });
+        </script>
+
       <!-- ============================================== -->
 
       <div id="right" class="course-overview">
@@ -492,15 +523,8 @@
 
                 </ul>
               </div>
-
-      
-
-
             </div>
             <div class="item button3">
-
-
-
               <ul>
                 {% for module in course.modules.all %}
                   {% for task in module.tasks.all %}

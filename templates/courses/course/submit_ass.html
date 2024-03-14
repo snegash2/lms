@@ -1,0 +1,124 @@
+{% extends '_base.html' %}
+{% load static %}
+{% block style %}
+
+<link rel="stylesheet" href="{% static 'submit_ass.css' %}" />
+<link rel="stylesheet" href="{% static 'main_ass.css' %}" />
+
+{% endblock %}
+{% block content %}
+  
+    <h1>Submit Assignment</h1>
+    <div class="instructions">
+      <h2>Instructions</h2>
+      <p>
+        Please download the assignment questions below and submit your answers
+        using the form.
+      </p>
+      <p>Deadline for submission: March 15, 2024</p>
+      <p>Allowed file types: PDF, DOC, DOCX</p>
+      <p>Maximum file size: 10MB</p>
+      <p>
+        Additional instructions: Please make sure your answers are clear and
+        organized.
+      </p>
+    </div>
+    <div>
+      <a href="/pdf/Fullstack CV1.pdf" download id="downloadBtn">
+        <span id="downloadIcon"></span> Download Assignment 
+      </a>
+    </div>
+    <div id="myModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <form
+          id="assignmentForm"
+          enctype="multipart/form-data"
+        >
+          <label for="assignmentName"><h3 class="assing">Assignment Name:</h3></label><br />
+          <input
+            type="text"
+            id="assignmentName"
+            name="assignmentName"
+            required
+          /><br />
+  
+          <label for="description"><h3>Description:</h3></label><br />
+          <textarea id="description" name="description" required></textarea><br />
+  
+          <label for="file"><h3>Select your assignment file:</h3></label><br />
+          <input
+            type="file"
+            id="file"
+            name="file"
+            accept=".pdf, .doc, .docx"
+            required
+          /><br />
+  
+          <button type="button" onclick="submitForm()" id="submitBtn">Submit</button>
+        </form>
+      </div>
+    </div>
+    <div id="status"></div>
+    <div id="submissionDetails">
+      <h2>Submission Details</h2>
+      <p>
+        <strong>Assignment Name:</strong>
+        <span id="submittedAssignmentName"></span>
+      </p>
+      <p>
+        <strong>Description:</strong> <span id="submittedDescription"></span>
+      </p>
+    </div>
+    <button id="showFormButton" onclick="openModal()">Assignment Submission</button>
+  
+    <!-- Success message modal -->
+    <div id="successModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <p>Your assignment was successfully submitted!</p>
+      </div>
+    </div>
+  
+  <!-- ... (previous code) ... -->
+
+<script>
+  function openModal() {
+    document.getElementById("myModal").style.display = "block";
+    document.body.classList.add("modal-open");
+  }
+
+  function closeModal() {
+    document.getElementById("myModal").style.display = "none";
+    document.getElementById("successModal").style.display = "none";
+    document.body.classList.remove("modal-open");
+  }
+
+  function submitForm() {
+    // Show confirmation dialog using SweetAlert
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you really want to submit this file?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, submit it!',
+      cancelButtonText: 'No, cancel!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Close the form modal
+        closeModal();
+
+        // Show success message using SweetAlert
+        Swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: 'Your assignment was successfully submitted!',
+          confirmButtonText: 'OK',
+        });
+      }
+    });
+  }
+</script>
+   
+
+{% endblock content %}

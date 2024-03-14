@@ -4,6 +4,8 @@
 {% load crispy_forms_tags %}
 {% block style %}
 {% load embed_video_tags %}
+{% load avatar_tags %}
+
 <link rel="icon" href="{% static 'logo.png' %}" type="image/x-icon" />
 
 <meta charset="UTF-8" />
@@ -65,11 +67,17 @@
 
 
   <img src="{% static 'logo.png'%}" class="logo">
-  <h1 class="Header-Title">Welcome {{ request.user.first_name}} {{request.user.last_name }}</h1>
   <div id="dashboard-container">
-    <div id="profile-picture-container" onclick="openFileInput()" id="uploadForm">
+    <h1 class="Header-Title">Welcome {{ request.user.first_name}} {{request.user.last_name }}</h1>
 
-      {% if profile.avatar %}
+    <!-- <div id="profile-picture-container" onclick="openFileInput()" id="uploadForm"> -->
+      <div style="position: absolute;left:95%;">
+        {% avatar user 65 class="img-circle img-responsive" id="user_avatar" %}
+
+        <a href="{% url 'avatar:change' %}">Change your avatar</a>
+      </div>
+     
+      <!-- {% if profile.avatar %}
 
       <img id="profile-picture" src="{{profile.avatar.url}}" alt="Profile Picture" />
 
@@ -79,7 +87,7 @@
       accept="image/*" onchange="displayImage(this)" </form>
   </div>
 
-  {% endif %}
+  {% endif %} -->
 
   <script>
     // JavaScript functions

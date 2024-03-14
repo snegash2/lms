@@ -1,4 +1,140 @@
+<header>
+  <div class="navgation">
+    <nav class="navbar">
+      <div class="navbar-brand">
+        <img class="menu-logo" src="./assets/logo.png" alt="" />
+      </div>
+      <div class="navbar-hamburger">
+        <span id="span"></span>
+        <span id="span"></span>
+        <span id="span"></span>
+        <span id="span"></span>
+      </div>
+      <div class="navbar-menu">
+        <ul class="Menu-container">
+          <li>
+            <a id="Links" class="Links" href="#">Home</a>
+          </li>
+          <li><a class="Links" href="#">About</a></li>
+          <li><a class="Links" href="#">Contact</a></li>
 
+          <li>
+            <div class="dropdown">
+              <button class="dropdown-toggle">
+                <i class="fa fa-user-circle"></i>
+              </button>
+              <div class="dropdown-menu">
+                <a href="#"><i class="bx bx-cog"></i> Settings</a>
+                <a href="#"><i class="bx bx-user"></i> Profile</a>
+                <a href="#"><i class="bx bx-question-mark"></i>Help</a>
+                <a href="#"><i class="bx bx-log-out bx-icon"></i> Logout</a>
+              </div>
+            </div>
+            <script>
+              // ====================================================click drop down icon anywhere==========================
+
+              const dropdown = document.querySelector(".dropdown");
+
+              document.addEventListener("click", (event) => {
+                // Close the dropdown if clicked outside the dropdown
+                if (!dropdown.contains(event.target)) {
+                  closeDropdown();
+                }
+              });
+
+              dropdown
+                .querySelector(".dropdown-toggle")
+                .addEventListener("click", (event) => {
+                  event.stopPropagation(); // Prevent the document listener from triggering
+                  toggleDropdown();
+                });
+
+              function toggleDropdown() {
+                dropdown.classList.toggle("show");
+              }
+
+              function closeDropdown() {
+                dropdown.classList.remove("show");
+              }
+            </script>
+          </li>
+          <div class="All__Btn"></div>
+        </ul>
+      </div>
+    </nav>
+    <!-- =========================================Navgation js===================================== -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        var navbarHamburger = document.querySelector(".navbar-hamburger");
+        var navbarMenu = document.querySelector(".navbar-menu");
+
+        navbarHamburger.addEventListener("click", function () {
+          navbarHamburger.classList.toggle("active");
+          navbarMenu.classList.toggle("active");
+        });
+
+        document.addEventListener("click", function (event) {
+          var targetElement = event.target;
+          if (
+            !targetElement.closest(".navbar") &&
+            navbarHamburger.classList.contains("active")
+          ) {
+            navbarHamburger.classList.remove("active");
+            navbarMenu.classList.remove("active");
+          }
+        });
+      });
+    </script>
+  </div>
+</header>
+
+
+
+
+
+
+
+
+{% if not request.user.is_authenticated %}
+
+<li>
+  <div class="Sign" style="display: flex;justify-content: center;align-items: center;" data-bs-toggle="modal" data-bs-target="#logoutModal">
+  
+    {% if request.path == '/accounts/login/' %}
+    <a   href="{%url 'account_signup'%}" ><h6>Sign up</h6></a>
+
+    {% else %}
+  
+    <div class="Sign" style="display: flex;justify-content: center;align-items: center;" data-bs-toggle="modal" data-bs-target="#loginmodal">
+      <h6 style="margin: 0;color:white;">Login</h6>
+    </div>
+
+    {% endif %}
+  </div>
+</li>
+
+{% else %}
+<li>
+  <div class="Sign" style="display: flex;justify-content: center;align-items: center;" data-bs-toggle="modal" data-bs-target="#logoutModal">
+    <h6 style="margin: 0;color:white;">Logout</h6>
+  </div>
+</li>
+
+{%if request.user.is_authenticated %}
+<li>
+  <a  href="{%url 'students:student_update_profile' request.user.profile.pk %}" >
+    {% avatar user 65 class="img-circle img-responsive" id="user_avatar" %}
+
+  </a>
+  
+  <!-- <div class="Sign" style="display: flex;justify-content: center;align-items: center; margin-bottom:5px;" >
+    <a  style="margin:0px;padding:0px;" href="{%url 'students:student_update_profile' request.user.profile.pk %}" ><h6>   </h6></a>
+    
+  </div> -->
+</li>
+
+{% endif %}
+{% endif %}
 
 
 
