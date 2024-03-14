@@ -70,13 +70,13 @@
               </div>
               
               ` :` 
-                      <div class="gallery-item-inner">
+                      <div class="gallery-item camera" style="width: 320px;">
                         <div class="card__new">
                           <img src="${jcourse.image_url}" alt="${jcourse.name}" />
                           <div class="container__new">
                             <h4>${jcourse.name.toUpperCase()}</h4>
                             <p>
-                              ${jcourse.detail.slice(0,100)}
+                              ${jcourse.detail.slice(0,30)}
                             </p>
                             <h4 id="Birr">400 <span class="Birr_span">ETB</span></h4>
                             <div class="Enroll__Container">
@@ -400,12 +400,19 @@
   <div class="container">
     <div class="row">
       <div class="gallery-filter">
-        <span class="filter-item active" id="All" data-filter="all" onclick="filterCourses('All')">Show All</span>
+        <span class="filter-item active" id="All" data-filter="all" hx-get="{% url 'filter_course_base' 'all' %}" hx-target="#row">Show All</span>
    
         {% for category in categories %}
      
-        <span class="filter-item" id="{{category}}" data-filter="watch"
-          onclick="filterCourses('{{category}}')">{{category|title}}</span>
+        <!-- <span class="filter-item" id="{{category}}" data-filter="watch"
+          onclick="filterCourses('{{category}}')">
+          {{category|title}}
+        </span> -->
+
+
+        <span class="filter-item" id="{{category}}" data-filter="watch" hx-get="{% url 'filter_course_base' category %}" hx-target="#row">
+        {{category|title}}
+      </span>
         {% endfor %}
       </div>
     </div>

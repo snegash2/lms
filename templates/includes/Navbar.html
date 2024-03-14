@@ -2,7 +2,7 @@
 {% load crispy_forms_tags %}
 {% load i18n %}
 {% load socialaccount %}
-{% load avatar_tags %}
+
   
 <!-- Modal -->
 <div style="z-index: 1000000;" class="modal fade" id="loginmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -31,9 +31,7 @@
           <div class="forgot-password">
             <a href="{% url 'account_reset_password' %}">Forgot Password? </a>
           </div>
-          <div class="forgot-password">
-            <a href="https://ashewa.com?q=tinsae">test</a>
-          </div>
+
 
           <div class="forgot-password">
             <a href="{% url 'account_signup' %}">Don't have an account ?</a>
@@ -158,46 +156,41 @@
         
         <div class="All__Btn">
 
+          {% if not request.user.is_authenticated %}
+
           <li>
-            <div class="dropdown">
-              <button class="dropdown-toggle">
-                <i class="fa fa-user-circle"></i>
-              </button>
-              <div class="dropdown-menu">
-                <a href="#"><i class="bx bx-cog"></i> Settings</a>
-                <a href="#"><i class="bx bx-user"></i> Profile</a>
-                <a href="#"><i class="bx bx-question-mark"></i>Help</a>
-                <a href="#"><i class="bx bx-log-out bx-icon"></i> Logout</a>
+            <div class="Sign" style="display: flex;justify-content: center;align-items: center;" data-bs-toggle="modal" data-bs-target="#logoutModal">
+            
+              {% if request.path == '/accounts/login/' %}
+              <a   href="{%url 'account_signup'%}" ><h6>Sign up</h6></a>
+
+              {% else %}
+            
+              <div class="Sign" style="display: flex;justify-content: center;align-items: center;" data-bs-toggle="modal" data-bs-target="#loginmodal">
+                <h6 style="margin: 0;color:white;">Login</h6>
               </div>
+        
+              {% endif %}
             </div>
-            <script>
-              // ====================================================click drop down icon anywhere==========================
-
-              const dropdown = document.querySelector(".dropdown");
-
-              document.addEventListener("click", (event) => {
-                // Close the dropdown if clicked outside the dropdown
-                if (!dropdown.contains(event.target)) {
-                  closeDropdown();
-                }
-              });
-
-              dropdown
-                .querySelector(".dropdown-toggle")
-                .addEventListener("click", (event) => {
-                  event.stopPropagation(); // Prevent the document listener from triggering
-                  toggleDropdown();
-                });
-
-              function toggleDropdown() {
-                dropdown.classList.toggle("show");
-              }
-
-              function closeDropdown() {
-                dropdown.classList.remove("show");
-              }
-            </script>
           </li>
+
+          {% else %}
+          <li>
+            <div class="Sign" style="display: flex;justify-content: center;align-items: center;" data-bs-toggle="modal" data-bs-target="#logoutModal">
+              <h6 style="margin: 0;color:white;">Logout</h6>
+            </div>
+          </li>
+
+          {%if request.user.is_authenticated %}
+          <li>
+
+            <div class="Sign" style="display: flex;justify-content: center;align-items: center; margin-bottom:5px;" >
+              <a  style="margin:0px;padding:0px;" href="{%url 'students:student_update_profile' request.user.profile.pk %}" ><h6>Profile</h6></a>
+              
+            </div>
+          </li>
+          {% endif %}
+          {% endif %}
         </div>
       </ul>
     </div>

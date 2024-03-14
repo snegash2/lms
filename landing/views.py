@@ -28,6 +28,11 @@ from django.shortcuts import render, redirect
 from allauth.account.forms import LoginForm
 from .utils import MyCustomSignupForm,LmsSignupForm
 
+
+
+
+
+
 def custom_login(request):
     if request.method == 'POST':
         form = LmsSignupForm(request.POST)
@@ -349,3 +354,28 @@ class PasswordResetAPIView(views.APIView):
             return Response({'detail': 'Password reset email has been sent.'}, status=status.HTTP_200_OK)
         else:
             return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+def filter_course_base(request,category):
+    print("category ",category)
+    if category == "all":
+        courses = Course.objects.all()
+        
+    try:
+        cat = Category.objects.filter(category = category).first()
+    except Category.DoesNotExist:
+        pass
+   
+    courses = Course.objects.filter(published = True,category = cat.id)
+    print("courses ",courses)
+    instructors = None
+ 
+    context = {
+        'courses':courses,
+        'instructors':instructors,
+        'enroll_form': CourseEnrollForm,
+        'login_form':LoginForm()
+    }
+
+    return render(request, 'landing/card.html',context)

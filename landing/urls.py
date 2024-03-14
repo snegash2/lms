@@ -1,7 +1,12 @@
 from django.urls import path
 from .views import landing_page
 from django.urls import path
-from .views import filter_courses,get_course_name,user_global_settings_update,verify_egiliable_student_ajax,student_enrolloment
+from .views import (filter_courses,
+                    get_course_name,
+                    user_global_settings_update,
+                    verify_egiliable_student_ajax,
+                    student_enrolloment,
+                    filter_course_base)
 from courses.views import delete_module,AssCreateView
 
 
@@ -10,6 +15,7 @@ from courses.views import delete_module,AssCreateView
 urlpatterns = [
     path('',landing_page,name = "landing"),
     path('filter-courses/', filter_courses, name='filter_courses'),
+    path('filter_course_base/<category>/', filter_course_base, name='filter_course_base'),
     path('get_course_name/',get_course_name, name='get_course_name'),
     path('eligibility_ajax/',verify_egiliable_student_ajax,name='egiliablity_ajax'),
     path('student_enrolloment/',student_enrolloment,name='student_enrolloment'),
