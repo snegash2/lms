@@ -152,6 +152,7 @@
          
         {% for module in course.modules.all %}
      
+       
         <!-- ====================================Introduction One============================================ -->
         <div class="accordion">
           <div id="module-one" class="accordion-item">
@@ -171,19 +172,31 @@
                   <div class="sub-accordion-content"></div>
                 </div>
 
+                <script>
+                  function clickedVideo() {
+                    const video = document.getElementsByTagName("iframe")
+                    video[0].src =  "{{course.intro_video}}"
+                    $(`#videoContainer`).load(`{% url 'courses:course_detail' course.slug %} #videoContainer`)
+                  }
+                </script>
+
                 <div class="sub-accordion-item">
-                  <div id="sub-accordion-header" class="sub-accordion-header">
-                    <img src="{% static 'video-icons.png' %}" />Video<i
+                  <div id="sub-accordion-header" class="sub-accordion-header"  onclick="clickedVideo()" >
+                    <img src="{% static 'video-icons.png' %}"/>Video<i
                       id="Sub-video"
                       class="fas fa-angle-right"
                     ></i>
+                  
                   </div>
+
+
+             
 
                   <div class="sub-accordion-content">
 
                  
-                    
-                    <div class="video-list">
+    
+                    <div class="video-list" id="videoContainer">
 
                      {% for content in  module.contents.all %}
                    
@@ -202,30 +215,28 @@
                 </div>
 
                 <div class="sub-accordion-item">
+
+
+
                   <div class="sub-accordion-header">
                     <img src="{% static 'referance-icons.png' %}" /> Reference<i
                       id="Ref-icons"
                       id="Ref-icons"
                       class="fas fa-angle-right"
                     ></i>
-
-
                   </div>
-
-
-                  <div class="sub-accordion-item">
-                    <div class="sub-accordion-header">
-                      <img src="{% static 'newfile.png' %}" />Assignment
-                      <i class="fas fa-angle-right"></i>
-                    </div>
-                    <div class="sub-accordion-content">
-                      <ul>
-                        <li><a href="#Assignment1">Assignment 1</a></li>
-                        <li><a href="#Assignment2">Assignment 2</a></li>
-                        <li><a href="#Assignment3">Assignment 3</a></li>
-                      </ul>
-                    </div>
+          
+                <a href="{% url 'students:submit-assiagnment'  module.id  %}" target="_blank" >
+                  <div class="sub-accordion-header">
+                    <img src="{% static 'referance-icons.png' %}" /> Module Assignment <i
+                      id="Ref-icons"
+                      id="Ref-icons"
+                      class="fas fa-angle-right"
+                    ></i>
                   </div>
+                  </a>
+
+
                   <div class="sub-accordion-content">
 
                     {%if request.user.is_authenticated %}
@@ -284,6 +295,10 @@
          
 
           <script>
+
+            function clickedVideo() {
+              console.log("hello world from click video")
+            }
             const form = document.getElementById("fileForm")
             form.addEventListener ("submit",function(envent){
               event.preventDefault();

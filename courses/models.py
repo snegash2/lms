@@ -288,6 +288,7 @@ class CourseAccess(models.Model):
     
     
 class Assignment(models.Model):
+    course = models.ForeignKey(Course, related_name = "ass_course",null = True, blank = True, on_delete = models.CASCADE)
     title = models.CharField(max_length=100,blank = False,null = False)
     module = models.ForeignKey(Module,blank = True,null = True, on_delete = models.CASCADE)
     description = models.TextField(blank = False,null = False)

@@ -7,11 +7,11 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
 from django.views.generic.edit import FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponse
+from django.http import HttpRequest, HttpResponse
 # from django.urls import reverse,redirect
 from django.shortcuts import get_object_or_404,redirect
-from courses.models import Course
-from .forms import CourseEnrollForm
+from courses.models import Course,Module,Assignment
+from .forms import CourseEnrollForm,AssModalForm
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from crendential.models import Crendential
 from django.contrib.auth import get_user_model
@@ -20,6 +20,7 @@ from .forms import StudentProfile
 from django.shortcuts import  render
 from django.contrib import messages
 from django.http import JsonResponse
+from django.http import HttpResponseBadRequest, JsonResponse  # Use JsonResponse for JSON response
 
     # File: views.py
 from bootstrap_datepicker_plus.widgets import DateTimePickerInput
@@ -41,6 +42,7 @@ class StudentRegistrationView(CreateView):
         password=cd['password1'])
         login(self.request, user)
         return result
+
 
 
 
@@ -105,27 +107,60 @@ class StudentSubmitAss(LoginRequiredMixin,FormView):
     course = None
     form_class = CourseEnrollForm
     template_name = "courses/course/submit_ass.html"
-
-    def post(self,request):
-        user_id = request.POST.get("user")
-        course_id   = request.POST.get("id")
-        slug = request.POST.get("slug")
-        course = get_object_or_404(Course,id = course_id)
-        user = get_object_or_404(User,id = user_id)
-        
-        course.students.add(user)
-        course.save()
-        activity = StudentActivity.objects.create(user = self.request.user,activity = f"Student Enroled")
-        activity.save()
-        
-        return redirect("courses:course_detail",slug = slug)
-
-
-    def form_valid(self, form):
-        self.course = form.cleaned_data['course']
-        self.course.students.add(self.request.user)
-        return super().form_valid(form)
     
+    
+  
+    def get_context_data(self, **kwargs):
+        crendentials = None
+        context = super().get_context_data(**kwargs)
+        id = None
+        form = AssModalForm()
+ 
+        try:
+            id = kwargs.get(id,None)
+            module = Module.objects.all().last()
+            # assiagnment = Assignment.objects.filter(module = module,course = self.request.user.courses_joined.all().first()).first()
+            assiagnment = Assignment.objects.filter(module = module).first()
+
+            context['module'] = module
+            context['ass'] = assiagnment
+            context['form'] = form
+        except Module.DoesNotExist:
+            pass
+
+        return context
+    
+    def post(self, request: HttpRequest, *args: str, **kwargs: Any) -> HttpResponse:
+        module = Module.objects.get(id = kwargs.get("id"))
+        print("module ",module.course.id)
+
+        form = AssModalForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            # Extract cleaned data from the form
+            cleaned_data = form.cleaned_data
+
+            # Create a new assignment instance with validated data
+            new_assignment = Assignment.objects.create(
+                course=module.course,
+                title=cleaned_data['title'],
+                module=module,
+                description=cleaned_data['description'],
+                file=cleaned_data['file'],
+            )
+            messages.success(self.request, 'you submit  assiagment success fully.')
+            return redirect('students:submit-assiagnment', id= kwargs.get("id"))
+        else:
+            # Handle form validation errors
+            return JsonResponse({'errors': form.errors}, status=400)  # Use status code for errors
+
+
+ 
+    
+
+    
+    
+
     
 class StudentDropoutCourseView(LoginRequiredMixin,FormView):
     course = None

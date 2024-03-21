@@ -366,9 +366,8 @@ def filter_course_base(request,category):
         cat = Category.objects.filter(category = category).first()
     except Category.DoesNotExist:
         pass
-   
-    courses = Course.objects.filter(published = True,category = cat.id)
-    print("courses ",courses)
+    if cat != None:
+       courses = Course.objects.filter(published = True,category = cat.id)
     instructors = None
  
     context = {

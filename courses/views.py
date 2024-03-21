@@ -383,11 +383,10 @@ class CourseListView(TemplateResponseMixin, View):
 
 
 
-class CourseDetailView(DetailView):
+class   CourseDetailView(DetailView):
     model = Course
     template_name = 'courses/course/detail.html'
   
-
     def get_context_data(self, **kwargs):
         crendentials = None
         context = super().get_context_data(**kwargs)
@@ -403,7 +402,6 @@ class CourseDetailView(DetailView):
             context['crendentials'] = crendentials
 
         return context
-    
     
     def post(self,request,**kwargs):
         user = request.user
