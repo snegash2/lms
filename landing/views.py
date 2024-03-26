@@ -252,7 +252,7 @@ def verify_egiliable_student_ajax(request):
             pass
 
         try:
-            student = User.objects.get(id = studentId)
+            student = LmsUser.objects.get(id = studentId)
 
         except User.DoesNotExist:
             pass

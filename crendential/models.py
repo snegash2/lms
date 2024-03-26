@@ -11,7 +11,8 @@ def user_directory_path(instance, filename):
 class Crendential(models.Model):
     user = models.ForeignKey(User, related_name = "student_document",on_delete = models.CASCADE)
     course = models.ForeignKey(Course, on_delete = models.CASCADE,default=1)
-    # name  = models.CharField(max_length=100)
+    title  = models.CharField(max_length=100,blank = True,null = True)
+    description = models.CharField(max_length = 1000,blank = True,null = True)
     file = models.FileField(upload_to=user_directory_path)
 
     def __str__(self):

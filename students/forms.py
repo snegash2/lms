@@ -2,7 +2,7 @@ from django import forms
 from tempus_dominus.widgets import DateTimePicker
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Field
-from students. models import Profile
+from students. models import Profile,Certification
 from courses.models import Course,Assignment
 
 
@@ -14,15 +14,14 @@ class CourseEnrollForm(forms.Form):
     
 class AssModalForm(forms.ModelForm):
             
-
     class Meta:
         model = Assignment
         fields = 'title','description','file'
     title = forms.CharField(max_length=100,widget=forms.TextInput(attrs={'class':'form-control','style':'width:455px;'}))
+    
+    
 
-        
-    
-    
+
 class StudentProfile(forms.ModelForm):
     class Meta:
         model = Profile

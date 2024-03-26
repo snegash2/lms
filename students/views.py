@@ -16,6 +16,7 @@ from django.core.files.uploadedfile import InMemoryUploadedFile
 from crendential.models import Crendential
 from django.contrib.auth import get_user_model
 from students.models import Certification,StudentActivity,Profile
+from crendential.forms import CrendentialForm
 from .forms import StudentProfile
 from django.shortcuts import  render
 from django.contrib import messages
@@ -114,7 +115,7 @@ class StudentSubmitAss(LoginRequiredMixin,FormView):
         crendentials = None
         context = super().get_context_data(**kwargs)
         id = None
-        form = AssModalForm()
+        form = CrendentialForm()
  
         try:
             id = kwargs.get(id,None)
@@ -134,20 +135,25 @@ class StudentSubmitAss(LoginRequiredMixin,FormView):
         module = Module.objects.get(id = kwargs.get("id"))
         print("module ",module.course.id)
 
-        form = AssModalForm(request.POST, request.FILES)
+        form = CrendentialForm(request.POST, request.FILES)
 
         if form.is_valid():
+            instance = form.save(commit=False)
+            instance.user = request.user
+            instance.course = module.course
+            instance.save()
+            form.save()
             # Extract cleaned data from the form
-            cleaned_data = form.cleaned_data
+            # cleaned_data = form.cleaned_data
 
-            # Create a new assignment instance with validated data
-            new_assignment = Assignment.objects.create(
-                course=module.course,
-                title=cleaned_data['title'],
-                module=module,
-                description=cleaned_data['description'],
-                file=cleaned_data['file'],
-            )
+            # # Create a new assignment instance with validated data
+            # new_assignment = Assignment.objects.create(
+            #     course=module.course,
+            #     title=cleaned_data['title'],
+            #     module=module,
+            #     description=cleaned_data['description'],
+            #     file=cleaned_data['file'],
+            # )
             messages.success(self.request, 'you submit  assiagment success fully.')
             return redirect('students:submit-assiagnment', id= kwargs.get("id"))
         else:

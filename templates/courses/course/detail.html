@@ -189,29 +189,61 @@
                   
                   </div>
 
-
-             
-
                   <div class="sub-accordion-content">
-
-                 
-    
                     <div class="video-list" id="videoContainer">
 
                      {% for content in  module.contents.all %}
-                   
+               
                       {% if  content.content_type.model == "video"  %}
                         {% video content.item.video  as my_video %}
                         {{content.item.video}}
                         {% video my_video "small" %}
                        {% endvideo %}
+                  
                       {% endif %}
                           
                     {% endfor %}
                     </div>
-
-                   
                   </div>
+
+                </div>
+
+
+
+
+                <div class="sub-accordion-item">
+                  <div id="sub-accordion-header" class="sub-accordion-header">
+                    <img src="{% static 'video-icons.png' %}"/>Materials<i
+                      id="Sub-video"
+                      class="fas fa-angle-right"
+                    ></i>
+                  
+                  </div>
+
+                  <div class="sub-accordion-content">
+                    <div class="video-list" id="videoContainer">
+                    <ul class="list-group">
+
+                     {% for content in  module.contents.all %}
+               
+                      {% if  content.content_type.model == "file"  %}
+                         
+                        <li class="list-group-item active" aria-current="true">{{content.item.title}}</li>
+                        <a href="{{content.item.file.url}}" target="_blank" rel="noopener noreferrer">
+
+                          <li class="list-group-item">A second item</li>
+                        </a>
+                    
+                  
+                     
+                     
+                      {% endif %}
+                          
+                    {% endfor %}
+                  </ul>
+                    </div>
+                  </div>
+
                 </div>
 
                 <div class="sub-accordion-item">
